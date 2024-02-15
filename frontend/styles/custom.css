@@ -1,0 +1,93 @@
+/*!
+ * Theme: Default
+ * Package: CopyGen
+ * Version: 1.0.0
+ * Author: Softnio
+ * Author URI: http://themeforest.net/user/softnio
+**/
+
+/* Default Theme */
+
+#__next {
+  position: relative;
+  overflow: hidden;
+}
+img {
+  height: auto;
+}
+.index-module_type__E-SaG::after {
+  background: linear-gradient(
+    var(--bs-bg-gradient-angle, 319.2deg),
+    RGBA(70, 162, 255, var(--bs-bg-opacity, 1)) 25.45%,
+    RGBA(63, 62, 237, var(--bs-bg-opacity, 1)) 100.14%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 400;
+}
+.dropdown > span {
+  cursor: pointer;
+}
+.dropdown-menu.show {
+  transform: translate3d(-16px, 36px, 0px);
+  position: absolute;
+  inset: 0px 0px auto auto;
+  margin: 0px;
+}
+.is-dark .nk-menu-buttons .dropdown-menu {
+  background: #151e36;
+}
+.is-dark .nk-menu-buttons .dropdown-item:hover {
+  background-color: #f8f9fa0a;
+}
+.is-dark .is-dark .bg-white .form-control-plaintext,
+.is-dark .is-dark .bg-white .form-control {
+  color: #fff;
+}
+.is-light .is-dark .bg-white .form-control-plaintext,
+.is-light .is-dark .bg-white .form-control {
+  color: #293a51;
+}
+.custom-isotop {
+  column-count: 3;
+  column-gap: 30px;
+  margin-bottom: -30px;
+}
+.custom-isotop > * {
+  margin-bottom: 30px;
+}
+
+.is-dark .blog-post .text-bg-primary-soft {
+  color: #fff;
+}
+
+@media (max-width: 1199px) {
+  .custom-isotop {
+    column-count: 2;
+  }
+}
+@media (max-width: 991px) {
+  .nk-header-menu {
+    transition: 0.4s ease;
+  }
+}
+@media (max-width: 767px) {
+  .custom-isotop {
+    column-count: 1;
+  }
+}
+@media (max-width: 575px) {
+  .section-head br {
+    display: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .header-menu-overlay {
+    display: none;
+  }
+}
+
+/* ========================================= 
+  Wright Your Custom Style Here 
+============================================ */
