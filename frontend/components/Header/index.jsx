@@ -6,6 +6,7 @@ import DropDown from './DropDown';
 import { useRouter } from 'next/router';
 import Icon from '../Icon';
 import Logo from '../Logo';
+import { useSession } from 'next-auth/react';
 
 export default function HeaderStyle1({
   varient,
@@ -22,6 +23,18 @@ export default function HeaderStyle1({
   const [mobileToggle, setMobileToggle] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [isLanguage, setIsLanguage] = useState(false);
+
+  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+
+
+
+useEffect(() => {
+  if (session) {
+    setUser(session.user);
+  }
+}, [session]);
+
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -68,62 +81,14 @@ export default function HeaderStyle1({
                 menuPosition ? menuPosition : 'mx-auto'
               }`}
             >
-              <li className="nk-menu-item has-dropdown">
-                <DropDown menuTitle="Home">
-                  <ul className="nk-menu-sub">
-                    <li
-                      className={`nk-menu-item ${
-                        router.pathname === '/' ? 'active' : ''
-                      }`}
-                    >
-                      <Link className="nk-menu-link" href="/">
-                        Home S1
-                      </Link>
-                    </li>
-                    <li
-                      className={`nk-menu-item ${
-                        router.pathname === '/index-s2' ? 'active' : ''
-                      }`}
-                    >
-                      <Link className="nk-menu-link" href="/index-s2">
-                        Home S2
-                      </Link>
-                    </li>
-                    <li
-                      className={`nk-menu-item ${
-                        router.pathname === '/index-s3' ? 'active' : ''
-                      }`}
-                    >
-                      <Link className="nk-menu-link" href="/index-s3">
-                        Home S3
-                      </Link>
-                    </li>
-                    <li
-                      className={`nk-menu-item ${
-                        router.pathname === '/index-s4' ? 'active' : ''
-                      }`}
-                    >
-                      <Link className="nk-menu-link" href="/index-s4">
-                        Home S4
-                        <div className="badge bg-primary ms-2 me-n4 px-2 rounded-pill">
-                          New
-                        </div>
-                      </Link>
-                    </li>
-                    <li
-                      className={`nk-menu-item ${
-                        router.pathname === '/index-s5' ? 'active' : ''
-                      }`}
-                    >
-                      <Link className="nk-menu-link" href="/index-s5">
-                        Home S5
-                        <div className="badge bg-primary ms-2 me-n4 px-2 rounded-pill">
-                          New
-                        </div>
-                      </Link>
-                    </li>
-                  </ul>
-                </DropDown>
+                <li
+                className={`nk-menu-item ${
+                  router.pathname === '/' ? 'active' : ''
+                }`}
+              >
+                <Link href="/" className="nk-menu-link">
+                  <span className="nk-menu-text">Home</span>
+                </Link>
               </li>
               <li
                 className={`nk-menu-item ${
@@ -143,242 +108,14 @@ export default function HeaderStyle1({
                   <span className="nk-menu-text">Features</span>
                 </Link>
               </li>
-              <li className="nk-menu-item has-dropdown">
-                <DropDown menuTitle="Pages" megaMenuClass="nk-menu-mega">
-                  <div className="nk-menu-mega-wrap">
-                    <ul className="nk-menu-sub">
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/about' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/about">
-                          About
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/usecase' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/usecase">
-                          Use Case
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/usecase/usecase-details'
-                            ? 'active'
-                            : ''
-                        }`}
-                      >
-                        <Link
-                          className="nk-menu-link"
-                          href="/usecase/usecase-details"
-                        >
-                          Use Case Details
-                          <div className="badge bg-primary ms-2 me-n4 px-2 rounded-pill">
-                            New
-                          </div>
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/usecase-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/usecase-s2">
-                          Use Case S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/usecase-s2/usecase-details-s2'
-                            ? 'active'
-                            : ''
-                        }`}
-                      >
-                        <Link
-                          className="nk-menu-link"
-                          href="/usecase-s2/usecase-details-s2"
-                        >
-                          Use Case Details S2{' '}
-                          <div className="badge bg-primary ms-2 me-n4 px-2 rounded-pill">
-                            New
-                          </div>
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/pricing' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/pricing">
-                          Pricing
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/pricing-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/pricing-s2">
-                          Pricing S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/blog' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/blog">
-                          Blog
-                        </Link>
-                      </li>
-                    </ul>
-                    <ul className="nk-menu-sub">
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/blog/blog-single'
-                            ? 'active'
-                            : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/blog/blog-single">
-                          Blog Single
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/features' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/features">
-                          Features
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/contact' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/contact">
-                          Contact
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/contact-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/contact-s2">
-                          Contact S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/login' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/login">
-                          Login
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/login-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/login-s2">
-                          Login S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/register' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/register">
-                          Register
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/register-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/register-s2">
-                          Register S2
-                        </Link>
-                      </li>
-                    </ul>
-                    <ul className="nk-menu-sub">
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/reset' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/reset">
-                          Reset
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/reset-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/reset-s2">
-                          Reset S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/404' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/404">
-                          404 Error
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/404-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/404-s2">
-                          404 Error S2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/504' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/504">
-                          504 Error
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/504-s2' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/504-s2">
-                          504 Error s2
-                        </Link>
-                      </li>
-                      <li
-                        className={`nk-menu-item ${
-                          router.pathname === '/terms-condition' ? 'active' : ''
-                        }`}
-                      >
-                        <Link className="nk-menu-link" href="/terms-condition">
-                          Terms & Condition
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </DropDown>
+               <li
+                className={`nk-menu-item ${
+                  router.pathname === '/about' ? 'active' : ''
+                }`}
+              >
+                <Link href="/about" className="nk-menu-link">
+                  <span className="nk-menu-text">About</span>
+                </Link>
               </li>
               <li
                 className={`nk-menu-item ${
@@ -401,13 +138,21 @@ export default function HeaderStyle1({
                   btnClass={actionBtnClass}
                 />
               </li>
-              {loginBtn && (
                 <li>
+                  {user ? (<div>
+                  <Link className="link link-dark" href="/dashboard">
+                    <span className="nk-menu-text">Dashboard</span>
+                    </Link>
+                    </div>
+                    ) : (
                   <Link className="link link-dark" href="/login">
-                    {loginBtn}
-                  </Link>
+                    <span className="nk-menu-text">{loginBtn}</span>
+                      </Link>
+                  )}
+                   
+                 
+                
                 </li>
-              )}
               {language && (
                 <li className="dropdown">
                   <span

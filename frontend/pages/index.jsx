@@ -10,7 +10,7 @@ import FeatureCard from '../components/FeatureCard';
 import Accordion from '../components/Accordion';
 import Cta from '../components/Cta';
 import PricingSection from '../components/Pricing/PricingSection';
-import heroImage from '../public/images/gfx/banner/a.jpg';
+import heroImage from '../public/images/spindle_mongo_db.png';
 import FeatureCardImg from '../public/images/gfx/feature/a.jpg';
 
 export default function Home() {
@@ -18,17 +18,15 @@ export default function Home() {
     <>
       <Head>
         <title>
-          CopyGen - AI Writer & Copywriting Landing Page Next.js Template.
+          Spindle - Automatic API Generation and Deployment
         </title>
       </Head>
       <Layout>
         <Hero
-          title="Unlock the power of Copywriting AI and Create Content Faster"
-          subTitle="AI Copywriting is revolutionizing the way content is created.
-          AI can create content for blogs, articles, websites, social
-          media and more."
+          title="Deploy A Database With Hundreds of API Endpoints in a Single Click"
+          subTitle="Spindle is a revolutionary tool that allows you to create a MongoDB database with a host of your own custom API endpoints from a csv."
           href="/login"
-          btnText="Start writing for free"
+          btnText="Start deploying for free"
           alertText="No credit card required"
           imgUrl={heroImage}
           imgAlt="Banner"

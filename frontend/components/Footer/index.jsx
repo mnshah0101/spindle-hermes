@@ -2,16 +2,15 @@ import React from 'react';
 import MenuWidget from '../Widget/MenuWidget';
 import TextWidget from '../Widget/TextWidget';
 import Copyright from '../Widget/Copyright';
-import logoUrl from '../../public/images/logo-dark.png';
-import darkLogoUrl from '../../public/images/logo.png';
+import logoUrl from '../../public/images/logos/spindle_med_purple.png';
+import darkLogoUrl from '../../public/images/logos/spindle_med_white.png';
 
 const useCaseMenu = [
-  { href: '/usecase/ai-writer', title: 'AI Writer' },
-  { href: '/usecase/ai-articel-writer', title: 'AI Articel Writer' },
-  { href: '/usecase/content-generator', title: 'Content Generator' },
-  { href: '/usecase/ai-content-writing', title: 'AI Content Writing' },
-  { href: '/usecase/content-rewriter', title: 'Content Rewriter' },
-  { href: '/usecase/blog-post-writer', title: 'Blog Post Writer' },
+  { href: '/usecase/data-migration', title: 'Data Migration' },
+  { href: '/usecase/data-analysis', title: 'Data Analysis' },
+  { href: '/usecase/e-commerce', title: 'E-Commerce' },
+  { href: '/usecase/supply-chain', title: 'Supply Chain Management' },
+  { href: '/usecase/crm', title: 'CRM' },
 ];
 const aboutMenu = [
   { href: '/pricing', title: 'Pricing' },
@@ -22,9 +21,7 @@ const aboutMenu = [
 ];
 const copygenMenu = [
   { href: '/contact', title: 'Contact Us' },
-  { href: '/', title: 'FAQs' },
-  { href: '/', title: 'Affiliate Program' },
-];
+  { href: '/', title: 'FAQs' }];
 
 export default function Footer() {
   return (
@@ -49,7 +46,7 @@ export default function Footer() {
             <div className="col-xl-2 col-sm-4 col-6">
               <MenuWidget
                 titleClass="overline-title text-heading mb-3"
-                title="CopyGen"
+                title="Spindle"
                 menuItems={copygenMenu}
               />
             </div>
@@ -60,15 +57,12 @@ export default function Footer() {
                 logoWidth="125"
                 logoHeight="26"
                 title="Save time. Get inspired."
-                subTitle="Automatically genarate blog articles, website copy, landing
-                pages & digital ads for your business in seconds. Unleash
-                the most advanced AI writer to boost your traffic and
-                productitvity."
+                subTitle="Automatically generate and host dozens of APIs for your projects."
               />
               <Copyright
-                copyrightText="© 2023 CopyGenAI. Template Made By"
-                copyrightLink="https://softnio.com"
-                copyrightLinkText="Softnio"
+                copyrightText="© 2024 Spindle by Hermes Group"
+                copyrightLink="https://hermesgruop.dev"
+                copyrightLinkText="HERMES"
                 variant="text-heading mt-4"
               />
             </div>
