@@ -4,7 +4,7 @@ import FooterStyle2 from '../Footer/FooterStyle2';
 import Head from 'next/head';
 import logoUrl from '../../public/images/logo-dark.png';
 import darkLogoUrl from '../../public/images/logo.png';
-
+import { SessionProvider } from 'next-auth/react';
 export default function Layout2({ children }) {
   return (
     <>
@@ -15,6 +15,7 @@ export default function Layout2({ children }) {
         />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
+      <SessionProvider>
       <div className="nk-app-root  bg-darker">
         <Header
           varient="is-transparent is-dark on-dark"
@@ -29,6 +30,7 @@ export default function Layout2({ children }) {
         <main className="nk-pages">{children}</main>
         <FooterStyle2 />
       </div>
+     </SessionProvider>
     </>
   );
 }

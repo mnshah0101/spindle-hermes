@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import ModeSwitch from '../ModeSwitch';
 import Button from '../Button';
-import DropDown from './DropDown';
 import { useRouter } from 'next/router';
 import Icon from '../Icon';
 import Logo from '../Logo';
@@ -128,7 +127,6 @@ useEffect(() => {
               </li>
             </ul>
             <div className="mx-2 d-none d-lg-block">
-              <ModeSwitch />
             </div>
             <ul className="nk-menu-buttons flex-lg-row-reverse">
               <li>

@@ -23,9 +23,9 @@ export default function Layout({ children }) {
           varient="is-transparent"
           logoUrl={logoUrl}
           darkLogoUrl={darkLogoUrl}
-          actionBtnText="Deploy for Free"
+          actionBtnText="Deploy "
           actionBtnClass="btn btn-primary"
-          actionBtnUrl="/"
+          actionBtnUrl="/deploy"
           menuPosition="mx-auto"
           loginBtn="Login"
         />
