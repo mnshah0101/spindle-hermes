@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 const accordionData = [
   {
-    question: 'What is a copy?',
+    question: 'What is a Mongoose Schema?',
     answer:
-      "Yes, you can write long articel for your blog posts, product descriptions or any long article with CopyGen. We're always updating our template and tools, so let us know what are expecting!",
+      'A Mongoose schema defines the structure of the document, default values, validators, etc. It is fundamental to managing data in MongoDB through Mongoose.',
   },
   {
-    question: 'Does CopyGen to write long articles?',
+    question: 'How do you generate MongoDB from CSV?',
     answer:
-      "Yes, you can write long articel for your blog posts, product descriptions or any long article with CopyGen. We're always updating our template and tools, so let us know what are expecting!",
+      'Once you input a CSV, our AI parses it using GPT and creates a Mongoose schema. We then run code in a Virtual Machine (VM) that creates your MongoDB collection and uploads all your CSV data into it.',
   },
   {
-    question: 'Is the generated content original?',
+    question: 'How does the API endpoint creation work?',
     answer:
-      "Yes, you can write long articel for your blog posts, product descriptions or any long article with CopyGen. We're always updating our template and tools, so let us know what are expecting!",
+      'Based on the MongoDB collection automatically created from your CSV, we generate RESTful API endpoints with full CRUD operations. These endpoints are hosted, and the code is run in our VM for each API call.',
   },
   {
-    question: 'Do you have wordpress plugin?',
+    question: 'Can I prompt new endpoints with natural language?',
     answer:
-      "Yes, you can write long articel for your blog posts, product descriptions or any long article with CopyGen. We're always updating our template and tools, so let us know what are expecting!",
+      'Yes, part of our service allows you to create custom endpoints with natural language. These user-prompted endpoints will be created, documented, and hosted for your convenience.',
   },
 ];
 

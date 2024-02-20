@@ -65,7 +65,7 @@ export default function HeroStyle2({
                     />
                   </div>
                   <div className="badge bg-dark p-2 mt-2 fw-normal text-white text-opacity-75">
-                    Freelancer
+                    Hobbyist
                   </div>
                 </div>
                 <div className="d-none d-md-block position-absolute top-50 end-100 me-3 me-lg-4 mt-n5">
@@ -78,7 +78,7 @@ export default function HeroStyle2({
                     />
                   </div>
                   <div className="badge bg-dark p-2 mt-2 fw-normal text-white text-opacity-75">
-                    Marketer
+                    Business Owner
                   </div>
                 </div>
                 <div className="d-none d-md-block position-absolute top-0 start-100 ms-5 ms-lg-7 ms-xl-10 mt-n7">
@@ -91,7 +91,7 @@ export default function HeroStyle2({
                     />
                   </div>
                   <div className="badge bg-dark p-2 mt-2 fw-normal text-white text-opacity-75">
-                    Copywriter
+                    Developer
                   </div>
                 </div>
                 <div className="d-none d-md-block position-absolute top-50 start-100 ms-4 ms-lg-5 mt-n2">
@@ -104,7 +104,7 @@ export default function HeroStyle2({
                     />
                   </div>
                   <div className="badge bg-dark p-2 mt-2 fw-normal text-white text-opacity-75">
-                    Blogger
+                    Data Scientist
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header';
-import FooterStyle2 from '../Footer/FooterStyle2';
+import FooterStyle2 from '../Footer';
 import Head from 'next/head';
 import logoUrl from '../../public/images/logos/spindle_med_purple.png';
 import darkLogoUrl from '../../public/images/logos/spindle_med_white.png';
