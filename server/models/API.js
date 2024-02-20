@@ -2,6 +2,29 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
+/*
+{
+    "_id" : ObjectId("60d21b8a3c4a7e49b1b28796"),
+    "name" : "User Management API",
+    "description" : "API for managing users in our application",
+    "api_keys" : [
+        "AKDJFH98798JHYTUCIYT",
+        "KADJFH1651RQEASDZXCZ",
+        "QWER6876QWERTYUIOREW"
+    ],
+    "api_slug" : "www.example.com/user_management_api",
+    "user" : ObjectId("60d21b8a3c4a7e49b1b28767"),
+    "mongo_uri" : "mongodb://localhost:27017",
+    "mongo_schema" : "UserSchema",
+    "database_name" : ObjectId("60d21b8a3c4a7e49b1b28759"),
+    "endpoints" : [
+        ObjectId("60d21b8a3c4a7e49b1b28760"),
+        ObjectId("60d21b8a3c4a7e49b1b28761"),
+        ObjectId("60d21b8a3c4a7e49b1b28762")
+    ],
+    "created_at" : ISODate("2021-06-22T01:22:34.639Z")
+}
+*/
 
 const APISchema = new Schema({
     //api name/title

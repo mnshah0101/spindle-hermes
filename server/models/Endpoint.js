@@ -2,6 +2,37 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
+//example of a schema for an endpoint
+
+/*
+{
+    "endpoint_name": "Get User Data",
+    "endpoint_slug": "www.example.com/api_slug/get_user_data",
+    "user" : "609d6cd3429f150020429",
+    "api" : "5f8762d3742f160024426",
+    "database": "7e278e6cb894250025429",
+    "description": "This endpoint is used to fetch user data from database",
+    "parameters": [
+        {
+            "name": "string",
+            "age": "number"
+        }
+    ],
+    "response_type": "JSON",
+    "code": "const responseFunction = async (userID) => { 
+    
+                const user = await User.findById(userID); 
+
+                if (!user) { 
+                     throw new Error('No user found!'); 
+                }
+
+                return user; 
+
+            }"
+}
+*/
+
 
 const EndpointSchema = new Schema({
     //endpoint name/title
