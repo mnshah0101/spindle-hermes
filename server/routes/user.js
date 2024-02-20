@@ -1,10 +1,8 @@
 //create a user routes
 
 import express from 'express';
-import bodyParser from 'body-parser';
 import UserModel from '../models/User.js';
 import bycrypt from 'bcryptjs';
-import mongoose from 'mongoose';
 
 //connect to the database
 

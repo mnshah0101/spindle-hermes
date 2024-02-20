@@ -4,6 +4,9 @@ import path from 'path';
 import mongoose from 'mongoose';
 import user_routes from './routes/user.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
 
@@ -14,7 +17,7 @@ app.use(cors());
 
     
 
-mongoose.connect('mongodb://localhost:27017/spindle', { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     console.log('Connected to the database');
 }).catch((err) => {
     console.log('Error connecting to the database');
@@ -26,7 +29,7 @@ app.use('/', user_routes);
 
 
 
-app.listen(8000, () => {
+app.listen(process.env.EXPRESS_PORT, () => {
     console.log('Server is listening on port 8000');
     }
 );
