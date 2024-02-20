@@ -4,6 +4,7 @@ import FooterStyle3 from '../Footer/FooterStyle3';
 import Head from 'next/head';
 import logoUrl from '../../public/images/logo-green-dark.png';
 import darkLogoUrl from '../../public/images/logo-green.png';
+import { SessionProvider } from 'next-auth/react';
 
 export default function LayoutThree({ children }) {
   return (
@@ -15,6 +16,7 @@ export default function LayoutThree({ children }) {
         />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
+      <SessionProvider>
       <div className="nk-app-root">
         <Header
           varient="has-border"
@@ -29,6 +31,7 @@ export default function LayoutThree({ children }) {
         <main className="nk-pages">{children}</main>
         <FooterStyle3 />
       </div>
+      </SessionProvider>
     </>
   );
 }

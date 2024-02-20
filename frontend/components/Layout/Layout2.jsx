@@ -2,8 +2,8 @@ import React from 'react';
 import Header from '../Header';
 import FooterStyle2 from '../Footer/FooterStyle2';
 import Head from 'next/head';
-import logoUrl from '../../public/images/logo-dark.png';
-import darkLogoUrl from '../../public/images/logo.png';
+import logoUrl from '../../public/images/logos/spindle_med_purple.png';
+import darkLogoUrl from '../../public/images/logos/spindle_med_white.png';
 import { SessionProvider } from 'next-auth/react';
 export default function Layout2({ children }) {
   return (
@@ -11,9 +11,9 @@ export default function Layout2({ children }) {
       <Head>
         <meta
           name="description"
-          content="CopyGen - AI Writer & Copywriting Landing Page Next.js Template."
+          content="Spindle - Create a MongoDB database with a host of your own custom API endpoints a single click."
         />
-        <link rel="icon" href="/images/favicon.png" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <SessionProvider>
       <div className="nk-app-root  bg-darker">
@@ -21,9 +21,9 @@ export default function Layout2({ children }) {
           varient="is-transparent is-dark on-dark"
           logoUrl={logoUrl}
           darkLogoUrl={darkLogoUrl}
-          actionBtnText="Get Started"
+          actionBtnText="Deploy"
           actionBtnClass="btn btn-outline-primary rounded-pill"
-          actionBtnUrl="/"
+          actionBtnUrl="/deploy"
           menuPosition="me-auto"
           loginBtn="Sign in"
         />

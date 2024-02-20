@@ -1,212 +1,297 @@
 import Head from 'next/head';
-
-import Hero from '../components/Hero';
-import Layout from '../components/Layout';
+import React from 'react';
+import Layout2 from '../components/Layout/Layout2';
+import HeroStyle2 from '../components/Hero/HeroStyle2';
 import SectionHeading from '../components/SectionHeading';
-import IconBox from '../components/IconBox';
-import Card from '../components/Card';
-import Button from '../components/Button';
-import FeatureCard from '../components/FeatureCard';
 import Accordion from '../components/Accordion';
-import Cta from '../components/Cta';
-import PricingSection from '../components/Pricing/PricingSection';
+import SectionHeadingStyle2 from '../components/SectionHeading/SectionHeadingStyle2';
+import PricingSectionStyle2 from '../components/Pricing/PricingSectionStyle2';
+import IconBoxStyle2 from '../components/IconBox/IconBoxStyle2';
+import FeatureCardStyle2 from '../components/FeatureCard/FeatureCardStyle2';
+import IconBoxStyle3 from '../components/IconBox/IconBoxStyle3';
 import heroImage from '../public/images/spindle_mongo_db.png';
-import FeatureCardImg from '../public/images/gfx/feature/a.jpg';
+import featureCardImg1 from '../public/images/gfx/process/a.jpg';
+import featureCardImg2 from '../public/images/gfx/process/b.jpg';
+import featureCardImg3 from '../public/images/gfx/process/c.jpg';
 
-export default function Home() {
+export default function HomeS2() {
   return (
     <>
       <Head>
         <title>
-          Spindle - Automatic API Generation and Deployment
+          Spindle - Automated API and Database Hosting
         </title>
       </Head>
-      <Layout>
-        <Hero
-          title="Deploy A Database With Hundreds of API Endpoints in a Single Click"
-          subTitle="Spindle is a revolutionary tool that allows you to create a MongoDB database with a host of your own custom API endpoints from a csv."
-          href="/login"
-          btnText="Start deploying for free"
-          alertText="No credit card required"
+      <Layout2>
+        <HeroStyle2
+          title="AI Developer for Creating"
+          typingText={[
+            'Instant APIs',
+            1000,
+            'Database Hosting',
+            1000,
+            'Intelligent API Endpoints',
+            1000,
+          ]}
+          subTitle="AI Copywriting is revolutionizing the way content is created. AI can create content for blogs, articles, websites, social media and more."
           imgUrl={heroImage}
-          imgAlt="Banner"
+          btnText="Start writing for free"
+          btnUrl="/login-s2"
+          btnAlert="No credit card required"
+          brandTitle="Trusted by 60,000+ freelancers, marketing teams and agencies."
+          brandSrcList={[
+            '/images/brands/72-b-white.png',
+            '/images/brands/72-c-white.png',
+            '/images/brands/72-d-white.png',
+            '/images/brands/72-e-white.png',
+          ]}
         />
-        <section className="section section-bottom-0 has-shape">
-          <div className="nk-shape bg-shape-blur-a mt-8 start-50 top-0 translate-middle-x" />
+        <section className="section bg-darker is-dark section-top-0 has-shape">
+          <div className="nk-shape bg-shape-blur-a start-50 top-50 translate-middle" />
           <div className="container">
-            <SectionHeading
-              overlineTitle="Get started for free"
-              title="AI Generate content in seconds"
-              subTitle="Give our AI a few descriptions and we'll automatically create blog articles, product descriptions and more for you within just few second."
-            />
-            <div className="section-content">
-              <div className="row text-center g-gs">
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Blog Post & Articles"
-                    subTitle="Generate optimized blog post and articles to get organic traffic - making you visible to the world."
-                    iconClass="book-read"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Product Description"
-                    subTitle="Create a perfect description for your products to
-                    engage your customers to click and buy."
-                    iconClass="card-view"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Social Media Ads"
-                    subTitle="Create ads copies for your social media - make an impact with your online marketing campaigns."
-                    iconClass="facebook-f"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Product Benefits"
-                    subTitle="Create a bullet point list of your product benefits that appeal to your customers to purchase."
-                    iconClass="grid-plus"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Landing Page Content"
-                    subTitle="Write very attractive headlines, slogans or paragraph for your landing page of your website."
-                    iconClass="layout2"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <IconBox
-                    title="Suggest Improvements"
-                    subTitle="Need to improve your existing content? Our AI will
-                    rewrite and improve the content for you."
-                    iconClass="loader"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="section has-mask">
-          <div className="nk-mask bg-pattern-dot bg-blend-around mt-10p mb-3" />
-          <div className="container">
-            <SectionHeading
-              overlineTitle="How it works"
-              title="Instruct to our AI and generate copy"
-              subTitle="Give our AI a few descriptions and we'll automatically
-              create blog articles, product descriptions and more for you
-              within just few second."
+            <SectionHeadingStyle2
+              title="Superpower with AI Writer"
+              subTitle="Let our AI assist with most time consuming to write blog <br>
+              articles, product descriptions and more."
             />
             <div className="section-content">
               <div className="row g-gs">
-                <div className="col-lg-4">
-                  <Card
-                    title="Select writing template"
-                    subTitle="Simply choose a template from available list to write
-                    content for blog posts, landing page, website content
-                    etc."
-                    imgUrl="/images/number/1.png"
-                    imgAlt="1"
-                    imgHeight="101"
-                    imgWidth="42"
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Brainstorm faster"
+                    subTitle="Use our advanced AI as your personal content writer or partner for your endless work for your business."
+                    iconClass="bulb"
+                    variant="text-info bg-info"
                   />
                 </div>
-                <div className="col-lg-4">
-                  <Card
-                    title="Describe your topic"
-                    subTitle="Provide our AI content writer with few sentences on
-                    what you want to write, and it will start writing for
-                    you."
-                    imgUrl="/images/number/2.png"
-                    imgAlt="2"
-                    imgHeight="103"
-                    imgWidth="64"
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Tools and templates"
+                    subTitle="Using our AI tools and pre-built template to create
+                    content briefs, write and optimize content in one
+                    place."
+                    iconClass="cpu"
+                    variant="text-primary bg-primary"
                   />
                 </div>
-                <div className="col-lg-4">
-                  <Card
-                    title="Generate quality content"
-                    subTitle="Our powerful AI tools will generate content in few
-                    second, then you can export it to wherever you need."
-                    imgUrl="/images/number/3.png"
-                    imgAlt="3"
-                    imgHeight="103"
-                    imgWidth="66"
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Write content faster"
+                    subTitle="You do not need to spend hours to write good content
+                    — let our advance AI Writer to get it done."
+                    iconClass="spark"
+                    variant="text-indigo bg-indigo"
+                  />
+                </div>
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Repurpose content easily"
+                    subTitle="Write and saved once, use everywhere. Also rewrite
+                    content for different porpose with minimal effort."
+                    iconClass="swap-alt"
+                    variant="text-success bg-success"
+                  />
+                </div>
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Write in Any Language"
+                    subTitle="Let AI write for you in over 40 languages. Our AI
+                    can write in English, Spanish, French and many more
+                    language."
+                    iconClass="text"
+                    variant="text-danger bg-danger"
+                  />
+                </div>
+                <div className="col-md-6 col-xl-4">
+                  <IconBoxStyle3
+                    title="Copy and publish anywhere"
+                    subTitle="You can simply copy your desire content and then you
+                    can publish, like Shopify, WordPress, or anywhere."
+                    iconClass="file-docs"
+                    variant="text-warning bg-warning"
                   />
                 </div>
               </div>
             </div>
-            <div className="section-actions text-center">
-              <ul className="btn-list btn-list-inline gx-gs gy-3">
-                <li>
-                  <Button
-                    href="/login"
-                    btnClass="btn btn-primary btn-lg"
-                    btnText="Start free trial today"
-                  />
-                </li>
-                <li>
-                  <Button
-                    href="/"
-                    btnClass="btn btn-primary btn-soft btn-lg"
-                    btnText="See action in video"
-                    leftIconClass="play"
-                  />
-                </li>
-              </ul>
-            </div>
-            <FeatureCard
-              imgUrl={FeatureCardImg}
-              imgAlt="Feature Thumb"
-              title="AI Generate content in seconds"
-              subTitle="Generate copy that converts for business bios, facebook ads,
-              product descriptions, emails, landing pages, social ads, and more."
-              featureList={[
-                'Create article that are complete in less than 15 seconds.',
-                'Save hundreds of hours with our AI article generator.',
-                'Improve your copy with the article rewriter.',
-              ]}
-              listIconClass="minus text-primary"
-            />
           </div>
         </section>
-        <section className="section section-bottom-0 section-top-0">
+        <section
+          className="section section-bottom-0 bg-white rounded-top-6"
+          id="howto"
+        >
+          <div className="container">
+            <SectionHeadingStyle2
+              overlineTitle="How To"
+              title="Few steps to write content"
+              subTitle="Let our AI assist with most time consuming to write blog <br>
+              articles, product descriptions and more."
+            />
+            <div className="section-content">
+              <div className="row gy-3 justify-content-center">
+                <div className="col-xxl-12">
+                  <FeatureCardStyle2
+                    variant="bg-primary"
+                    gradientVariant="bg-gradient-primary"
+                    imgUrl={featureCardImg1}
+                    imgAlt="Thumbnail"
+                    iconUrl="/images/icon/text.svg"
+                    title="Select writing template"
+                    subTitle="Simply choose a template from available list to
+                    write content for blog posts, landing page, website
+                    content etc."
+                    featureList={[
+                      'Available more than 10 template.',
+                      'A clean and minimalist editor.',
+                      'Article generator wizard.',
+                    ]}
+                  />
+                </div>
+                <div className="col-xxl-12">
+                  <FeatureCardStyle2
+                    variant="bg-warning"
+                    gradientVariant="bg-gradient-warning"
+                    imgUrl={featureCardImg2}
+                    imgAlt="Thumbnail"
+                    iconUrl="/images/icon/edit.svg"
+                    title="Describe your topic"
+                    subTitle="Provide our AI content writer with few sentences on
+                    what you want to write, and it will start writing
+                    for you."
+                    featureList={[
+                      'Simply provide a few input as topic',
+                      'Type a topic like "best ways to earn money"',
+                      'Facebook Ads, Headlines and other 10+ tools',
+                    ]}
+                  />
+                </div>
+                <div className="col-xxl-12">
+                  <FeatureCardStyle2
+                    variant="bg-info"
+                    gradientVariant="bg-gradient-info"
+                    imgUrl={featureCardImg3}
+                    imgAlt="Thumbnail"
+                    iconUrl="/images/icon/paper.svg"
+                    title="Generate quality content"
+                    subTitle="Our powerful AI tools will generate content in few
+                    second, then you can export it to wherever you need."
+                    featureList={[
+                      'Generate content in under 30 seconds.',
+                      'All content is unique and original."',
+                      'Generate up to 200 words each time.',
+                    ]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="section bg-white has-mask" id="usecase">
+          <div className="nk-mask bg-pattern-dot-sm bg-blend-around" />
+          <div className="container">
+            <SectionHeadingStyle2
+              overlineTitle="Use Cases"
+              title="Generate in seconds using AI"
+              subTitle="Let our AI assist with most time consuming to write blog
+              articles, <br>product descriptions and more."
+              variant="h1"
+            />
+            <div className="section-content">
+              <div className="row justify-content-center">
+                <div className="col-xxl-11">
+                  <div className="row gy-6 gx-5 text-center">
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Blog Post & Articles"
+                        subTitle="Generate optimized blog post and articles to get
+                        organic traffic - making you visible on the world."
+                        imgUrl="/images/icon/articles.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                      />
+                    </div>
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Product Description"
+                        subTitle="Create a perfect description for your products to
+                        engage your customers to click and buy."
+                        imgUrl="/images/icon/product-discription.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                        variant="text-bg-success-soft-outline"
+                      />
+                    </div>
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Social Media Ads"
+                        subTitle="Create ads copies for your social media - make an
+                        impact with your online marketing campaigns."
+                        imgUrl="/images/icon/hand-mic.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                        variant="text-bg-purple-soft-outline"
+                      />
+                    </div>
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Product Benefits"
+                        subTitle="Create a bullet point list of your product benefits that appeal to your customers to purchase."
+                        imgUrl="/images/icon/praying-hand.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                        variant="text-bg-info-soft-outline"
+                      />
+                    </div>
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Suggest Improvements"
+                        subTitle="Need to improve your existing content? Our AI will
+                        rewrite and improve the content for you."
+                        imgUrl="/images/icon/stock-up.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                        variant="text-bg-primary-soft-outline"
+                      />
+                    </div>
+                    <div className="col-sm-6 col-lg-4">
+                      <IconBoxStyle2
+                        title="Landing Page Content"
+                        subTitle="Write very attractive headlines, slogans or
+                        paragraph for your landing page of your website."
+                        imgUrl="/images/icon/website.svg"
+                        imgHeight="32"
+                        imgWidth="32"
+                        variant="text-bg-indigo-soft-outline"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="section section-bottom-0 bg-light" id="pricing">
+          <div className="container">
+            <SectionHeadingStyle2
+              overlineTitle="Pricing"
+              title="Plans that start free and <br> fits with your needs"
+              subTitle="With our simple plans, supercharge your content writing to
+              helps your <br> business. Let’s make great content together."
+              variant="h1"
+            />
+            <PricingSectionStyle2 />
+          </div>
+        </section>
+        <section className="section bg-light">
           <div className="container">
             <SectionHeading
-              overlineTitle="Pricing"
-              title="Start your content writing with AI"
-              subTitle="With our simple plans, supercharge your content <br>writing to
-              helps your business."
+              title="Frequently Asked Questions"
+              subTitle="If you have any questions not answered in the FAQ, please do not hesitate to contac us."
+              containerWidthClass="col-xl-8"
             />
-            <PricingSection />
+            <Accordion variant="accordion-separated" plusMinus />
           </div>
         </section>
-        <section className="section section-bottom-0">
-          <div className="container">
-            <SectionHeading title="Frequently Asked Questions" />
-            <Accordion plusMinus />
-          </div>
-        </section>
-        <section className="section section-bottom-0">
-          <div className="container">
-            <Cta
-              overlineTitle="Boost your writing productivity"
-              title="End writer’s block today"
-              subtitle="It’s like having access to a team of copywriting experts writing
-              powerful copy for you in 1-click."
-              btnUrl="/login"
-              btnText="Start writing for free"
-              infoList={[
-                'No credit card required',
-                'Cancel anytime',
-                '10+ tools to expolore',
-              ]}
-            />
-          </div>
-        </section>
-      </Layout>
+      </Layout2>
     </>
   );
 }
