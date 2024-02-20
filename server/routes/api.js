@@ -12,5 +12,3 @@
 //the code should run and return a result
 //if the code runs successfully, we want to return the result with a 200 status code
 //if the code fails, we want to return a 500 status code
-
-
