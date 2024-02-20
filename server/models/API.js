@@ -25,6 +25,8 @@ const ObjectId = Schema.Types.ObjectId;
         ObjectId("60d21b8a3c4a7e49b1b28767"),
         ObjectId("60d21b8a3c4a7e49b1b28767")
     ],
+    "image" : "https://www.example.com/user_management_api.png",
+    "status" : "active",
     "created_at" : ISODate("2021-06-23T19:41:14.000Z")
 }
 
@@ -90,7 +92,18 @@ const APISchema = new Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+
+    //image of the api for the dashboard
+    image : {
+        type: String
+    },
+    //api status
+    status: {
+        type: String,
+        default: "active"
     }
+   
    
 });
 

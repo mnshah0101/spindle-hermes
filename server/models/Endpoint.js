@@ -30,6 +30,12 @@ const ObjectId = Schema.Types.ObjectId;
                 return user; 
 
             }"
+    "tags": [
+        "user",
+        "data"
+    ],
+    "full_endpoint": "www.example.com/api_slug/get_user_data"
+    
 }
 */
 
@@ -81,7 +87,19 @@ const EndpointSchema = new Schema({
     //mongoose+node code to be run in the VM for the endpoint
     code: {
         type: String
+    },
+     //api tags
+    tags: [
+        {
+            type: String
+        }
+    ],
+
+    //api full endpoint ie www.example.com/api_slug/endpoint_slug
+    full_endpoint: {
+        type: String
     }
+
    
 });
 

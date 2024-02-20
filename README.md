@@ -21,7 +21,7 @@ Here's how to get the project running locally:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/spindle
+   git clone https://github.com/mnshah0101/spindle-hermes
    ```
 
 2. Move into the Spindle directory:
