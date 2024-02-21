@@ -27,6 +27,7 @@ export default function ContactPage() {
                 header: false,
                 complete: (result) => {
                     setCsvData(result.data);
+                   
                 }
             });
         }
@@ -36,6 +37,11 @@ export default function ContactPage() {
 
     }
 
+
+    
+
+
+    
 
   return (
     <>

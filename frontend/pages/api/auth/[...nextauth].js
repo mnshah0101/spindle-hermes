@@ -39,7 +39,7 @@ export const authOptions = {
 
       if (user) {
         new_user = {
-          name: user.name
+          username: user.username
         };
       }
       else{
