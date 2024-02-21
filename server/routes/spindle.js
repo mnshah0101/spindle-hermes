@@ -10,35 +10,45 @@
 
 // read in a csv array and then feed 3 rows into langchain and then make a mongodb schema out of that
 
-const express = require('express');
-const { getSchemaFromCSV } = require('../utils/getSchemaFromCSV');
-const run = require("../utils/vmUtils");
-require('dotenv').config();
-const OpenAI = require('openai');
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+import express from 'express';
+import { getSchemaFromCSV, readCSV } from '../utils/schemaUtils.js';
+import { run } from "../utils/vmUtils.js";
+import { config } from 'dotenv';
+import OpenAI from 'openai';
 
-const openai = new OpenAI(OPENAI_API_KEY);
+config();
+
+const { OPENAI_API_KEY, MONGO_URI } = process.env;
+
+const openai = new OpenAI({apiKey: OPENAI_API_KEY});
 
 const app = express();
+const port = 8080;
 
 app.use(express.json());
 
-// Read first 3 rows of csv and then create mongo schema using langchain
+// Read first 3 rows of csv, create mongo schema using langchain, and then run on vm
 app.post('/', async (req, res) => {
   try {
     const csvData = req.body;
     const schema = await getSchemaFromCSV(csvData);
-    //res.send(schema); test code that creates schema
+    res.send(schema); //TESTED UP TO THIS POINT
 
-    let answer = await run(schema, code, MONGO_URI, params);
-    if (!answer) {
-      return res.status(500).send({ error: 'Internal server error' });
-    }
-    return res.status(200).send({ answer: answer });
+    //VM CODE TO TEST
+
+    // let answer = await run(schema, code, MONGO_URI, params);
+    // if (!answer) {
+    //   return res.status(500).send({ error: 'Internal server error' });
+    // }
+    // return res.status(200).send({ answer: answer });
   } catch (error) {
     console.error('Error generating schema:', error);
     res.status(500).send('Internal server error');
   }
 });
 
-module.exports = app;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+export default app;

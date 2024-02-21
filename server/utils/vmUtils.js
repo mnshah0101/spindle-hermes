@@ -1,8 +1,10 @@
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 const vm = require('node:vm');
 const mongoose = require('mongoose');
 
 //turn schema from json to schema string
-function generateSchemaCode(schema) {
+function generateSchemaCode(schema, modelName) {
     let schemaCode = 'const schema = new mongoose.Schema({\n';
 
     Object.keys(schema).forEach((key) => {
@@ -11,11 +13,34 @@ function generateSchemaCode(schema) {
     });
 
     schemaCode += '});\n';
-    schemaCode += 'const Model = mongoose.model("YourModelName", schema);\n';
+    schemaCode += `Model = mongoose.model(${modelName}, schema);\n`;
     schemaCode += 'module.exports = Model;\n';
 
     return schemaCode;
 }
+
+//run code in vm and do detailed error handling
+async function createAndRunInVm(code, context) {
+    try {
+        vm.createContext(context);
+        await vm.runInContext(code, context);
+    } catch (err) {
+        if (err instanceof SyntaxError) {
+            console.error('Syntax Error:', err.message);
+        } else if (err instanceof ReferenceError) {
+            console.error('Reference Error:', err.message);
+        } else if (err instanceof TypeError) {
+            console.error('Type Error:', err.message);
+        } else if (err instanceof EvalError) {
+            console.error('Eval Error:', err.message);
+        } else if (err instanceof RangeError) {
+            console.error('Range Error:', err.message);
+        } else {
+            console.error('Error:', err.message);
+        }
+    }
+}
+
 
 // take schema, endpoint code, mongo uri and extra params and run in a vm to output 
 async function run(schema, code, uri, params){
@@ -28,14 +53,13 @@ async function run(schema, code, uri, params){
 
         const context = {
             mongoose: mongoose,
-            Model:null 
+            Model: null,
+            console: console
         };
 
-        const schemaCode = generateSchemaCode(schema);
+        const schemaCode = generateSchemaCode(schema, params.modelName);
 
-        vm.createContext(context); 
-
-        await vm.runInContext(schemaCode, context);
+        createAndRunInVm(schemaCode, context);
         
         const context_2 = {
             mongoose: mongoose,
@@ -68,9 +92,8 @@ async function run(schema, code, uri, params){
         connect();`
 
         console.log(code2)
-        vm.createContext(context_2);
-
-        await vm.runInContext(code2, context_2);
+        
+        createAndRunInVm(code2, context_2);
 
         return context_2.answer 
 
@@ -80,4 +103,4 @@ async function run(schema, code, uri, params){
         }
 }
 
-module.exports = run;
+export {run};
