@@ -21,7 +21,6 @@ function readCSV(csvData) {
 
   const typecastedRows = firstThreeRows.map(row => row.map(value => {
       if (!isNaN(value) && !isNaN(parseFloat(value))) {
-          // Check if the value is an integer
           if (Number.isInteger(parseFloat(value))) {
               return parseInt(value); 
           } else {
