@@ -12,6 +12,12 @@
 
 const express = require('express');
 const { getSchemaFromCSV } = require('../utils/getSchemaFromCSV');
+const run = require("../utils/vmUtils");
+require('dotenv').config();
+const OpenAI = require('openai');
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+const openai = new OpenAI(OPENAI_API_KEY);
 
 const app = express();
 
@@ -22,7 +28,13 @@ app.post('/', async (req, res) => {
   try {
     const csvData = req.body;
     const schema = await getSchemaFromCSV(csvData);
-    res.send(schema);
+    //res.send(schema); test code that creates schema
+
+    let answer = await run(schema, code, MONGO_URI, params);
+    if (!answer) {
+      return res.status(500).send({ error: 'Internal server error' });
+    }
+    return res.status(200).send({ answer: answer });
   } catch (error) {
     console.error('Error generating schema:', error);
     res.status(500).send('Internal server error');
