@@ -3,6 +3,7 @@ import Icon from '../Icon';
 import AccountForm from './AccountForm';
 import Databases from './DatabasesShow';
 import APIKeys from './APIKeys';
+import Documentation from './Documentation';
 
 
 export default function Tab() {
@@ -84,7 +85,7 @@ export default function Tab() {
             active === 4 ? 'show active' : ''
           }`}
         >
-          // Content for the Documentation Section goes here
+          <Documentation />
         </div>
       </div>
     </div>

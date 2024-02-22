@@ -6,36 +6,16 @@ export default function Databases() {
         <div className="row g-4">
         <div className="col-12 col-lg-6">
             <DatabaseCard
-            title="MongoDB"
-            subTitle="NoSQL database"
-            imgUrl=""
-            imgAlt="MongoDB"
+            title="NFL"
+            imgUrl="https://static.profootballnetwork.com/wp-content/uploads/2021/02/15211332/nfl-logo-shield-history-design-meaning.jpg"
+            imgAlt="NFL"
+            link = "https://www.nfl.com/"
+            description="The National Football League is a professional American football league consisting of 32 teams, divided equally between the National Football Conference and the American Football Conference."
             />
         </div>
-        <div className="col-12 col-lg-6">
-            <DatabaseCard
-            title="PostgreSQL"
-            subTitle="Relational database"
-            imgUrl="/images/postgresql.svg"
-            imgAlt="PostgreSQL"
-            />
-        </div>
-        <div className="col-12 col-lg-6">
-            <DatabaseCard
-            title="MySQL"
-            subTitle="Relational database"
-            imgUrl="/images/mysql.svg"
-            imgAlt="MySQL"
-            />
-        </div>
-        <div className="col-12 col-lg-6">
-            <DatabaseCard
-            title="Redis"
-            subTitle="In-memory data structure store"
-            imgUrl="/images/redis.svg"
-            imgAlt="Redis"
-            />
-        </div>
+       
+       
+      
         </div>
     );
     }
