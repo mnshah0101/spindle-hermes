@@ -16,7 +16,7 @@ const getAPIIdeas = async (schema, query) => {
 
   const chain = RunnableSequence.from([
     PromptTemplate.fromTemplate("List 10 Read API ideas that a user could implement based on the given MongoDB Schema in a comma separated list. Here are some ideas that the user might want: {query}. This is the schema: {schema}.\n{format_instructions}"),
-    new OpenAI({ temperature: 1.0, maxTokens:3000, modelName: "gpt-4" }),
+    new OpenAI({ temperature: 1.0, maxTokens:3000, modelName: "gpt-3.5-turbo-1106" }),
     parser,
   ]);
 

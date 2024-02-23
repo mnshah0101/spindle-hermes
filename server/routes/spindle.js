@@ -12,7 +12,7 @@
 
 import express from 'express';
 import { getSchemaFromCSV } from '../utils/schemaUtils.js';
-import { config, parse } from 'dotenv';
+import { config } from 'dotenv';
 import OpenAI from 'openai';
 import { connectToMongoDB } from '../utils/dbUtils.js';
 

@@ -42,7 +42,7 @@ async function generateSchema(data) {
   
   const chain = RunnableSequence.from([
     PromptTemplate.fromTemplate("Create a mongoDB schema from this csv sample. Here is the csv sample: {data}. Do not create the schema objects for the examples, but for each field provide the type. give it to me in key value pairs of field: type. \n{format_instructions}"),
-    new OpenAI({ temperature: 0.0, maxTokens: 3000, modelName: "gpt-4" }),
+    new OpenAI({ temperature: 0.0, maxTokens: 3000, modelName: "gpt-3.5-turbo-1106" }),
     parser,
   ]);
 

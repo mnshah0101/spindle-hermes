@@ -96,7 +96,4 @@ async function createEndpoints(endpoints, schema){
     return returnArr
 }
 
-
-
-
 module.exports = createEndpoints
