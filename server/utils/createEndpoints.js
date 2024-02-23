@@ -50,7 +50,7 @@ const extractionFunctionSchema = {
 // Instantiate the ChatOpenAI class
 const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:1.07});
 
-// Create a new runnable, bind the function to the model, and pipe the output through the parser
+// Create a new runnable, bind the function to the model, and pipe the output through parser
 const runnable = model
   .bind({
     functions: [extractionFunctionSchema],

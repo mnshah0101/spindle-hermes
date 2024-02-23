@@ -11,7 +11,7 @@ async function getSchemaFromCSV(csvData) {
   return schema;
 }
 
-//Read in first 3 rows of csv and typecast numbers, stringify whole thing
+//Read in first 3 rows of csv, typecast numbers, and stringify whole thing
 function readCSV(csvData) {
   if (!Array.isArray(csvData)) {
       return "CSV data is not in the expected format.";

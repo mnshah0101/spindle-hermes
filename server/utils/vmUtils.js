@@ -19,7 +19,7 @@ function generateSchemaCode(schema, modelName) {
     return schemaCode;
 }
 
-//run code in vm and do detailed error handling
+//run code in vm with detailed error handling
 async function createAndRunInVm(code, context) {
     try {
         vm.createContext(context);

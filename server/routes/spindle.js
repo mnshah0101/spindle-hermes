@@ -37,7 +37,7 @@ app.post('/', async (req, res) => {
     const collectionName = 'passengers'; // hardcoded for now
 
     const out = connectToMongoDB(schema, MONGO_URI, dbName, collectionName, csvData);
-    res.json(out); //TESTED UP TO THIS POINT
+    res.json(out); //TESTED UP TO HERE
     
     //Need to run vm code next
 

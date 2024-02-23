@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-// Upload all csv data in schema format to MongoDB
+// Upload all the csv data in schema format to MongoDB
 async function connectToMongoDB(schema, uri, dbName, collectionName, csvData) {
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   try {
