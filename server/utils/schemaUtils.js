@@ -11,13 +11,13 @@ async function getSchemaFromCSV(csvData) {
   return schema;
 }
 
-//Read in first 3 rows of csv and typecast numbers
+//Read in first 3 rows of csv and typecast numbers, stringify whole thing
 function readCSV(csvData) {
-  if (!Array.isArray(csvData.csvData)) {
+  if (!Array.isArray(csvData)) {
       return "CSV data is not in the expected format.";
   }
   
-  const firstThreeRows = csvData.csvData.slice(0, 3);
+  const firstThreeRows = csvData.slice(0, 3);
 
   const typecastedRows = firstThreeRows.map(row => row.map(value => {
       if (!isNaN(value) && !isNaN(parseFloat(value))) {
@@ -36,12 +36,13 @@ function readCSV(csvData) {
   return stringifiedRows;
 }
 
+//generates schema from stringified csv sample
 async function generateSchema(data) {
   const parser = new JsonOutputParser();
   
   const chain = RunnableSequence.from([
-    PromptTemplate.fromTemplate("Create a mongoDB schema from this csv sample. Here is the csv sample: {data}.\n{format_instructions}"),
-    new OpenAI({ temperature: 1.0, maxTokens: 3000, modelName: "gpt-4" }),
+    PromptTemplate.fromTemplate("Create a mongoDB schema from this csv sample. Here is the csv sample: {data}. Do not create the schema objects for the examples, but for each field provide the type. give it to me in key value pairs of field: type. \n{format_instructions}"),
+    new OpenAI({ temperature: 0.0, maxTokens: 3000, modelName: "gpt-4" }),
     parser,
   ]);
 
@@ -49,7 +50,7 @@ async function generateSchema(data) {
     data: data,
     format_instructions: "Return JSON output." 
   });
-
+  console.log(response);
   return response;
 }
 
