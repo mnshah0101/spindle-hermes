@@ -53,7 +53,7 @@ export default function LoginPage() {
       }
       else{
         setError('');
-        router.push('/');
+        router.push('/dashboard');
       }
 
       

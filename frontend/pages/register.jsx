@@ -87,7 +87,7 @@ export default function RegisterPage() {
       }
       else{
         setError('');
-        router.push('/');
+        router.push('/dashboard');
  
 
     }
