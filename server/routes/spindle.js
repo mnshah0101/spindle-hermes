@@ -11,10 +11,10 @@
 // read in a csv array and then feed 3 rows into langchain and then make a mongodb schema out of that
 
 import express from 'express';
-import { getSchemaFromCSV, readCSV } from '../utils/schemaUtils.js';
-import { run } from "../utils/vmUtils.js";
-import { config } from 'dotenv';
+import { getSchemaFromCSV } from '../utils/schemaUtils.js';
+import { config, parse } from 'dotenv';
 import OpenAI from 'openai';
+import { connectToMongoDB } from '../utils/dbUtils.js';
 
 config();
 
@@ -30,17 +30,17 @@ app.use(express.json());
 // Read first 3 rows of csv, create mongo schema using langchain, and then run on vm
 app.post('/', async (req, res) => {
   try {
-    const csvData = req.body;
+    const csvData = req.body.csvData;
     const schema = await getSchemaFromCSV(csvData);
-    res.send(schema); //TESTED UP TO THIS POINT
 
-    //VM CODE TO TEST
+    const dbName = 'MyTestDB' // hardcoded for now
+    const collectionName = 'passengers'; // hardcoded for now
 
-    // let answer = await run(schema, code, MONGO_URI, params);
-    // if (!answer) {
-    //   return res.status(500).send({ error: 'Internal server error' });
-    // }
-    // return res.status(200).send({ answer: answer });
+    const out = connectToMongoDB(schema, MONGO_URI, dbName, collectionName, csvData);
+    res.json(out); //TESTED UP TO THIS POINT
+    
+    //Need to run vm code next
+
   } catch (error) {
     console.error('Error generating schema:', error);
     res.status(500).send('Internal server error');
