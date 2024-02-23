@@ -186,3 +186,8 @@ img {
     outline: none;
   }
 }
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+}

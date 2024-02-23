@@ -1,5 +1,5 @@
 import React from "react";
-import DatabaseCard from "../Database/card";
+import DatabaseCard from "../DatabaseCard/card";
 
 export default function Documentation() {
     return (
