@@ -62,4 +62,4 @@ const DatabaseSchema = new Schema({
   
 });
 
-module.exports = mongoose.model('Database', DatabaseSchema);
+export default mongoose.model('Database', DatabaseSchema);

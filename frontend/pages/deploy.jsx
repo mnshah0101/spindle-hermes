@@ -9,6 +9,11 @@ import { useState, useEffect} from 'react';
 export default function ContactPage() {
 
     const [csvData, setCsvData] = useState([]);
+    const [apiName, setApiName] = useState('');
+    const [endpointSlug, setEndpointSlug] = useState('');
+    const [dataDescription, setDataDescription] = useState('');
+    
+
 
     useEffect(() => {
         console.log(csvData.length);
@@ -132,6 +137,24 @@ export default function ContactPage() {
                               </div>
                             </div>
                           </div>
+
+
+                           <div className="col-12">
+                            <div className="form-group">
+                              <div className="form-control-wrap">
+                                <input
+                                  type="text"
+                                  name="collection_name"
+                                  className="form-control form-control-lg"
+                                  placeholder="Collection Name"
+                                  required
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+
+
                           <div className="col-12">
                             <div className="form-group">
                               <div className="form-control-wrap">

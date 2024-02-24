@@ -46,6 +46,10 @@ const EndpointSchema = new Schema({
         required: true,
         type: String
     },
+    method : {
+        required: true,
+        type: String
+    },
 
     //endpoint slug such as www.example.com/api_slug/endpoint_slug
    endpoint_slug: {
