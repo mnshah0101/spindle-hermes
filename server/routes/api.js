@@ -20,6 +20,10 @@ import KeyModel from '../models/Key.js';
 import Endpoint from '../models/Endpoint.js';
 import APIModel from '../models/API.js';
 import UserModel from '../models/User.js';
+import run from '../utils/runAPI.js';
+import { config } from 'dotenv';
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const router = express.Router();
 
@@ -69,26 +73,32 @@ router.use('/', async (req, res, next) => {
 
     for(const key of keys) {
         if(!params.includes(key)) {
-            return res.status(400).send('Invalid parameters');
+            return res.status(400).send('Key not in parameters');
         }
     }
 
+    //create masterParams to run api code in vm
+    const masterParams = {}
+    for (let paramKey in req.params){
+        masterParams[paramKey] = req.params[paramKey]
+    };
+    for (let paramKey in req.body) {
+        masterParams[paramKey] = req.body[paramKey];
+    };
+    if (!masterParams) {
+        return res.status(400).send('Invalid parameters');
+    };
 
-   
-
+    //run code in vm
+    const code = endpoint_object.code;
+    const schema = api.mongo_schema;
     
-
-
-
+    let answer = await run(schema, code, MONGO_URI, masterParams);
+    if (!answer) {
+        return res.status(500).send({ error: 'Internal server error' });
+    }
+    return res.status(200).send({ answer: answer });
 
 });
 
 export default router;
-    
-
-
-
-   
-
-
-

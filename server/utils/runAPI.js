@@ -74,4 +74,4 @@ async function run(schema, code, uri, params){
     }
     }
 
-module.exports = run
+export default run;
