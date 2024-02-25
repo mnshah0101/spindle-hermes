@@ -22,6 +22,10 @@ const extractionFunctionSchema = {
         type: "string",
         description: "The Name of the API Endpoint",
       },
+      method : {
+        type: "string",
+        description: "The HTTP Method of the API Endpoint. Can be GET, POST, PUT, DELETE, PATCH",
+      },
 
       endpoint_slug: {
         type: "string",

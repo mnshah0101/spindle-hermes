@@ -28,7 +28,7 @@ const getAPIIdeas = async (schema) => {
     format_instructions: "Return a comma seperated list.",
   });
 
-  return response
+  return response.splice(0, 3);
 
 };
 

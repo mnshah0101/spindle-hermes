@@ -36,14 +36,12 @@ const ObjectId = Schema.Types.ObjectId;
 const APISchema = new Schema({
     //api name/title
     name: {
-        required: true,
         type: String
 
     },
 
     //api description
     description: {
-        required: true,
         type: String
     },
     api_keys: [
@@ -54,7 +52,7 @@ const APISchema = new Schema({
 
     //api slug such as www.example.com/api_slug/endpoint_slug
     api_slug:{
-        required: true,
+        type: String
 
     },
 
@@ -65,7 +63,6 @@ const APISchema = new Schema({
     },
     //mongo_uri for the database
     mongo_uri: {
-        required:true,
         type:String
     },
 
@@ -86,6 +83,9 @@ const APISchema = new Schema({
             type :ObjectId,
             ref: 'Endpoint'
         }
+
+
+
     ],
 
     //created at
@@ -107,4 +107,5 @@ const APISchema = new Schema({
    
 });
 
-module.exports = mongoose.model('API', APISchema);
+const API = mongoose.model('API', APISchema);
+export default API;

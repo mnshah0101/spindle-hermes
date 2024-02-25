@@ -58,7 +58,10 @@ const DatabaseSchema = new Schema({
     mongo_uri: {
         required:true,
         type:String
-    }
+    },
+    image : {
+        type:String
+    },
   
 });
 

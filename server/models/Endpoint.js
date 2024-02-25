@@ -43,17 +43,15 @@ const ObjectId = Schema.Types.ObjectId;
 const EndpointSchema = new Schema({
     //endpoint name/title
     endpoint_name: { 
-        required: true,
         type: String
     },
     method : {
-        required: true,
+
         type: String
     },
 
     //endpoint slug such as www.example.com/api_slug/endpoint_slug
    endpoint_slug: {
-         required: true,
          type: String
     },
     //endpoint owner
@@ -74,7 +72,6 @@ const EndpointSchema = new Schema({
     },
     //endpoint description
     description: {
-        required: true,
         type: String
     },
     //parameters for the endpoint
@@ -85,7 +82,6 @@ const EndpointSchema = new Schema({
     ],
     //response_type for the endpoint
     response_type: {
-        required: true,
         type: String
     },
     //mongoose+node code to be run in the VM for the endpoint
@@ -107,4 +103,5 @@ const EndpointSchema = new Schema({
    
 });
 
-module.exports = mongoose.model('Endpoint', EndpointSchema);
+const EndpointModel = mongoose.model('Endpoint', EndpointSchema);
+export default EndpointModel;

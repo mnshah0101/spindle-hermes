@@ -69,7 +69,6 @@ function parseCSV(schema, csvData) {
       }
       result.push(obj);
   }
-  console.log(result);
   return result;
 }
 
