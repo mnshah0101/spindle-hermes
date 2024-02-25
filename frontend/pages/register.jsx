@@ -82,7 +82,7 @@ export default function RegisterPage() {
         password
       });
       if(sign_in_response.error){
-        setError(result.error);
+        setError(sign_in_response.error);
         return;
       }
       else{

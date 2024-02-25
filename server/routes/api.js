@@ -14,3 +14,81 @@
 //if the code fails, we want to return a 500 status code
 
 
+import express from 'express';
+import mongoose from 'mongoose';
+import KeyModel from '../models/Key.js';
+import Endpoint from '../models/Endpoint.js';
+import APIModel from '../models/API.js';
+import UserModel from '../models/User.js';
+
+const router = express.Router();
+
+router.use('/', async (req, res, next) => {
+
+    const method = req.method;
+    const key = req.body.key;
+
+    if(!key) {
+        return res.status(403).send('Key missing');
+    }
+
+
+    //the endppint is just the path of the request
+    const endpoint = req.path;
+    console.log(endpoint)
+    //first part of the endpoint is the username
+    const username = endpoint.split('/')[1];
+    //look for endpoint with the endpoint
+    const endpoint_object = await Endpoint.findOne({endpoint_slug: endpoint, method: method});
+    if(!endpoint_object) {
+        return res.status(404).send('Endpoint not found');
+    }
+
+    
+    //check if the key is valid
+    const api = await APIModel.findById(endpoint_object.api.toString());
+
+    if(!api) {
+        return res.status(404).send('API not found');
+    }
+
+    //check if key in api.api_keys
+
+    const isIn = api.api_keys.includes(key);
+    if(!isIn) {
+        return res.status(401).send('Invalid key');
+    }
+
+    //check if the parameters are valid
+    const params = req.body;
+    const endpoint_params = endpoint_object.parameters;
+    const keys = Object.keys(endpoint_params);
+
+
+
+
+    for(const key of keys) {
+        if(!params.includes(key)) {
+            return res.status(400).send('Invalid parameters');
+        }
+    }
+
+
+   
+
+    
+
+
+
+
+});
+
+export default router;
+    
+
+
+
+   
+
+
+

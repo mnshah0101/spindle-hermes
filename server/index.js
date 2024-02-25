@@ -6,6 +6,7 @@ import user_routes from './routes/user.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import spindleRouter from './routes/spindle.js';
+import apiRouter from './routes/api.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 app.use('/', user_routes);
 app.use('/spindle', spindleRouter);
+app.use('/', apiRouter);
 
 
 

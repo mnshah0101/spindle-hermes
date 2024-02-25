@@ -15,6 +15,7 @@ import createEndpoints from '../utils/createEndpoint.js';
 import image_query from '../utils/getImage.js';
 import mongoose from 'mongoose';
 import API from '../models/API.js';
+import createOneEndpoint from '../utils/createOneEndpoint.js';
 
 
 
@@ -100,7 +101,7 @@ router.post('/createDatabase', async (req, res) => {
 });
 
 
-router.post("/createAPI", async (req, res) => {
+router.post("/createAPIs", async (req, res) => {
 
     
     const api_name = req.body.api_name;
@@ -169,6 +170,7 @@ router.post("/createAPI", async (req, res) => {
           response_type: endpoint.response_type,
           code: endpoint.code, 
           tags: endpoint.tags, 
+          api_keys : [],
           full_endpoint: `/${username}/${endpoint.endpoint_slug}`
         };
 
@@ -198,6 +200,92 @@ router.post("/createAPI", async (req, res) => {
         await database_new.save();
         res.send(myCreatedAPI);
 });
+
+router.post('/createAPI', async (req, res) => {
+  const endpoint_name = req.body.endpoint_name;
+  const endpoint_slug = req.body.endpoint_slug;
+  const user_id = req.body.user_id;
+  const endpoint_description = req.body.endpoint_description;
+  const api_id = req.body.api_id;
+
+  //get schema from api object
+  const api = await APIModel.findById(api_id);
+
+  if(!api) {
+    return res.status(400).send('Invalid API');
+  }
+
+
+
+  const schema = api.mongo_schema;
+
+  if(!endpoint_name || !endpoint_slug || !user_id || !endpoint_description || !api_id) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  const user = await UserModel.findById(user_id);
+  if(!user) {
+    return res.status(400).send('Invalid user');
+  }
+
+  //check if endpoint_slug already exists
+  const username = user.username;
+
+  const full_endpoint_slug = `/${username}/${endpoint_slug}`;
+  const endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
+  if(endpoint) {
+    return res.status(400).send('Endpoint slug already exists');
+  }
+
+  const create_endpoint = await createOneEndpoint(endpoint_name, full_endpoint_slug, endpoint_description, schema);
+
+  if(!create_endpoint) {
+    return res.status(500).send('Error creating endpoint');
+  }
+
+  const newEndpoint = {
+    endpoint_name: endpoint_name,
+    endpoint_slug: endpoint_slug,
+    user: user,
+    method: create_endpoint.method,
+    api: api_id,
+    database: api.database_name,
+    description: create_endpoint.description,
+    parameters: create_endpoint.params,
+    code: create_endpoint.code,
+    tags: create_endpoint.tags,
+    full_endpoint: full_endpoint_slug
+  };
+
+  const endpointObject = new EndpointModel(newEndpoint);
+
+  try {
+    const savedEndpoint = await endpointObject.save();
+
+    api.endpoints.push(savedEndpoint);
+    await api.save();
+
+
+    res.send(savedEndpoint);
+  }
+  catch(error) {
+    console.error('Error saving endpoint:', error);
+    res.status(500).send('Internal server error');
+  }
+
+}
+);
+
+
+
+
+
+
+
+
+
+
+
 
 
 

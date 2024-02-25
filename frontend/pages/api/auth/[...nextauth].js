@@ -21,9 +21,12 @@ export const authOptions = {
     const {  username, password } = credentials;
     let new_user = null
 
+
     try{
       const client = await MongoClient.connect(uri || '')
       const users =  client.db().collection('users');
+
+
       const user = await users.findOne({ username : username });
 
       if (!user) {
