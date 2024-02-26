@@ -29,7 +29,7 @@ const extractionFunctionSchema = {
 
       endpoint_slug: {
         type: "string",
-        description: "The slug of the endpoint. This is the part of the URL that comes after the domain name. You will be provided with the endpoint slug",
+        description: "The slug of the endpoint. This is the part of the URL that comes after the domain name. You will be provided with the endpoint slug. All params will be passed through the body of the request.",
       },
 
       description: {

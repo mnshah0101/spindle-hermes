@@ -20,13 +20,33 @@ import KeyModel from '../models/Key.js';
 import Endpoint from '../models/Endpoint.js';
 import APIModel from '../models/API.js';
 import UserModel from '../models/User.js';
+import run from '../utils/runAPI.js';
+import { config } from 'dotenv';
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const router = express.Router();
+
+function getParams(path, actualPath) {
+    var params = {};
+    var pathParts = path.split('/');
+    var actualParts = actualPath.split('/');
+    for (var i = 0; i < pathParts.length; i++) {
+        if (pathParts[i].startsWith(':')) {
+            var paramName = pathParts[i].slice(1);
+            var value = actualParts[i];
+            params[paramName] = value;
+        }
+    }
+    return params;
+}
 
 router.use('/', async (req, res, next) => {
 
     const method = req.method;
     const key = req.body.key;
+
+
 
     if(!key) {
         return res.status(403).send('Key missing');
@@ -35,7 +55,6 @@ router.use('/', async (req, res, next) => {
 
     //the endppint is just the path of the request
     const endpoint = req.path;
-    console.log(endpoint)
     //first part of the endpoint is the username
     const username = endpoint.split('/')[1];
     //look for endpoint with the endpoint
@@ -48,6 +67,10 @@ router.use('/', async (req, res, next) => {
     //check if the key is valid
     const api = await APIModel.findById(endpoint_object.api.toString());
 
+        await mongoose.connection.close();
+
+
+
     if(!api) {
         return res.status(404).send('API not found');
     }
@@ -59,36 +82,56 @@ router.use('/', async (req, res, next) => {
         return res.status(401).send('Invalid key');
     }
 
-    //check if the parameters are valid
-    const params = req.body;
-    const endpoint_params = endpoint_object.parameters;
-    const keys = Object.keys(endpoint_params);
-
-
-
-
-    for(const key of keys) {
-        if(!params.includes(key)) {
-            return res.status(400).send('Invalid parameters');
-        }
-    }
-
-
-   
 
     
 
+    //create masterParams to run api code in vm
+    const params = getParams(endpoint, req.path);
+    const masterParams = {}
+    for (let paramKey in params){
+        masterParams[paramKey] = params[paramKey]
+    };
+    for (let paramKey in req.body) {
+        masterParams[paramKey] = req.body[paramKey];
+    };
 
 
+    //check if the parameters are valid
+    const endpoint_params = endpoint_object.parameters;
+
+
+    console.log(masterParams)
+
+
+
+    const keys = []
+    for(let param of endpoint_params){
+        keys.push(param.name)
+    }
+
+    for(const key of keys) {
+        if(!Object.keys(masterParams).includes(key)) {
+            return res.status(400).send('Parameters Not valid');
+        }
+    }
+
+  
+   
+    const code = endpoint_object.code;
+    const schema = api.mongo_schema;
+
+    let answer = await run(schema, code, MONGO_URI, masterParams);
+
+    await mongoose.connection.close()
+
+
+
+
+    if (!answer) {
+        return res.status(500).send({ error: 'Internal server error' });
+    }
+    return res.status(200).send({ answer: answer });
 
 });
 
 export default router;
-    
-
-
-
-   
-
-
-
