@@ -63,20 +63,6 @@ router.use('/', async (req, res, next) => {
         return res.status(401).send('Invalid key');
     }
 
-    //check if the parameters are valid
-    const params = req.body;
-    const endpoint_params = endpoint_object.parameters;
-    const keys = Object.keys(endpoint_params);
-
-
-
-
-    for(const key of keys) {
-        if(!params.includes(key)) {
-            return res.status(400).send('Key not in parameters');
-        }
-    }
-
     //create masterParams to run api code in vm
     const masterParams = {}
     for (let paramKey in req.params){
@@ -85,9 +71,15 @@ router.use('/', async (req, res, next) => {
     for (let paramKey in req.body) {
         masterParams[paramKey] = req.body[paramKey];
     };
-    if (!masterParams) {
-        return res.status(400).send('Invalid parameters');
-    };
+
+    //check if the parameters are valid
+    const endpoint_params = endpoint_object.parameters;
+    const keys = Object.keys(endpoint_params);
+    for(const key of keys) {
+        if(!masterParams.includes(key)) {
+            return res.status(400).send('Key not in parameters');
+        }
+    }
 
     //run code in vm
     const code = endpoint_object.code;
