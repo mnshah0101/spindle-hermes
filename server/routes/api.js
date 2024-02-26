@@ -27,6 +27,20 @@ const MONGO_URI = process.env.MONGO_URI;
 
 const router = express.Router();
 
+function getParams(path, actualPath) {
+    var params = {};
+    var pathParts = path.split('/');
+    var actualParts = actualPath.split('/');
+    for (var i = 0; i < pathParts.length; i++) {
+        if (pathParths[i].startWith(':')) {
+            var paramName = pathParts[i].slice(1);
+            var value = actualParts[i];
+            params[paramName] = value;
+        }
+    }
+    return params;
+}
+
 router.use('/', async (req, res, next) => {
 
     const method = req.method;
@@ -63,10 +77,13 @@ router.use('/', async (req, res, next) => {
         return res.status(401).send('Invalid key');
     }
 
+    
+
     //create masterParams to run api code in vm
+    const params = getParams(endpoint_slug, req.path);
     const masterParams = {}
-    for (let paramKey in req.params){
-        masterParams[paramKey] = req.params[paramKey]
+    for (let paramKey in params){
+        masterParams[paramKey] = params[paramKey]
     };
     for (let paramKey in req.body) {
         masterParams[paramKey] = req.body[paramKey];
