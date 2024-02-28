@@ -14,22 +14,22 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema
 const extractionFunctionSchema = {
   name: "endpointcreator",
-  description: "Creates API Endpoint Functionality From API Idea and Mongoose Schema.",
+  description: "Creates API Endpoint Functionality From API Idea and strictly only the Mongoose Schema.",
   parameters: {
     type: "object",
     properties: {
       endpoint_name: {
         type: "string",
-        description: "The Name of the API Endpoint",
+        description: "The Name of the API Endpoint. This should be the exact same as the API idea, but with a space between each word.",
       },
       method : {
         type: "string",
-        description: "The HTTP Method of the API Endpoint. Can be GET, POST, PUT, DELETE, PATCH",
+        description: "The HTTP Method of the API Endpoint. Can only be GET",
       },
 
       endpoint_slug: {
         type: "string",
-        description: "The slug of the endpoint. This is the part of the URL that comes after the domain name. You will be provided with the endpoint slug",
+        description: "The slug of the endpoint. This is the part of the URL that comes after the domain name. You will be provided with the endpoint slug. All params will be passed through the body of the request.",
       },
 
       description: {
@@ -46,10 +46,6 @@ const extractionFunctionSchema = {
             type: "string",
         },
         description: "Array of tags for the endpoint",
-      },
-      code: {
-        type: "string",
-        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model.",
       },
       params:{
         type:"array",
@@ -69,7 +65,7 @@ const extractionFunctionSchema = {
         description: "array of the parameters names and types",
       }
     },
-    required: ["endpoint_name", "endpoint_slug", "code", "params", "response_type", "tags", "description", "method"]
+    required: ["endpoint_name", "endpoint_slug", "params", "response_type", "tags", "description", "method"]
   },
 };
 

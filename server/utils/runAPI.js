@@ -1,7 +1,7 @@
 
 import vm from 'vm';
 import mongoose from 'mongoose';
-import generateSchemaCode from './generateSchemaCode';
+import generateSchemaCode from './generateSchemaCode.js';
 
 
 /**
@@ -10,63 +10,74 @@ import generateSchemaCode from './generateSchemaCode';
 
 async function run(schema, code, uri, params){
     try {
-        await mongoose.connect(uri, {
+
+        let schema_code = generateSchemaCode(schema, "flower",'iris');
+
+
+        const conn = await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log("connected to db")
+
+
         const context = {
-        mongoose: mongoose,
-        Model:null };
-
-        vm.createContext(context); 
-
-        await vm.runInContext(schema, context);
-        
-     
-
-
-        const context_2 = {
             mongoose: mongoose,
             uri: uri,
-            Model: context.Model,
+            Model: null,
             answer: null,
             console: console,
-            params: params
+            params: params,
+            conn: conn
         }
+
+
+        
 
         code =code.replace(/(const|let|var) answer/g, "answer");
 
-        
-
         let code2=`
         async function connect(){
-            console.log(Model)
             try{
-            ${code}
+                await mongoose.connect(uri, {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                });
+                console.log("connected to database")
+
+                
+
+            ${schema_code}
+
+            ${code} 
+
+
+
             }catch(err){
+                console.log('there was an error')
                 console.log(err)
             }
+
             finally{
                 console.log("closing connection")
-                if(mongoose.connection.readyState === 1){
-                var keys = Object.keys(mongoose.connection.models)
-                mongoose.deleteModel(keys[keys.length-1]);
-                await mongoose.connection.close();
-            }
         }
         }
         connect();
         `
+
         console.log(code2)
-        vm.createContext(context_2); // Contextify the object.
 
-        await vm.runInContext(code2, context_2);
+        vm.createContext(context); // Contextify the object.
 
-        
+        await vm.runInContext(code2, context);
+
+        //close connection
 
 
-        return context_2.answer      
+
+      
+
+
+        return context.answer      
     }
         catch(err){
             console.log(err)

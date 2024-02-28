@@ -16,7 +16,7 @@ const getAPIIdeas = async (schema) => {
   const parser = new CommaSeparatedListOutputParser();
 
   const chain = RunnableSequence.from([
-    PromptTemplate.fromTemplate("Give me a comma seperate list of API Ideas with to Give An API Based on a MongoDb Schema Full CRUD capability. Be specific with API ideas. This is the Mongoose Schema to base your list off of: {schema}.\n{format_instructions}"),
+    PromptTemplate.fromTemplate("Give me a comma seperate list of API Ideas with to Give An API Based on this exact MongoDB: {schema}. Only provide get request ideas that directly use the fields from this schema. If the field is not exactly listed on this schema, do not provide an API idea for it.\n{format_instructions}"),
     new OpenAI({ temperature: 1.0, maxTokens:3000, modelName: "gpt-4"}),
     parser,
   ]);

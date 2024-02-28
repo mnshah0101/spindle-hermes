@@ -9,7 +9,7 @@ import spindleRouter from './routes/spindle.js';
 import apiRouter from './routes/api.js';
 
 dotenv.config();
-
+const {EXPRESS_PORT} = process.env;
 
 
 const app = express();
@@ -33,8 +33,8 @@ app.use('/', apiRouter);
 
 
 
-app.listen(process.env.EXPRESS_PORT, () => {
-    console.log('Server is listening on port 8000');
+app.listen(EXPRESS_PORT, () => {
+    console.log(`Server is listening on port ${EXPRESS_PORT}`);
     }
 );
 

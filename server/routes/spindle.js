@@ -12,8 +12,9 @@ import APIModel from '../models/API.js';
 import EndpointModel from '../models/Endpoint.js';
 import getIdeas from '../utils/getIdeas.js';
 import createEndpoints from '../utils/createEndpoint.js';
+import createCode from '../utils/createCode.js';
 import image_query from '../utils/getImage.js';
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import API from '../models/API.js';
 import createOneEndpoint from '../utils/createOneEndpoint.js';
 
@@ -103,7 +104,6 @@ router.post('/createDatabase', async (req, res) => {
 
 router.post("/createAPIs", async (req, res) => {
 
-    
     const api_name = req.body.api_name;
     const user_id = req.body.user_id;
     const description = req.body.description;
@@ -141,7 +141,7 @@ router.post("/createAPIs", async (req, res) => {
       mongo_uri: MONGO_URI,
       mongo_schema: schema,
       database_name: database,
-      image: image_url, 
+      image: 'image_url', 
       status: "active",
       created_at: curDate
 
@@ -168,37 +168,36 @@ router.post("/createAPIs", async (req, res) => {
           description: description,
           parameters: endpoint.params, 
           response_type: endpoint.response_type,
-          code: endpoint.code, 
+          code: "", 
           tags: endpoint.tags, 
           api_keys : [],
           full_endpoint: `/${username}/${endpoint.endpoint_slug}`
         };
 
-
+        let code = await createCode(newEndpoint, schema);
+        newEndpoint.code = code;
         let saved_endpoint = new EndpointModel(newEndpoint);
         let new_endpoint = await saved_endpoint.save();
         endpointObjects.push(new_endpoint);
       };
 
-      //get the API 
+      //push endpoints to api object with createdCode 
       let myCreatedAPI = await API.findById(new_api._id);
-
       for(let endpoint of endpointObjects){
-
-      myCreatedAPI.endpoints.push(endpoint);
-
+        myCreatedAPI.endpoints.push(endpoint);
       }
 
       console.log('created api:')
 
       await myCreatedAPI.save()
 
-      //update database to ahve image_url
-
+      // update database to have image_url
       const database_new = await DatabaseModel.findById(database_id);
         database_new.image = image_url;
         await database_new.save();
         res.send(myCreatedAPI);
+
+      res.send(myCreatedAPI);
 });
 
 router.post('/createAPI', async (req, res) => {
@@ -275,18 +274,5 @@ router.post('/createAPI', async (req, res) => {
 
 }
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default router;
