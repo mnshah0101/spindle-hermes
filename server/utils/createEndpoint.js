@@ -47,10 +47,6 @@ const extractionFunctionSchema = {
         },
         description: "Array of tags for the endpoint",
       },
-      code: {
-        type: "string",
-        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model.",
-      },
       params:{
         type:"array",
         items: {
@@ -69,7 +65,7 @@ const extractionFunctionSchema = {
         description: "array of the parameters names and types",
       }
     },
-    required: ["endpoint_name", "endpoint_slug", "code", "params", "response_type", "tags", "description", "method"]
+    required: ["endpoint_name", "endpoint_slug", "params", "response_type", "tags", "description", "method"]
   },
 };
 

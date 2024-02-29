@@ -8,8 +8,8 @@ function generateSchemaCode(schema, collectionName, dbName) {
 
     schemaCode += '});\n';
     schemaCode += 'let Model;\n';
-    schemaCode += `const testDb = conn.connection.useDb("${dbName}");`
-    schemaCode += `Model = testDb.model("Model", mySchema, "${collectionName}" );\n`;
+    schemaCode += `const db = conn.connection.useDb("${dbName}");`
+    schemaCode += `Model = db.model("Model", mySchema, "${collectionName}" );\n`;
 
     return schemaCode;
 }

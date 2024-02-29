@@ -8,10 +8,10 @@ import generateSchemaCode from './generateSchemaCode.js';
  * req should have endpoint code
  */
 
-async function run(schema, code, uri, params){
+async function run(schema, code, uri, params, dbName, collectionName){
     try {
 
-        let schema_code = generateSchemaCode(schema, "flower",'iris');
+        let schema_code = generateSchemaCode(schema, collectionName, dbName);
 
 
         const conn = await mongoose.connect(uri, {
@@ -34,6 +34,9 @@ async function run(schema, code, uri, params){
         
 
         code =code.replace(/(const|let|var) answer/g, "answer");
+        code = code.replace(/(const|let|var) Model/g, "Model");
+        code = code.replace(/(const|let|var) mongoose/g, "mongoose");
+        code = code.replace(/(const|let|var) params/g, "params");
 
         let code2=`
         async function connect(){
@@ -59,6 +62,7 @@ async function run(schema, code, uri, params){
 
             finally{
                 console.log("closing connection")
+                
         }
         }
         connect();
@@ -70,7 +74,8 @@ async function run(schema, code, uri, params){
 
         await vm.runInContext(code2, context);
 
-        //close connection
+  
+
 
 
 

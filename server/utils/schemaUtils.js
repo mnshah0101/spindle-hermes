@@ -24,6 +24,14 @@ function readCSV(csvData) {
   const firstThreeRows = csvData.slice(0, 3);
 
   const typecastedRows = firstThreeRows.map(row => row.map(value => {
+
+    if (typeof value === 'string') {
+         value = value.trim().replace(/ /g, '_').toLowerCase();
+          value = value.replace(/[()]/g, '');
+
+
+    }
+
       if (!isNaN(value) && !isNaN(parseFloat(value))) {
           if (Number.isInteger(parseFloat(value))) {
               return parseInt(value); 
