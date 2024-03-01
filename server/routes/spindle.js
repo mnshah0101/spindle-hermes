@@ -17,13 +17,19 @@ import mongoose from 'mongoose';
 import API from '../models/API.js';
 import createOneEndpoint from '../utils/createOneEndpoint.js';
 import createCode from '../utils/createCode.js';
-
+import cleanString from '../utils/cleanString.js';
 
 
 config();
 const { MONGO_URI } = process.env;
 const router = express.Router();
 
+
+//function to remove spaces and special characters from a string
+
+function removeSpaces(str) {
+  return str.replace(/\s+/g, '');
+}
 
 
 router.post('/createDatabase', async (req, res) => {
@@ -38,7 +44,7 @@ router.post('/createDatabase', async (req, res) => {
     if(!user_id) {
       return res.status(400).send('Missing user ID');
     }
-    const api_name = req.body.api_name;
+    let api_name = req.body.api_name;
     if(!api_name) {
       return res.status(400).send('Missing API name');
     }
@@ -117,6 +123,11 @@ router.post("/createAPIs", async (req, res) => {
 
     
     const api_name = req.body.api_name;
+
+    let api_exists = await APIModel.findOne({name: api_name});
+    if(api_exists) {
+      return res.status(400).send('API name already exists');
+    }
     //check if api_name exists
     if(!api_name) {
         return res.status(400).send('Missing API name');
@@ -160,14 +171,14 @@ router.post("/createAPIs", async (req, res) => {
     if(!database) {
         return res.status(400).send('Invalid database');
     }
-    const ideas = await getIdeas(full_endpoint_slug, schema);
-    const endpoints = await createEndpoints(ideas, schema);
+    const ideas = await getIdeas(schema);
+    let endpoints = await createEndpoints(ideas, schema);
 
     const curDate = new Date();
     const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
 
         //check to make sure api with api name does not exist
-    const api_exists = await APIModel.findOne({name: api_name});
+     api_exists = await APIModel.findOne({name: api_name});
     if(api_exists) {
       return res.status(400).send('API name already exists');
     }
@@ -181,8 +192,8 @@ router.post("/createAPIs", async (req, res) => {
     const newAPI = {
       name: api_name,
       description: description,
-      api_keys: "", 
-      api_slug: full_endpoint_slug,
+      api_keys: ['a'], 
+      api_slug: removeSpaces(full_endpoint_slug),
       user: user,
       mongo_uri: MONGO_URI,
       mongo_schema: schema,
@@ -205,26 +216,29 @@ router.post("/createAPIs", async (req, res) => {
  
       const endpointObjects = [];
 
+      endpoints = endpoints.filter((v,i,a)=>a.findIndex(t=>(t.endpoint_slug === v.endpoint_slug))===i)
+
+
       for (let endpoint of endpoints) {
   
         const newEndpoint = {
           endpoint_name: endpoint.endpoint_name, 
-          endpoint_slug: `/${username}${endpoint.endpoint_slug}`,
+          endpoint_slug: removeSpaces(`/${username}${endpoint.endpoint_slug}`),
           user: user,
           method: endpoint.method,
           api: api._id,
           database: database,
-          description: description,
+          description: endpoint.description,
           parameters: endpoint.params, 
           response_type: endpoint.response_type,
           code: '', 
           tags: endpoint.tags, 
           api_keys : [],
-          full_endpoint: `/${username}${endpoint.endpoint_slug}`
+          full_endpoint: removeSpaces(`/${username}${endpoint.endpoint_slug}`)
         };
 
         let code = await createCode(newEndpoint, schema)
-        newEndpoint.code = code;
+        newEndpoint.code = code['code'];
 
 
 
@@ -257,6 +271,10 @@ router.post("/createAPIs", async (req, res) => {
         await database_new.save();
         res.send(myCreatedAPI);
 });
+
+
+
+
 
 router.post('/createAPI', async (req, res) => {
   const endpoint_name = req.body.endpoint_name;
@@ -313,10 +331,11 @@ router.post('/createAPI', async (req, res) => {
   const username = user.username;
 
   const full_endpoint_slug = `/${username}/${endpoint_slug}`;
-  const endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
+  let endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
   if(endpoint) {
     return res.status(400).send('Endpoint slug already exists');
   }
+
 
 
   const create_endpoint = await createOneEndpoint(endpoint_name, full_endpoint_slug, endpoint_description, schema);

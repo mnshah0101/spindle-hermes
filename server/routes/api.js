@@ -43,37 +43,31 @@ function getParams(path, actualPath) {
 
 router.use('/', async (req, res, next) => {
 
+    try{
+
     const method = req.method;
     const key = req.body.key;
-
-
 
     if(!key) {
         return res.status(403).send('Key missing');
     }
-
-
-    //the endppint is just the path of the request
     const endpoint = req.path;
-    //first part of the endpoint is the username
-    const username = endpoint.split('/')[1];
-    //look for endpoint with the endpoint
+    console.log(endpoint)
+    console.log(method)
+    
     const endpoint_object = await Endpoint.findOne({endpoint_slug: endpoint, method: method});
+    console.log(endpoint_object)
     if(!endpoint_object) {
         return res.status(404).send('Endpoint not found');
     }
 
     
-    //check if the key is valid
     const api = await APIModel.findById(endpoint_object.api.toString()).populate('database_name');
-
 
 
     if(!api) {
         return res.status(404).send('API not found');
     }
-
-    //check if key in api.api_keys
 
     const isIn = api.api_keys.includes(key);
     if(!isIn) {
@@ -81,9 +75,6 @@ router.use('/', async (req, res, next) => {
     }
 
 
-    
-
-    //create masterParams to run api code in vm
     const params = getParams(endpoint, req.path);
     const masterParams = {}
     for (let paramKey in params){
@@ -102,10 +93,19 @@ router.use('/', async (req, res, next) => {
         keys.push(param.name)
     }
 
+    let missing_params = []
+
     for(const key of keys) {
         if(!Object.keys(masterParams).includes(key)) {
-            return res.status(400).send('Parameters Not valid');
+           let missing_param = key;
+              missing_params.push(missing_param)
+
+
         }
+    }
+
+    if(missing_params.length > 0) {
+        return res.status(400).send({error: 'Missing parameters', missing_params: missing_params});
     }
 
   
@@ -122,7 +122,12 @@ router.use('/', async (req, res, next) => {
     if (!answer) {
         return res.status(500).send({ error: 'Internal server error' });
     }
-    return res.status(200).send({ answer: answer });
+    return res.status(200).send({ response_data: answer });
+
+} catch(e){
+    console.log(e)
+    return res.status(500).send({ error: 'Internal server error', message: e});
+}
 
 });
 

@@ -13,7 +13,6 @@ async function run(schema, code, uri, params, dbName, collectionName){
 
         let schema_code = generateSchemaCode(schema, collectionName, dbName);
 
-
         const conn = await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
@@ -29,9 +28,6 @@ async function run(schema, code, uri, params, dbName, collectionName){
             params: params,
             conn: conn
         }
-
-
-        
 
         code =code.replace(/(const|let|var) answer/g, "answer");
         code = code.replace(/(const|let|var) Model/g, "Model");
@@ -67,21 +63,8 @@ async function run(schema, code, uri, params, dbName, collectionName){
         }
         connect();
         `
-
-        console.log(code2)
-
-        vm.createContext(context); // Contextify the object.
-
+        vm.createContext(context); 
         await vm.runInContext(code2, context);
-
-  
-
-
-
-
-      
-
-
         return context.answer      
     }
         catch(err){
