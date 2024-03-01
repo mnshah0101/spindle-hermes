@@ -16,7 +16,7 @@
 
 import express from 'express';
 import mongoose from 'mongoose';
-import KeyModel from '../models/Key.js';
+import Database from '../models/Database.js';
 import Endpoint from '../models/Endpoint.js';
 import APIModel from '../models/API.js';
 import UserModel from '../models/User.js';
@@ -65,9 +65,7 @@ router.use('/', async (req, res, next) => {
 
     
     //check if the key is valid
-    const api = await APIModel.findById(endpoint_object.api.toString());
-
-        await mongoose.connection.close();
+    const api = await APIModel.findById(endpoint_object.api.toString()).populate('database_name');
 
 
 
@@ -99,11 +97,6 @@ router.use('/', async (req, res, next) => {
     //check if the parameters are valid
     const endpoint_params = endpoint_object.parameters;
 
-
-    console.log(masterParams)
-
-
-
     const keys = []
     for(let param of endpoint_params){
         keys.push(param.name)
@@ -116,15 +109,14 @@ router.use('/', async (req, res, next) => {
     }
 
   
-   
     const code = endpoint_object.code;
     const schema = api.mongo_schema;
 
-    let answer = await run(schema, code, MONGO_URI, masterParams);
-
-    await mongoose.connection.close()
+    let answer = await run(schema, code, MONGO_URI, masterParams, api.database_name.database_name, api.database_name.collection_name);
 
 
+
+   
 
 
     if (!answer) {

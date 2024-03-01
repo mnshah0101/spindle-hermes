@@ -14,7 +14,7 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema  
 const extractionFunctionSchema = {
   name: "endpointcreator",
-  description: "Given an API description, endpoint name and endpoint slug, create an API Object with full functionality.",
+  description: "Given an API description, endpoint name endpoint slug, and schema of the data, create an API Object with full functionality. You can only use the data fields from the schema in the code of the API when making queries. The schema is structured by {field_name : field_type}. ",
   parameters: {
     type: "object",
     properties: {
@@ -49,7 +49,7 @@ const extractionFunctionSchema = {
       },
       code: {
         type: "string",
-        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model.",
+        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Only use fields from the schema to create the API.",
       },
       params:{
         type:"array",
@@ -74,7 +74,7 @@ const extractionFunctionSchema = {
 };
 
 // Instantiate the ChatOpenAI class
-const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:1.07});
+const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:5000, temperature:0});
 
 // Create a new runnable, bind the function to the model, and pipe the output through parser
 const runnable = model
@@ -90,7 +90,7 @@ async function createOneEndpoint(endpoint_name, endpoint_slug, endpoint_descript
 const result = await runnable.invoke([
   new HumanMessage(`Create an API with this endpoint name: ${endpoint_name}, this endpoint slug: ${endpoint_slug} from this API description: 
   ${endpoint_description}
-    This is the schema of the data: 
+    This is the schema of the data. The schema is the structure of the data that the API will be working with and you can only use the schema fields to create the API. 
     ${schema}
     `)
 
