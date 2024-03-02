@@ -17,7 +17,9 @@ import mongoose from 'mongoose';
 import API from '../models/API.js';
 import createOneEndpoint from '../utils/createOneEndpoint.js';
 import createCode from '../utils/createCode.js';
+import { MongoClient } from 'mongodb';
 import cleanString from '../utils/cleanString.js';
+import { createPostEndpoint, createPutEndpoint, createDeleteEndpoint } from '../utils/createRequests.js';
 
 
 config();
@@ -49,6 +51,12 @@ router.post('/createDatabase', async (req, res) => {
       return res.status(400).send('Missing API name');
     }
     const databaseName = processDBName(api_name);
+
+    if(databaseName =="test") {
+      return res.status(400).send('Invalid database name');
+    }
+
+
 
     let collection_name = req.body.collection_name;
     if(!collection_name) {
@@ -145,7 +153,7 @@ router.post("/createAPIs", async (req, res) => {
         return res.status(400).send('Missing endpoint slug');
     }
 
-     endpoint_slug = processName(req.body.endpoint_slug);
+    endpoint_slug = processName(req.body.endpoint_slug);
   
     const database_id = req.body.database_id;
     if(!database_id) {
@@ -171,8 +179,24 @@ router.post("/createAPIs", async (req, res) => {
     if(!database) {
         return res.status(400).send('Invalid database');
     }
+
+    //close mongodb connection
+    mongoose.connection.close();
+
+    //get first three rows from database with database name database.database_name and collection name database.collection_name
+    const db = await MongoClient.connect(database.mongo_uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const dbo = db.db(database.database_name);
+    const collection = dbo.collection(database.collection_name);
+    const firstThree = await collection.find().limit(3).toArray();
+    if(!firstThree) {
+        return res.status(500).send('Error getting data from database');
+    }
+    db.close();
+
+    mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
     const ideas = await getIdeas(schema);
-    let endpoints = await createEndpoints(ideas, schema);
+    let endpoints = await createEndpoints(ideas, schema, JSON.stringify(firstThree));
 
     const curDate = new Date();
     const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
@@ -200,7 +224,8 @@ router.post("/createAPIs", async (req, res) => {
       database_name: database,
       image: image_url, 
       status: "active",
-      created_at: curDate
+      created_at: curDate,
+      sample_data: firstThree
 
     }
 
@@ -254,11 +279,29 @@ router.post("/createAPIs", async (req, res) => {
       //get the API 
       let myCreatedAPI = await API.findById(new_api._id);
 
+      let postEndpoint = await createPostEndpoint(myCreatedAPI, user, database);
+      let putEndpoint = await createPutEndpoint(myCreatedAPI, user, database);
+      let deleteEndpoint = await createDeleteEndpoint(myCreatedAPI, user, database);
+
+
+
+
       for(let endpoint of endpointObjects){
-
       myCreatedAPI.endpoints.push(endpoint);
-
       }
+
+      console.log('creating post endpoint:')
+      myCreatedAPI.endpoints.push(postEndpoint);
+
+      console.log('creating put endpoint:')
+      myCreatedAPI.endpoints.push(putEndpoint);
+
+      console.log('creating delete endpoint:')
+      myCreatedAPI.endpoints.push(deleteEndpoint);
+
+
+
+
 
       console.log('created api:')
 
@@ -336,9 +379,11 @@ router.post('/createAPI', async (req, res) => {
     return res.status(400).send('Endpoint slug already exists');
   }
 
+  let first_three = api.sample_data
 
 
-  const create_endpoint = await createOneEndpoint(endpoint_name, full_endpoint_slug, endpoint_description, schema);
+
+  const create_endpoint = await createOneEndpoint(endpoint_name, full_endpoint_slug, endpoint_description, schema, JSON.stringify(first_three));
   console.log('create_endpoint:', create_endpoint);
 
 

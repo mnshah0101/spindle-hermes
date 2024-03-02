@@ -14,7 +14,7 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema
 const extractionFunctionSchema = {
   name: "endpointcreator",
-  description: "Creates API Endpoint Functionality From API Idea and Mongoose Schema.",
+  description: "Creates API Endpoint Functionality From API Idea, A Schema of the Data, and example data to base the API off of.",
   parameters: {
     type: "object",
     properties: {
@@ -66,7 +66,7 @@ const extractionFunctionSchema = {
                 }
             }
          },
-        description: "Array of the parameters names and types",
+        description: "The array of the parameters that are used in the API. Only include parameters the code needs to run. If no parameters are needed, leave as an empty array.",
       }
     },
     required: ["endpoint_name", "endpoint_slug", "params", "response_type", "tags", "description", "method"]
@@ -85,13 +85,17 @@ const runnable = model
   .pipe(parser);
 
 //function to create an api for each api idea
-async function createEndpoint(endpoint, schema){
+async function createEndpoint(endpoint, schema, firstThree){
     try{
 const result = await runnable.invoke([
   new HumanMessage(`Create an API from this API idea : 
   ${endpoint}
     This is the schema: 
     ${schema}
+
+    These are three example data points:
+    ${firstThree}
+
     `)
 
     
@@ -108,12 +112,12 @@ return result
 
 //create array of endpoints for all api ideas
 //contains code that will be fed into vm
-async function createEndpoints(endpoints, schema){
+async function createEndpoints(endpoints, schema, firstThree){
     const returnArr = []
 
     for(let endpoint of endpoints){
-        console.log('done in create endpoints')
-        let new_endpoint = await createEndpoint(endpoint, schema)
+        console.log('creating endpoint for: ', endpoint)
+        let new_endpoint = await createEndpoint(endpoint, schema, firstThree)
         if(new_endpoint){
             returnArr.push(new_endpoint)
         }

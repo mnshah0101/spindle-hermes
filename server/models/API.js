@@ -102,7 +102,12 @@ const APISchema = new Schema({
     status: {
         type: String,
         default: "active"
-    }
+    },
+    sample_data: [
+        {
+            type: Object
+        }
+    ]
    
    
 });
