@@ -17,8 +17,8 @@ import image_query from '../utils/getImage.js';
 import mongoose, { Schema } from 'mongoose';
 import API from '../models/API.js';
 import createOneEndpoint from '../utils/createOneEndpoint.js';
-import createCode from '../utils/createCode.js';
 import cleanString from '../utils/cleanString.js';
+import { createDeleteEndpoint } from '../utils/createRequests.js';
 
 
 config();
@@ -256,6 +256,8 @@ router.post("/createAPIs", async (req, res) => {
       for(let endpoint of endpointObjects){
         myCreatedAPI.endpoints.push(endpoint);
       }
+      let deleteEndpoint = createDeleteEndpoint(api, user, database);
+      myCreatedAPI.endpoints.push(deleteEndpoint);
 
       console.log('created api:')
 
@@ -269,6 +271,90 @@ router.post("/createAPIs", async (req, res) => {
 
       res.send(myCreatedAPI);
 });
+
+router.post('/testRequests', async (req, res) => {
+  const api_name = req.body.api_name;
+    //check if api_name exists
+    if(!api_name) {
+        return res.status(400).send('Missing API name');
+    }
+    const user_id = req.body.user_id;
+    if(!user_id) {
+        return res.status(400).send('Missing user ID');
+    }
+    const description = req.body.description;
+    if(!description) {
+        return res.status(400).send('Missing description');
+    }
+    let endpoint_slug = req.body.endpoint_slug;
+    if(!endpoint_slug) {
+        return res.status(400).send('Missing endpoint slug');
+    }
+
+     endpoint_slug = processName(req.body.endpoint_slug);
+  
+    const database_id = req.body.database_id;
+    if(!database_id) {
+        return res.status(400).send('Missing database ID');
+    }
+    const schema = req.body.schema;
+    if(!schema) {
+        return res.status(400).send('Missing schema');
+    }
+
+    if(!api_name || !user_id || !description || !endpoint_slug || !database_id) {
+        return res.status(400).send('Missing required fields');
+    }
+    const user = await UserModel.findById(user_id);
+
+    if(!user) {
+        return res.status(400).send('Invalid user');
+    }
+
+    const username = user.username;
+    const full_endpoint_slug = `/${username}/${endpoint_slug}`;
+    const database = await DatabaseModel.findById(database_id);
+    if(!database) {
+        return res.status(400).send('Invalid database');
+    }
+
+    const curDate = new Date();
+    // const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
+
+    const newAPI = {
+      name: api_name,
+      description: description,
+      api_keys: ['a'], 
+      api_slug: removeSpaces(full_endpoint_slug),
+      user: user,
+      mongo_uri: MONGO_URI,
+      mongo_schema: schema,
+      database_name: database,
+      image: 'image_url', 
+      status: "active",
+      created_at: curDate
+
+    }
+
+
+    //check to make s
+    
+    let api =  new APIModel(newAPI);
+
+
+    let new_api = await api.save()
+
+    //push endpoints to api object with createdCode 
+    let myCreatedAPI = await API.findById(new_api._id);
+    let deleteEndpoint = createDeleteEndpoint(api, user, database);
+    myCreatedAPI.endpoints.push(deleteEndpoint);
+
+    console.log('created api:')
+
+    await myCreatedAPI.save()
+
+    res.send(myCreatedAPI);
+})
 
 
 

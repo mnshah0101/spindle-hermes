@@ -1,4 +1,8 @@
-import EndpointModel from "../models/Endpoint";
+import EndpointModel from "../models/Endpoint.js";
+
+function removeSpaces(str) {
+    return str.replace(/\s+/g, '');
+  }
 
 function createPostEndpoint(api, user, database, schema) {
     if (!api || !user || !database || !schema) {
@@ -6,21 +10,13 @@ function createPostEndpoint(api, user, database, schema) {
     };
 
     const postCode = `
-        const newObject = req.body;
-        if (!newObject) {
-            return res.status(400).json({ error: 'no object provided' });
-        };
-        const schema = ${JSON.stringify(schema)};
-        for (const field in newObject) {
-            if (!schema[field]) {
-                return res.status(400).json({ error: 'schema of provided object does not match db schema'});
-            }
-            else if (typeof newObject[field] != schema[field]) {
-                return res.status(400).json({ error: 'schema fields do not match' });
-            }
+        try {
+            let newObject = params.newObject;
+            await newObject.save();
+            answer = 'New employee has been successfully added.';
+        } catch (error) {
+            answer = 'There was an error while adding the new employee.';
         }
-        //HOW DO I UPLOAD TO THE DATABASE
-        return res.status(200).json({ message: "Object added successfully" })
     `;
 
     const newEndpoint = {
@@ -40,7 +36,7 @@ function createPostEndpoint(api, user, database, schema) {
       };
     
     let saved_endpoint = new EndpointModel(newEndpoint);
-    api.endpoints.push(saved_endpoint);
+    return saved_endpoint;
 };
 
 function createPutEndpoint(api, user, database) {
@@ -50,17 +46,15 @@ function createPutEndpoint(api, user, database) {
 
     const putCode = `
         try {
-            const { id } = req.params; 
-            const newObject = req.body;
-            if (!newObject) {
-                return res.status(400).json({ error: "Invalid parameters" });
+            let updatedObject = params.updatedObject
+        
+            answer = await Model.updateOne({ _id: params.id }, updatedObject);
+        
+            if (!answer) {
+                answer = 'No object found with the provided ID';
             }
-            const collection = ${database}.collection(${database.collection_name});
-            collection.findByIdAndUpdate(id, newObject);
-            res.status(200).json({ message: "Item updated successfully" });
-        } catch(e) {
-            console.log(e);
-            res.status(500).json({ message: "Item was not updated correctly" });
+        } catch (error) {
+            answer = 'An error occurred while updating the object';
         }
     `;
 
@@ -81,27 +75,24 @@ function createPutEndpoint(api, user, database) {
       };
     
     let saved_endpoint = new EndpointModel(newEndpoint);
-    api.endpoints.push(saved_endpoint);
-}
+    return saved_endpoint;
+};
 
-function createDeleteEndpoint(api, user, database) {
+async function createDeleteEndpoint(api, user, database) {
     if (!api || !user || !database) {
         throw new Error("Missing parameters");
     };
 
     const deleteCode = `
         try {
-            const { id } = req.params;
-            if (!id) {
-                return res.status(400).json({ error: "Invalid ID provided });
+            let result = await Model.deleteOne({ ID: params.ID });
+            if (!result) {
+                answer = 'No object found with the provided ID';
+            } else {
+                answer = 'object deleted successfully';
             }
-
-            const collection = ${database}.collection(${database.collection_name});
-            collection.deleteOne({ _id: id });
-            res.status(200).json({ message: "Item deleted successfully" });
-        } catch(e) {
-            console.log(e);
-            res.status(500).json({ message: "Item with specified id not found" });
+        } catch (error) {
+            answer = 'An error occurred during deletion';
         }
     `;
     
@@ -122,7 +113,8 @@ function createDeleteEndpoint(api, user, database) {
       };
     
     let saved_endpoint = new EndpointModel(newEndpoint);
-    api.endpoints.push(saved_endpoint);
+    await saved_endpoint.save();
+    return saved_endpoint;
 };
 
-export default { createPostEndpoint, createPutEndpoint, createDeleteEndpoint };
+export { createPostEndpoint, createPutEndpoint, createDeleteEndpoint };
