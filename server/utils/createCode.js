@@ -14,13 +14,13 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema
 const extractionFunctionSchema = {
     name: "codecreator",
-    description: "Creates code for an GET API endpoint based strictly on the Mongoose Schema", 
+    description: "Creates MongoDB NodeJS code for an GET API endpoint based strictly on the JSON Schema. The code should be the inner logic of the API, and should not include the Express wrapper. The code should be written as if it were inside of an async function, so you can use the await keyword. The Mongoose model is referred to as Model. The final output is saved as the variable called answer, which already exists, so don't redeclare. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. Only use fields from the schema to create the API. Only use fields from the schema to create the API. The schema is structured by {field_name : field_type}.", 
     parameters: {
         type: "object",
         properties: {
             code: {
                 type: "string",
-                description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model."
+                description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Include a descriptive case if the query returns no results."
             },
         },
         required: ["code"]
@@ -28,7 +28,7 @@ const extractionFunctionSchema = {
 };
 
 // Instantiate the ChatOpenAI class
-const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:1.07});
+const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:0});
 
 // Create a new runnable, bind the function to the model, and pipe the output through parser
 const runnable = model
@@ -42,12 +42,12 @@ const runnable = model
 async function createCode(endpoint, schema) {
     try{
         const result = await runnable.invoke([
-        new HumanMessage(`Create a code objectcode for a GET API using the provided information:
+        new HumanMessage(`Create a code for a GET API using the provided information:
             api_name: ${endpoint.api.api_name},
             endpoint_name: ${endpoint.endpoint_name}, 
             endpoint.description ${endpoint.description},
-            schema: ${schema},
-            params: ${endpoint.parameters}
+            schema: ${JSON.stringify(schema)},
+            params: ${JSON.stringify(endpoint.parameters)}
             `)   
         ]);
         console.log(`code created for endpoint: ${endpoint.endpoint_name}`);

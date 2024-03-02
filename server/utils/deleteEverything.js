@@ -23,7 +23,6 @@ const deleteEverything = async () => {
     });
         await API.deleteMany({});
         await Endpoint.deleteMany({});
-        await Database.deleteMany({});
         console.log('deleted everything');
     } catch (error) {
         console.log(error);

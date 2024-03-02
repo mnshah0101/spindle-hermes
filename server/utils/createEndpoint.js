@@ -34,7 +34,7 @@ const extractionFunctionSchema = {
 
       description: {
         type: "string",
-        description: "The description of the API Endpoint and what it does",
+        description: "The description of the API Endpoint and what it does. ",
       },
       response_type: {
         type: "string",
@@ -54,15 +54,19 @@ const extractionFunctionSchema = {
             properties :{
                 name: {
                     type:"string",
-                    description:"Name of the parameter. Must match exactly the name of the parameter in the code."
+                    description:"Name of the parameter. Must match exactly the name of the parameter in the schema."
                 },
                 type:{
                     type:"string",
                     description:"The type of the parameter. Can be string, number, boolean, or array."
+                },
+                 description:{
+                    type:"string",
+                    description:"The description of the parameter with examples of what it should look like. Include scale if it is a number."
                 }
             }
          },
-        description: "array of the parameters names and types",
+        description: "Array of the parameters names and types",
       }
     },
     required: ["endpoint_name", "endpoint_slug", "params", "response_type", "tags", "description", "method"]
@@ -70,7 +74,7 @@ const extractionFunctionSchema = {
 };
 
 // Instantiate the ChatOpenAI class
-const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:1.07});
+const model = new ChatOpenAI({ modelName: gpt_model, maxTokens:2500, temperature:0});
 
 // Create a new runnable, bind the function to the model, and pipe the output through parser
 const runnable = model

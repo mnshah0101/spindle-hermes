@@ -5,6 +5,9 @@ const PromptTemplate = require("@langchain/core/prompts").PromptTemplate;
 const JsonOutputParser = require("@langchain/core/output_parsers").JsonOutputParser;
 const RunnableSequence = require("@langchain/core/runnables").RunnableSequence;
 
+function cleanString(string) {
+    return string.trim().replace(/ /g, '_').toLowerCase().replace(/[()]/g, '');
+    }
 
 
 async function getSchemaFromCSV(csvData) {
@@ -25,9 +28,8 @@ function readCSV(csvData) {
 
   const typecastedRows = firstThreeRows.map(row => row.map(value => {
 
-    if (typeof value === 'string') {
-         value = value.trim().replace(/ /g, '_').toLowerCase();
-          value = value.replace(/[()]/g, '');
+    if (typeof value == 'String') {
+        value = cleanString(value);
 
 
     }

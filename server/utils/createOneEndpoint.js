@@ -14,7 +14,7 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema  
 const extractionFunctionSchema = {
   name: "endpointcreator",
-  description: "Given an API description, endpoint name endpoint slug, and schema of the data, create an API Object with full functionality. You can only use the data fields from the schema in the code of the API when making queries. The schema is structured by {field_name : field_type}. ",
+  description: "Given a description of API behavior, endpoint name endpoint slug, and schema of the data, create an API Object with full functionality. You can only use the data fields from the schema in the code of the API when making queries. The schema is structured by {field_name : field_type}. ",
   parameters: {
     type: "object",
     properties: {
@@ -34,7 +34,7 @@ const extractionFunctionSchema = {
 
       description: {
         type: "string",
-        description: "The description of the API Endpoint and what it does",
+        description: "The description of the API Endpoint and what it does.",
       },
       response_type: {
         type: "string",
@@ -49,7 +49,7 @@ const extractionFunctionSchema = {
       },
       code: {
         type: "string",
-        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Only use fields from the schema to create the API.",
+        description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to parameters as part of the params JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Only use fields from the schema to create the API. Add error handling, so that answer is set to a descriptive message if the query returns no results or has an error.",
       },
       params:{
         type:"array",
@@ -62,8 +62,13 @@ const extractionFunctionSchema = {
                 },
                 type:{
                     type:"string",
-                    description:"The type of the parameter. Can be string, number, boolean, or array."
+                    description:"The type of the parameter. Can be string, number, boolean, array or object."
+                },
+                 description:{
+                    type:"string",
+                    description:"The description of the parameter with examples of what it should look like. Include scale if it is a number."
                 }
+                
             }
          },
         description: "array of the parameters names and types",
@@ -87,6 +92,7 @@ const runnable = model
 //function to create an api for each api idea
 async function createOneEndpoint(endpoint_name, endpoint_slug, endpoint_description, schema){
     try{
+      schema = JSON.stringify(schema);
 const result = await runnable.invoke([
   new HumanMessage(`Create an API with this endpoint name: ${endpoint_name}, this endpoint slug: ${endpoint_slug} from this API description: 
   ${endpoint_description}

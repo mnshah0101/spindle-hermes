@@ -38,6 +38,8 @@ function parseCSV(schema, csvData) {
     console.error("Error: CSV data is not in the expected format.");
     return [];
 }
+
+
   
   const result = [];
   const keys = Object.keys(schema);
