@@ -3,7 +3,14 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import APIPage from '../../components/APIs/APIPage';
 import SectionHeading from '../../components/SectionHeading';
+import { useRouter } from 'next/router';
 export default function Database() {
+
+  const router = useRouter();
+  const id = router.query.id;
+
+
+
   return (
     <>
       <Head>
@@ -23,7 +30,7 @@ export default function Database() {
                 variant="h1"
                 />
 
-            <APIPage  />
+            <APIPage id={id}  />
            
               
              

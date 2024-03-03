@@ -23,7 +23,10 @@ const UserSchema = new Schema({
         unique: true
     },
     reset_password_token: String,
-    profile_picture: String,
+    profile_picture: {
+        type: String,
+        default: "https://i.ibb.co/ctJJ5Q7/image.png"
+    },
     apis :[
         {
             type: Schema.Types.ObjectId,

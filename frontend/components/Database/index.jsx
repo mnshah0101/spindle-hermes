@@ -1,5 +1,7 @@
 import React from 'react';
-
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 const data = [
     {
       "playerName": "Tom Brady",
@@ -471,11 +473,44 @@ const data = [
     }
   ]
 
-export default function DatabasePage(){
+export default function DatabasePage(id){
+
+    const [data, setData] = useState([{"LOADING":"LOADING"}]);
+    const { data: session, status } = useSession();
+    const [databaseTitle, setDatabaseTitle] = useState('Loading Database...');
+
+useEffect(() => {
+    if (status === 'loading') return;
+    if (status === 'unauthenticated') return;
+    async function fetchData() {
+        const res = await fetch('/api/database/getData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ database_id: id})
+        });
+        if (res.status !== 200) return;
+        const data = await res.json();
+        if(data.data.length > 1){
+          setData(data['data']);
+          setDatabaseTitle(data['title']);
+        }
+        else{
+          setData([{"hello":"world"}]);
+        }
+      
+
+    }
+    fetchData();
+}, [session])
+  
+
+
     return (
         <div style={{height:'100%'}} className='d-flex flex-column mt-7'>
             <div className='d-flex justify-content-between'>
-                <h2>My NFL Database</h2>
+                <h2>{databaseTitle}</h2>
 
                 <button className='btn btn-outline-info'>Edit API Page</button>
 

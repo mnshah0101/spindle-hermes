@@ -1,18 +1,47 @@
 import React from "react";
 import DatabaseCard from "../DatabaseCard/card";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useSession } from 'next-auth/react';
 
 export default function Documentation() {
+
+    let [apis, setAPIs] = useState([]);
+    const { data: session, status } = useSession();
+
+    useEffect(() => {
+        if (status === 'loading') return;
+        if (status === 'unauthenticated') return;
+        async function fetchData() {
+            const res = await fetch('/api/api/getAPI', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: session.user.id })
+            });
+            if (res.status !== 200) return;
+            const data = await res.json();
+            setAPIs(data);
+        }
+        fetchData();
+    }
+    , [session]
+    );
+
+
+
+
     return (
         <div className="row g-4">
-        <div className="col-12 col-lg-6">
-            <DatabaseCard
-            title="NFL Documentation"
-            imgUrl="https://static.profootballnetwork.com/wp-content/uploads/2021/02/15211332/nfl-logo-shield-history-design-meaning.jpg"
-            imgAlt="NFL"
-            link = "https://www.nfl.com/"
-            description="The National Football League is a professional American football league consisting of 32 teams, divided equally between the National Football Conference and the American Football Conference."
-            />
-        </div>
+        {apis.map((database, index) => {
+                return (
+                    <div className="col-12 col-lg-6">
+                    <DatabaseCard link={`/apis/${database._id}`} key={index} imgUrl={database.image} description={database.description} title={database.name} />
+                            </div>
+                )
+
+                })}
        
        
       
