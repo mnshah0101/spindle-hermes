@@ -14,13 +14,13 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema
 const extractionFunctionSchema = {
     name: "codecreator",
-    description: "Creates MongoDB NodeJS code for an GET API endpoint based strictly on the JSON Schema. The code should be the inner logic of the API, and should not include the Express wrapper. The code should be written as if it were inside of an async function, so you can use the await keyword. The Mongoose model is referred to as Model. The final output is saved as the variable called answer, which already exists, so don't redeclare. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. Only use fields from the schema to create the API. Only use fields from the schema to create the API. The schema is structured by {field_name : field_type}.", 
+    description: "Creates MongoDB NodeJS code for an GET API endpoint based strictly on the JSON Schema. The code should be the inner logic of the API, and should not include the Express wrapper. The code should be written as if it were inside of an async function, so you can use the await keyword. The Mongoose model is referred to as Model. The final output is saved as the variable called answer, which already exists, so don't redeclare. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. Only use fields from the schema to create the API. Only use fields from the schema to create the API. The schema is structured by {field_name : field_type}. ", 
     parameters: {
         type: "object",
         properties: {
             code: {
                 type: "string",
-                description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Include a descriptive case if the query returns no results."
+                description: "The NodeJS code for the inner logic of the API. This only includes the Mongoose Query, you can assume the Express wrapper is already made. You cannot use the response or requests objects. Refer to schema when using Model.find to find objects, the schema is a JSON. The final output is saved as the variable called answer, which already exists, so don't redeclare. You may assume the code will be inside of an async function, so you can use the await keyword. Refer to the Mongoose model as Model. Include a descriptive case if the query returns no results. All parameters needed are in in the params object, so you can refer to it as params.id for example."
             },
         },
         required: ["code"]

@@ -79,10 +79,10 @@ export default function ContactPage() {
                   <div className="block-text pt-lg-4">
                     <h3 className="title h2 mb-5">Upload A CSV</h3>
                    
-                <div class="file-drop-area">
-                <span class="fake-btn">Choose file</span>
-                <span class="file-msg">or drag and drop files here</span>
-                <input class="file-input" type="file" accept=".csv" name="csv"
+                <div className="file-drop-area">
+                <span className="fake-btn">Choose file</span>
+                <span className="file-msg">or drag and drop files here</span>
+                <input className="file-input" type="file" accept=".csv" name="csv"
                   onChange={(e) => {handleInput(e)}}
                 
                 />
@@ -92,7 +92,7 @@ export default function ContactPage() {
                        
                   </div>
                   <div className="my-7 rounded-3"style={{ height: '400px', overflow: 'auto'}}>
-                  <table  class="preview-table-area" style={{fontSize: '0.5rem'}} >
+                  <table  className="preview-table-area" style={{fontSize: '0.5rem'}} >
   <thead>
     <tr>
  

@@ -42,7 +42,8 @@ export const authOptions = {
 
       if (user) {
         new_user = {
-          username: user.username
+          username: user.username,
+          id: user._id
         };
       }
       else{
@@ -77,7 +78,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       if (token?.username) {
-        session.user = { username: token.username};
+        session.user = { username: token.username, id: token.id};
         
       }
       return session;

@@ -17,12 +17,11 @@ const getAPIIdeas = async (schema) => {
   const parser = new CommaSeparatedListOutputParser();
 
   const chain = RunnableSequence.from([
-    PromptTemplate.fromTemplate("Give me a comma separated list of API Ideas with to create an API based on a JSON schema of the data. These must be only GET style read only APIs. Be specific with API ideas and make them complex queries. Include the API Name, and make API names specific. This is the JSON Schema to base your list off of: {schema} Only include API ideas that could be created based on the JSON schema. Create as many as you can think of. \n{format_instructions}"),
+    PromptTemplate.fromTemplate("Give me a comma separated list of 3 API Ideas with to create an API based on a JSON schema of the data. These must be only GET style read only APIs. Be very specific with the api idea and include the API name in your description of the api, and make API names specific. This is the JSON Schema to base your list off of: {schema} Only include API ideas that could be created based on the JSON schema. \n{format_instructions}"),
     new OpenAI({ temperature: 0.4, maxTokens:3000, modelName: "gpt-4"}),
     parser,
   ]);
 
-  console.log("running chain")
 
   let response = await chain.invoke({
     schema: JSON.stringify(schema),
@@ -31,7 +30,8 @@ const getAPIIdeas = async (schema) => {
 
 
 
-  return response; 
+
+  return response.splice(0,3)
 
 };
 

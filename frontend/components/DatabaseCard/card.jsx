@@ -15,11 +15,11 @@ export default function DatabaseCard({
 
   return (
     <>
-    <div class="card" onClick={onClick}>
-  <img class="card-img-top" src={imgUrl} alt="Card image cap"/>
-  <div class="card-body">
-    <h5 class="card-title">{title}</h5>
-    <p class="card-text">{description}</p>
+    <div className="card" onClick={onClick}>
+  <img className="card-img-top" src={imgUrl} alt="Card image cap"/>
+  <div className="card-body">
+    <h5 className="card-title">{title}</h5>
+    <p className="card-text">{description}</p>
   </div>
 </div>
 </>

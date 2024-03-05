@@ -3,7 +3,18 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import Image from 'next/image';
 import DatabasePage from '../../components/Database';
+import { useRouter } from 'next/router';
 export default function Database() {
+
+  const router = useRouter();
+
+  const { id } = router.query;
+
+
+
+
+
+
   return (
     <>
       <Head>
@@ -17,7 +28,7 @@ export default function Database() {
           <div className="nk-mask bg-pattern-dot bg-blend-around" />
           <div className="container">
 
-            <DatabasePage />
+            <DatabasePage id={id} />
            
               
              

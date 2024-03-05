@@ -1,23 +1,117 @@
-import React, { useState } from 'react';
-export default function  AccountForm ()  {
-    const [email, setEmail] = useState('admin@gmail.com');
-    const [username, setUsername] = useState('admin');
-    const [profilePicture, setProfilePicture] = useState('https://media.licdn.com/dms/image/D4E03AQFGNAEy8FmTew/profile-displayphoto-shrink_800_800/0/1684209357812?e=2147483647&v=beta&t=X9EqxwRvOw5--FaQ-x4X0U_llmid-q-mvrFPqm3tWvk');
+import React, { useMemo, useState } from 'react';
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import {  useRouter } from 'next/navigation'
 
-    const handleInput = e => {
+
+
+export default function  AccountForm ()  {
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const { data: session, status } = useSession();
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(''); 
+    const [profilePicture, setProfilePicture] = useState('');
+    const router = useRouter();
+
+    const handleInput = async e => {
         const { name, value } = e.target;
         if (name === 'email') setEmail(value);
         if (name === 'username') setUsername(value);
-        if (name === 'profile_picture') setProfilePicture(value);
-
-
+       
+    
     };
+
+    useMemo(() => {
+        if(status === 'loading') return;
+        if(status==='unauthenticated'){
+            router.push('/login');
+        }
+
+         async function fetchData() {
+            try{
+            if(username != '') return;
+            if(!session) return;
+            const res = await fetch('/api/form/getAccount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: session.user.id })
+            });
+            if(res.status !== 200) return;
+            const data = await res.json();
+            if (data) {
+                setEmail(data.email);
+                setUsername(data.username);
+                setProfilePicture(data.profile_picture);
+            }
+            } catch (error) {
+                console.error('Error fetching account data:');
+            }
+           
+        }
+        fetchData();
+    
+    });
+   
+
+    const handleSubmit =async e => {
+        setSuccess('');
+        setError('');
+        //form validation and submission
+        e.preventDefault();
+        if (!email || !username ) return;
+        try{
+            const res = await fetch('/api/form/updateAccount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: session.user.id, email, username })
+            });
+            if(res.status !== 200){
+                console.error('Error updating account data:');
+                setError('Your username or email is already taken!');
+                return;
+            };
+            const data = await res.json();
+            if(res.status === 200) {
+                setSuccess('Account updated successfully!');
+                return;
+            }
+        }
+        catch (error) {
+            console.error('Error updating account data:');
+            setError('Your username or email is already taken!');
+
+        }
+    }
+
+   
 
     return (
       
             <div className='row'>
+            <div className="col-lg-6 col-12 ">
+
+                 <div className="mb-1 d-flex justify-content-center">
+
+                <div className='d-flex flex-column align-items-center justify-content-center '>
+                
+                <img src={profilePicture} alt="profile picture" className="rounded-circle mb-4 " width="400" height="400" />
+            
+                </div>
+                 
+            </div>
+            </div>
+                        
+
+
             <div className="col-lg-6 col-12 mb-3">
-                  <form >
+
+                 <form className='mb-5'  onSubmit={e=> handleSubmit(e)}>
+               
             <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
                 <input 
@@ -45,41 +139,28 @@ export default function  AccountForm ()  {
                 />
             </div>
 
-            <div className="mb-5">
-
-
-
-                <label htmlFor="profile_picture" className="form-label">Profile Picture </label>
-                <div className='d-flex flex-column my-4 '>
-                
-                <img src={profilePicture} alt="profile picture" className="rounded-circle mb-4 " width="100" height="100" />
-
-                <div className="file-drop-area">
-                <span className="fake-btn">Choose image</span>
-                <span className="file-msg">or drag and drop image here</span>
-                <input className="file-input" type="file" accept="image/png, image/gif, image/jpeg" name="profile_picture"
-                  onChange={(e) => {handleInput(e)}}
-                
-                />
-                </div>
-                </div>
-
-            </div>
+           
             <button type="submit" className="btn btn-primary">Update</button>
+
+            {error && <div className="alert alert-danger my-3" role="alert">{error}</div>}
+            {success && <div className="alert alert-success my-3" role="alert">{success}</div>}
+
+
         </form>
-            </div>
-                        
+
+                
 
 
-            <div className="col-lg-6 col-12 mb-3">
     <div className="form-group" id="formBasicEmail">
+
+
 
 
    
 
 
 
-      <label className='form-label'  for="email">Change Password</label>
+      <label className='form-label' >Change Password</label>
       <input 
         type="email" 
         className="form-control" 

@@ -14,7 +14,7 @@ const parser = new JsonOutputFunctionsParser();
 // Define the function schema  
 const extractionFunctionSchema = {
   name: "endpointcreator",
-  description: "Given a description of API behavior, endpoint name endpoint slug, and schema of the data, create an API Object with full functionality. You can only use the data fields from the schema in the code of the API when making queries. The schema is structured by {field_name : field_type}. ",
+  description: "Given a description of API behavior, endpoint name endpoint slug, schema of the data, and examples of the data, create an API Object with full functionality. You can only use the data fields from the schema in the code of the API when making queries. The schema is structured by {field_name : field_type}. ",
   parameters: {
     type: "object",
     properties: {
@@ -71,7 +71,7 @@ const extractionFunctionSchema = {
                 
             }
          },
-        description: "array of the parameters names and types",
+        description: "The array of the parameters names and types that are used in the API. Only include parameters the code needs to run. If no parameters are needed, leave as an empty array.",
       }
     },
     required: ["endpoint_name", "endpoint_slug", "code", "params", "response_type", "tags", "description", "method"]
@@ -90,7 +90,7 @@ const runnable = model
   .pipe(parser);
 
 //function to create an api for each api idea
-async function createOneEndpoint(endpoint_name, endpoint_slug, endpoint_description, schema){
+async function createOneEndpoint(endpoint_name, endpoint_slug, endpoint_description, schema, firstThree){
     try{
       schema = JSON.stringify(schema);
 const result = await runnable.invoke([
@@ -98,6 +98,10 @@ const result = await runnable.invoke([
   ${endpoint_description}
     This is the schema of the data. The schema is the structure of the data that the API will be working with and you can only use the schema fields to create the API. 
     ${schema}
+    These are the first three examples of the data:
+    ${firstThree}
+
+
     `)
 
     

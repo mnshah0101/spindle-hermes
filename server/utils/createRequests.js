@@ -4,20 +4,21 @@ function removeSpaces(str) {
     return str.replace(/\s+/g, '');
   }
 
-function createPostEndpoint(api, user, database, schema) {
-    if (!api || !user || !database || !schema) {
+async function createPostEndpoint(api, user, database) {
+    if (!api || !user || !database ) {
         throw new Error("Missing parameters");
     };
 
     const postCode = `
         try {
-            let newObject = params.newObject;
+            let newObject = new Model(params.newObject);
             await newObject.save();
-            answer = 'New employee has been successfully added.';
+            answer = 'New object has been successfully added.';
         } catch (error) {
-            answer = 'There was an error while adding the new employee.';
+            answer = 'There was an error while adding the new object. Make sure the object matches the schema of the database.';
         }
     `;
+
 
     const newEndpoint = {
         endpoint_name: 'Create an object', 
@@ -27,7 +28,7 @@ function createPostEndpoint(api, user, database, schema) {
         api: api._id,
         database: database,
         description: 'Creates an object',
-        parameters: [JSON.stringify(schema)],
+        parameters: [{ name: 'updatedObject', type: 'object', description: 'The object to be created.'}], 
         response_type: 'JSON',
         code: postCode, 
         tags: [], //I dont know what to do
@@ -36,17 +37,18 @@ function createPostEndpoint(api, user, database, schema) {
       };
     
     let saved_endpoint = new EndpointModel(newEndpoint);
+    await saved_endpoint.save();
     return saved_endpoint;
 };
 
-function createPutEndpoint(api, user, database) {
+async function createPutEndpoint(api, user, database) {
     if (!api || !user || !database) {
         throw new Error("Missing parameters");
     };
 
     const putCode = `
         try {
-            let updatedObject = params.updatedObject
+            let updatedObject = params.updatedObject;
         
             answer = await Model.updateOne({ _id: params.id }, updatedObject);
         
@@ -58,6 +60,8 @@ function createPutEndpoint(api, user, database) {
         }
     `;
 
+
+
     const newEndpoint = {
         endpoint_name: 'Update an object', 
         endpoint_slug: removeSpaces(`/${user.username}/updateObject`),
@@ -66,15 +70,17 @@ function createPutEndpoint(api, user, database) {
         api: api._id,
         database: database,
         description: 'Updates an object',
-        parameters: [{}],
+        parameters: [{ "name" :"id", "type":"String", "description":"This is the MongoDB ID of the object you want to update."}, { "name" :"newObject", "type":"Object", "description":"This is the new object you want to update. It must match the schema of the database."}],
         response_type: 'JSON',
-        code: postCode, 
+        code: putCode, 
         tags: [],
         api_keys : [],
         full_endpoint: removeSpaces(`/${user.username}/updateObject`)
       };
     
     let saved_endpoint = new EndpointModel(newEndpoint);
+      await saved_endpoint.save();
+    
     return saved_endpoint;
 };
 
@@ -85,14 +91,14 @@ async function createDeleteEndpoint(api, user, database) {
 
     const deleteCode = `
         try {
-            let result = await Model.deleteOne({ ID: params.ID });
+            let result = await Model.deleteOne({ _id: params.id });
             if (!result) {
-                answer = 'No object found with the provided ID';
+                answer = 'No object found with the provided id';
             } else {
                 answer = 'object deleted successfully';
             }
         } catch (error) {
-            answer = 'An error occurred during deletion';
+            answer = 'An error occurred during deletion. Make sure the id is correct.';
         }
     `;
     
@@ -104,7 +110,7 @@ async function createDeleteEndpoint(api, user, database) {
         api: api._id,
         database: database,
         description: 'Deletes an object',
-        parameters: [{ "id": "String" }], 
+        parameters: [{ "name" :"id", "type":"String", "description":"This is the MongoDB ID of the object you want to delete."}], 
         response_type: 'JSON',
         code: deleteCode, 
         tags: [], //I dont know what to do

@@ -14,7 +14,7 @@
 //if the code fails, we want to return a 500 status code
 
 
-import express from 'express';
+import express, { Router } from 'express';
 import mongoose from 'mongoose';
 import Database from '../models/Database.js';
 import Endpoint from '../models/Endpoint.js';

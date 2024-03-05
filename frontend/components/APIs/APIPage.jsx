@@ -1,8 +1,34 @@
 import React from 'react';
 import StickyMenu from './StickyMenu';
 import APIContent from './APIContent';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-export default function APIPage(){
+
+export default function APIPage(id){
+
+    const [endpoints, setEndpoints] = useState([])
+
+    useEffect(() => {
+        const fetchEndpoints = async () => {
+            const res = await fetch('/api/api/getEndpoints', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ api_id: id })
+            })
+            const data = await res.json()
+            console.log(data)
+            setEndpoints(data)
+        }
+        fetchEndpoints()
+    })
+
+
+
+
+
     return (
         <div className='container' style={{height:'100%'}}>
             <div className="row" style={{height:'100%'}}>
@@ -13,7 +39,7 @@ export default function APIPage(){
                     </div>
 
                 <div className="col-lg-10 mb-3">
-                    <APIContent />
+                    <APIContent id={id} />
                     </div>
 
 
