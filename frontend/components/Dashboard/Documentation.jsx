@@ -3,6 +3,9 @@ import DatabaseCard from "../DatabaseCard/card";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
+import { config } from 'dotenv';
+
+config();
 
 export default function Documentation() {
 
@@ -13,7 +16,7 @@ export default function Documentation() {
         if (status === 'loading') return;
         if (status === 'unauthenticated') return;
         async function fetchData() {
-            const res = await fetch('/api/api/getAPI', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getAPI`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

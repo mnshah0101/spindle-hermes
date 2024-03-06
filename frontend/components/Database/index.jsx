@@ -2,6 +2,10 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { config } from 'dotenv';
+
+config();
+
 const data = [
     {
       "playerName": "Tom Brady",
@@ -483,7 +487,7 @@ useEffect(() => {
     if (status === 'loading') return;
     if (status === 'unauthenticated') return;
     async function fetchData() {
-        const res = await fetch('/api/database/getData', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getData`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

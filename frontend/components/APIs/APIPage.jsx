@@ -3,6 +3,9 @@ import StickyMenu from './StickyMenu';
 import APIContent from './APIContent';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { config } from 'dotenv';
+
+config();
 
 
 export default function APIPage(id){
@@ -11,7 +14,7 @@ export default function APIPage(id){
 
     useEffect(() => {
         const fetchEndpoints = async () => {
-            const res = await fetch('/api/api/getEndpoints', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getEndpoints`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

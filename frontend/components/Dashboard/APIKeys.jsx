@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
 import { useSession } from 'next-auth/react';
+import { config } from "dotenv";
+
+config();
 
 export default function APIKeys() {
     const { data: session, status } = useSession();
@@ -13,7 +16,7 @@ export default function APIKeys() {
     }
 
     async function fetchData() {
-            const res = await fetch('/api/keys/getKeys', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getKeys`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
