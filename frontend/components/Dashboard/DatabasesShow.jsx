@@ -14,7 +14,8 @@ export default function Databases() {
         if(status === 'unauthenticated') return;
 
         async function fetchData() {
-            const res = await fetch('/api/database/getDatabase', {
+            try{
+            const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+ '/database/getDbs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,7 +26,15 @@ export default function Databases() {
             const data = await res.json();
             setDatabases(data);
         }
+        catch (error) {
+            console.error('Error fetching databases:', error);
+        }
+    }
+        
         fetchData();
+
+   
+    
     }
     , [session]
     );

@@ -37,41 +37,53 @@ function removeSpaces(str) {
 router.post('/createDatabase', async (req, res) => {
   try {
     const returnObject = {'status': 'fail', 'message': 'Error in connecting to MongoDB', 'schema': '', 'database_id': ''};
+    
     const csvData = req.body.csvData;
-    //check missing
     if(!csvData) {
-      return res.status(400).send('Missing CSV data');
+      console.log('missing csv data')
+      return res.status(400).send({'message' : 'Missing csv data'});
     }
+
+    const endpoint_slug = req.body.endpoint_slug;
+    if(!endpoint_slug) {
+      console.log('missing endpoint slug')
+      return res.status(400).send({'message' : 'Missing endpoint slug'});
+    }
+
     const user_id = req.body.user_id;
     if(!user_id) {
-      return res.status(400).send('Missing user ID');
+      console.log('missing user id')
+      return res.status(400).send({'message' : 'Missing user id'});
     }
     let api_name = req.body.api_name;
     if(!api_name) {
-      return res.status(400).send('Missing API name');
+      console.log('missing api name')
+      return res.status(400).send({'message' : 'Missing api name'});
     }
     const databaseName = processDBName(api_name);
 
     if(databaseName =="test") {
-      return res.status(400).send('Invalid database name');
+      console.log('cannot use database name')
+      return res.status(400).send({'message' : 'Cannot use database name'});
     }
-
 
 
     let collection_name = req.body.collection_name;
     if(!collection_name) {
-      return res.status(400).send('Missing collection name');
+      console.log('missing collection name')
+      return res.status(400).send({'message' : 'Missing collection name'});
     }
 
     collection_name = processName(collection_name);
     const description = req.body.description;
     if(!description) {
-      return res.status(400).send('Missing description');
+      return res.status(400).send({'message' : 'Missing description'});
     }
 
     //connect to MongoDB
     const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     if(!connect) {
+      console.log('error connecting to mongodb')
         return res.status(500).send('Error connecting to MongoDB');
     }
 
@@ -79,23 +91,23 @@ router.post('/createDatabase', async (req, res) => {
   
     const databases = await DatabaseModel.find({database_name: databaseName});
     if(databases.length > 0) {
-        return res.status(400).send('Database name already exists '+ databaseName);
+        return res.status(400).send({'message' : 'Database name already exists'});
     }
                 
 
     if(!csvData || !user_id || !databaseName  || !collection_name || !description) {
-        return res.status(400).send('Missing required fields');
+        return res.status(400).send({'message' : 'Missing required fields'});
     }
     const schema = await getSchemaFromCSV(csvData);
     console.log('schema:', schema);
     if (!schema) {
-      return res.status(400).send('Invalid CSV data');
+      return res.status(400).send({'message' : 'Error generating schema'});
     }
 
     const out = connectToMongoDB(schema, MONGO_URI, databaseName, collection_name, csvData);
     const user = await UserModel.findById(user_id);
     if(!user) {
-        return res.status(400).send('Invalid user');
+        return res.status(400).send({'message' : 'Invalid user'});
     }
     const database = new DatabaseModel({
         database_name: databaseName,
@@ -110,17 +122,32 @@ router.post('/createDatabase', async (req, res) => {
         returnObject.message = "Database created successfully.";
         returnObject.schema = schema;
         returnObject.database_id = uploadedDatabase._id;
+
+        //make post request to /spindle/createAPIs
+        const data = {api_name : api_name, user_id: user_id, description: description, endpoint_slug: endpoint_slug, database_id: uploadedDatabase._id, schema: schema};
+        const response = await fetch(process.env.MY_URL+'/spindle/createAPIs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const api_response = await response.json();
+        if(api_response.status != 'success') {
+            return res.status(500).send({'message' : 'Error creating API'});
+        }
+
         res.status(200).send(returnObject);
 
         } catch (error) {
             console.error('Error saving database:', error);
-            res.status(500).send('Internal server error');
+            res.status(500).send({'message' : 'Error saving database'});
         }
 
         } catch (error) {
 
         console.error('Error generating schema:', error);
-        res.status(500).send('Internal server error');
+        res.status(500).send({'message' : 'Error generating schema'});
 
 
         }
@@ -134,50 +161,50 @@ router.post("/createAPIs", async (req, res) => {
 
     let api_exists = await APIModel.findOne({name: api_name});
     if(api_exists) {
-      return res.status(400).send('API name already exists');
+      return res.status(400).send({'message' : 'API name already exists'});
     }
     //check if api_name exists
     if(!api_name) {
-        return res.status(400).send('Missing API name');
+        return res.status(400).send({'message' : 'Missing API name'});
     }
     const user_id = req.body.user_id;
     if(!user_id) {
-        return res.status(400).send('Missing user ID');
+        return res.status(400).send({'message' : 'Missing user ID'});
     }
     const description = req.body.description;
     if(!description) {
-        return res.status(400).send('Missing description');
+        return res.status(400).send({'message' : 'Missing description'});
     }
     let endpoint_slug = req.body.endpoint_slug;
     if(!endpoint_slug) {
-        return res.status(400).send('Missing endpoint slug');
+        return res.status(400).send({'message' : 'Missing endpoint slug'});
     }
 
     endpoint_slug = processName(req.body.endpoint_slug);
   
     const database_id = req.body.database_id;
     if(!database_id) {
-        return res.status(400).send('Missing database ID');
+        return res.status(400).send({'message' : 'Missing database ID'});
     }
     const schema = req.body.schema;
     if(!schema) {
-        return res.status(400).send('Missing schema');
+        return res.status(400).send({'message' : 'Missing schema'});
     }
 
     if(!api_name || !user_id || !description || !endpoint_slug || !database_id) {
-        return res.status(400).send('Missing required fields');
+        return res.status(400).send({'message' : 'Missing required fields'});
     }
     const user = await UserModel.findById(user_id);
 
     if(!user) {
-        return res.status(400).send('Invalid user');
+        return res.status(400).send({'message' : 'Invalid user'});
     }
 
     const username = user.username;
     const full_endpoint_slug = `/${username}/${endpoint_slug}`;
     const database = await DatabaseModel.findById(database_id);
     if(!database) {
-        return res.status(400).send('Invalid database');
+        return res.status(400).send({'message' : 'Invalid database'});
     }
 
     //close mongodb connection
@@ -189,7 +216,7 @@ router.post("/createAPIs", async (req, res) => {
     const collection = dbo.collection(database.collection_name);
     const firstThree = await collection.find().limit(3).toArray();
     if(!firstThree) {
-        return res.status(500).send('Error getting data from database');
+        return res.status(500).send({'message' : 'Error getting sample data'});
     }
     db.close();
 
@@ -204,13 +231,13 @@ router.post("/createAPIs", async (req, res) => {
         //check to make sure api with api name does not exist
      api_exists = await APIModel.findOne({name: api_name});
     if(api_exists) {
-      return res.status(400).send('API name already exists');
+      return res.status(400).send({'message' : 'API name already exists'});
     }
 
     //check to make sure api with api_slug does not exist
     const api_slug_exists = await APIModel.findOne({api_slug: full_endpoint_slug});
     if(api_slug_exists) {
-      return res.status(400).send('API slug already exists');
+      return res.status(400).send({'message' : 'API slug already exists'});
     }
 
     const newAPI = {
@@ -321,8 +348,10 @@ router.post("/createAPIs", async (req, res) => {
 
 router.post('/createAPI', async (req, res) => {
   const endpoint_name = req.body.endpoint_name;
+  console.log('endpoint_name:', endpoint_name)
   //check if endpoint_name exists
   if(!endpoint_name) {
+    console.log('no endpoint name')
     return res.status(400).send('Missing endpoint name');
   }
 
@@ -330,23 +359,28 @@ router.post('/createAPI', async (req, res) => {
 
   let endpoint_slug = req.body.endpoint_slug;
   if(!endpoint_slug) {
+    console.log('no endpoint slug')
     return res.status(400).send('Missing endpoint slug');
   }
   endpoint_slug = processName(endpoint_slug);
 
   const user_id = req.body.user_id;
   if(!user_id) {
-    return res.status(400).send('Missing user ID');
+    console.log('no user id')
+    return res.status(400).send({'message' : 'Missing user ID'});
   }
 
+  
 
   const endpoint_description = req.body.endpoint_description;
   if(!endpoint_description) {
-    return res.status(400).send('Missing endpoint description');
+    console.log('no endpoint description')
+    return res.status(400).send({'message' : 'Missing endpoint description'});
   }
-  const api_id = req.body.api_id;
+  const api_id = req.body.id;
   if(!api_id) {
-    return res.status(400).send('Missing API ID');
+    console.log('no api id')
+    return res.status(400).send({'message' : 'Missing API ID'});
   }
 
 
@@ -359,14 +393,17 @@ router.post('/createAPI', async (req, res) => {
 
 
 
+
   const schema = api.mongo_schema;
 
   if(!endpoint_name || !endpoint_slug || !user_id || !endpoint_description || !api_id) {
+    console.log('missing required fields')
     return res.status(400).send('Missing required fields');
   }
 
   const user = await UserModel.findById(user_id);
   if(!user) {
+    console.log('invalid user')
     return res.status(400).send('Invalid user');
   }
 
@@ -376,6 +413,7 @@ router.post('/createAPI', async (req, res) => {
   const full_endpoint_slug = `/${username}/${endpoint_slug}`;
   let endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
   if(endpoint) {
+    console.log('endpoint slug already exists')
     return res.status(400).send('Endpoint slug already exists');
   }
 
@@ -383,12 +421,13 @@ router.post('/createAPI', async (req, res) => {
 
 
 
+
   const create_endpoint = await createOneEndpoint(endpoint_name, full_endpoint_slug, endpoint_description, schema, JSON.stringify(first_three));
-  console.log('create_endpoint:', create_endpoint);
 
 
 
   if(!create_endpoint) {
+    console.log('error creating endpoint')
     return res.status(500).send('Error creating endpoint');
   }
 
@@ -408,6 +447,7 @@ router.post('/createAPI', async (req, res) => {
 
   const endpointObject = new EndpointModel(newEndpoint);
 
+
   try {
     const savedEndpoint = await endpointObject.save();
 
@@ -418,7 +458,7 @@ router.post('/createAPI', async (req, res) => {
     res.send(savedEndpoint);
   }
   catch(error) {
-    console.error('Error saving endpoint:', error);
+    console.log('Error saving endpoint:', error);
     res.status(500).send('Internal server error');
   }
 

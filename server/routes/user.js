@@ -14,6 +14,8 @@ dotenv.config();
 const router = express.Router();
 
 
+
+
 router.post('/register', async (req, res) => {
        try {
     const { username, email, password } = req.body;
@@ -29,7 +31,7 @@ router.post('/register', async (req, res) => {
     let index = Math.floor(Math.random() * images_ideas.length);
     let image_idea  = images_ideas[index];
 
-    let image = await getImage(image_idea);
+    let image = await getImage("Create an image of a " + image_idea);
 
 
     const user = new UserModel({ username, email, password:cryptPassword, profile_picture: image});

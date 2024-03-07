@@ -24,9 +24,7 @@ async function image_query(input) {
 
 }
 
-async function test() {
-   const myImage = await image_query('a futuristic programmer creating a web application called spindle');
-}
+
 
 
 export default image_query;

@@ -1,13 +1,18 @@
+'use client';
 import Head from 'next/head';
 import React from 'react';
 import Layout from '../../components/Layout';
 import APIPage from '../../components/APIs/APIPage';
 import SectionHeading from '../../components/SectionHeading';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
 export default function Database() {
 
   const router = useRouter();
   const id = router.query.id;
+
+   
 
 
 
@@ -15,7 +20,7 @@ export default function Database() {
     <>
       <Head>
         <title>
-          Database Page
+          Documentation Page
         </title>
       </Head>
       <Layout>
@@ -24,8 +29,8 @@ export default function Database() {
           <div className="nk-mask bg-pattern-dot bg-blend-around " />
 
             <SectionHeading
-                overlineTitle="Documentation"
-                title="National Football League API"
+                overlineTitle="Official Documentation"
+                title="Full API Documentation"
                 containerWidthClass="col-lg-10 col-xl-9 col-xxl-8 mb-7"
                 variant="h1"
                 />

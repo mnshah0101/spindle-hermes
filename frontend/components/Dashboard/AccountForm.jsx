@@ -1,3 +1,4 @@
+'use client'
 import React, { useMemo, useState } from 'react';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
@@ -30,16 +31,21 @@ export default function  AccountForm ()  {
 
          async function fetchData() {
             try{
+            console.log(process.env.NEXT_PUBLIC_SERVER_URL)
             if(username != '') return;
             if(!session) return;
-            const res = await fetch('/api/form/getAccount', {
+            const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+ '/form/getAccount', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ id: session.user.id })
             });
-            if(res.status !== 200) return;
+            if(res.status !== 200) {
+                console.error(res);
+                return;
+            }
+         
             const data = await res.json();
             if (data) {
                 setEmail(data.email);
