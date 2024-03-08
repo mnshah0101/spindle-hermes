@@ -7,6 +7,8 @@ import {useState} from 'react';
 import dotenv from 'dotenv'
 import {useRouter} from 'next/router';
 import { signIn } from 'next-auth/react';
+import Loader from '../components/Loader';
+
 
 
 dotenv.config();
@@ -24,6 +26,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
     const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -55,6 +58,8 @@ export default function RegisterPage() {
       return;
     }
     try{
+
+      setLoading(true);
     let response = await fetch(NEXT_PUBLIC_SERVER_URL+'/register', {
       method: 'POST',
       headers: {
@@ -62,6 +67,8 @@ export default function RegisterPage() {
       },
       body: JSON.stringify(data),
     });
+
+    setLoading(false);
 
     console.log(response.status)
 
@@ -93,6 +100,7 @@ export default function RegisterPage() {
     }
 
   }catch(err){
+    setLoading(false);
     console.log('error hit')
     setError("The username or email is already taken. Please try again")
     console.log(err);
@@ -256,6 +264,7 @@ export default function RegisterPage() {
             </div>
           </div>
         </section>
+        <Loader enabled={loading} />
       </Layout>
     </>
   );

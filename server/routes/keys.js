@@ -1,3 +1,4 @@
+'use client';
 import express from 'express';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
@@ -21,7 +22,7 @@ router.post('/createKey', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const newKey = {
@@ -34,7 +35,6 @@ router.post('/createKey', async (req, res) => {
         let saved_key = new KeyModel(newKey);
         await saved_key.save();
 
-        mongoose.connection.close()
         return res.status(200).json({ message: 'Key created' });
     } catch (error) {
         console.error('Error creating key:', error);
@@ -53,16 +53,14 @@ router.post('/deleteKey', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const key = await KeyModel.findByIdAndDelete(key_id).exec();
         if (!key) {
-            mongoose.connection.close();
             return res.status(404).json({ message: 'Key not found' });
         }
 
-        mongoose.connection.close();
         return res.status(200).json({ message: 'Key deleted successfully' });
     } catch (error) {
         console.error('Error deleting key:', error);
@@ -80,16 +78,14 @@ router.post('/getKeys', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const keys = await KeyModel.find({ user: user_id }).exec();
         if (!keys) {
-            mongoose.connection.close();
             return res.status(404).json({ message: 'Keys not found' });
         };
 
-        mongoose.connection.close();
         return res.status(200).json(keys);
     } catch (error) {
         console.error('Error fetching keys:', error);

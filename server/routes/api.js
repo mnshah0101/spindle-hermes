@@ -58,7 +58,7 @@ router.use('/', async (req, res, next) => {
     const endpoint_object = await Endpoint.findOne({endpoint_slug: endpoint, method: method});
     console.log(endpoint_object)
     if(!endpoint_object) {
-        return res.status(404).send('Endpoint not found');
+        return res.status(404).json({ message: 'Endpoint not found' });
     }
 
     
@@ -66,12 +66,12 @@ router.use('/', async (req, res, next) => {
 
 
     if(!api) {
-        return res.status(404).send('API not found');
+        return res.status(404).json({ message: 'API not found' });
     }
 
     const isIn = api.api_keys.includes(key);
     if(!isIn) {
-        return res.status(401).send('Invalid key');
+        return res.status(401).json({ message: 'Invalid key' });
     }
 
 

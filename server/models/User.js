@@ -1,6 +1,7 @@
 //create a User model in mongoose
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
 
 const Schema = mongoose.Schema;
 
@@ -22,7 +23,10 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
-    reset_password_token: String,
+    reset_password_token: {
+        type: String,
+        default: CryptoJS.lib.WordArray.random(16).toString()
+    },
     profile_picture: {
         type: String,
         default: "https://i.ibb.co/ctJJ5Q7/image.png"

@@ -7,9 +7,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import spindleRouter from './routes/spindle.js';
 import apiRouter from './routes/api.js';
-import dbRouter from './routes/database.js'
 import formRouter from './routes/form.js';
-import keyRouter from './routes/keys.js';
+import keysRouter from './routes/keys.js';
+import databaseRouter from './routes/database.js';
 
 dotenv.config();
 const {EXPRESS_PORT} = process.env;
@@ -28,13 +28,12 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     console.log('Error connecting to the database');
     console.log(err);
 }
-);
-
+);app.use('/spindle', spindleRouter);
+app.use('/form', formRouter);
+app.use('/database', databaseRouter);
+app.use('/keys', keysRouter);
 app.use('/', user_routes);
-app.use('/spindle', spindleRouter);
-app.use('/', keyRouter);
-app.use('/', dbRouter);
-app.use('/', formRouter);
+
 app.use('/', apiRouter);
 
 

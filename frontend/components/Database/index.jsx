@@ -487,7 +487,7 @@ useEffect(() => {
     if (status === 'loading') return;
     if (status === 'unauthenticated') return;
     async function fetchData() {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getData`, {
+        const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+ '/database/getDbObjects', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -529,7 +529,7 @@ useEffect(() => {
 
      <tr>
        {Object.keys(data[0]).map((key) => (
-        <td className='preview-table-row'>{key}</td>
+        <td key={key} className='preview-table-row'>{key}</td>
       ))}
     </tr>
 

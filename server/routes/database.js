@@ -21,7 +21,7 @@ router.post('/getDbObjects', async (req, res) => {
 
         let client = await MongoClient.connect(process.env.MONGO_URI, {});
         if (!client) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: "Error connecting to the database" });
         }
         
         const databases = client.db().collection('databases');
@@ -37,7 +37,8 @@ router.post('/getDbObjects', async (req, res) => {
 
         client = await MongoClient.connect(database.mongo_uri, {});
         if (!client) {
-            return res.status(500).send('Error connecting to MongoDB');
+            await client.close();
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         }
 
         const collection = client.db(database.database_name).collection(database.collection_name);
@@ -57,23 +58,19 @@ router.post('/getDbObjects', async (req, res) => {
 //get all databases from user_id
 router.post("/getDbs", async (req, res) => {
     try{
+        console.log('annabelle')
         const { user_id } = req.body
         if (!user_id) {
             return res.status(400).json({ message: 'User ID is required' })
         }
 
         //connect to mongodb
-        const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-        if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
-        }
+      
 
         const db_objects = await DatabaseModel.find({ user: user_id }).exec();
         if (!db_objects) {
-            mongoose.connection.close();
             return res.status(404).json({ message: 'Databases not found' });
         }
-        mongoose.connection.close();
         console.log('Databases:', db_objects)
         return res.status(200).json(db_objects)
 
@@ -92,19 +89,13 @@ router.post('/getAPIs', async (req, res) => {
             return res.status(400).json({ message: 'User ID is required' })
         }
         
-        //connect to MongoDB
-        const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-        if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
-        }
+      
 
         const apis = await APIModel.find({ user: user_id}).exec();
         if (!apis) {
-            mongoose.connection.close();
             console.log('APIs not found');
             return res.status(404).json({ message: 'APIs not found' });
         }
-        mongoose.connection.close();
         console.log('APIs:', apis);
         return res.status(200).json(apis);
     } catch (error) {
@@ -116,26 +107,20 @@ router.post('/getAPIs', async (req, res) => {
 //get all endpoints from user id
 router.post('/getEndpoints', async (req, res) => {
     try {
-        const { api_id } = req.body
-        if (!api_id) {
+        let { id } = req.body
+        if (!id) {
             return res.status(400).json({ message: 'API ID is required' })
         }
 
-        const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-        if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
-        }
 
-        const endpoints = await EndpointModel.find({ api: api_id });
+
+        const endpoints = await EndpointModel.find({ api: id });
         if (!endpoints) {
 
-            mongoose.connection.close();
             return res.status(404).json({ message: 'Endpoints not found' });
         }
-        mongoose.connection.close();
         return res.status(200).json(endpoints);
     } catch (error) {
-        console.error('Error fetching databases:', error)
         return res.status(500).json({ message: error.message })
     }
 })

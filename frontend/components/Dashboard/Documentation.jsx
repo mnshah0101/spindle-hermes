@@ -16,7 +16,8 @@ export default function Documentation() {
         if (status === 'loading') return;
         if (status === 'unauthenticated') return;
         async function fetchData() {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getAPI`, {
+            try{
+            const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/database/getAPIs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,6 +27,9 @@ export default function Documentation() {
             if (res.status !== 200) return;
             const data = await res.json();
             setAPIs(data);
+        }catch(e){
+            console.log(e)
+        }
         }
         fetchData();
     }

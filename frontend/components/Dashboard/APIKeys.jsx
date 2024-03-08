@@ -16,7 +16,8 @@ export default function APIKeys() {
     }
 
     async function fetchData() {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/getKeys`, {
+        try{
+            const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/keys/getKeys', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,6 +27,9 @@ export default function APIKeys() {
             if (res.status !== 200) return;
             const data = await res.json();
             changeKeys(data);
+        } catch (error) {
+            console.error('Error fetching keys:', error);
+        }
         }
 
 
