@@ -7,7 +7,6 @@ import CryptoJS from 'crypto-js';
 import getImage from '../utils/getImage.js';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import fs from 'fs';
 dotenv.config();
 
 //connect to the database
@@ -51,12 +50,44 @@ router.post('/register', async (req, res) => {
 
 router.post('/sendEmail', async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, user_id } = req.body;
         if (!email) {
             return res.status(404).json({ message: "Invalid email" });
         }
+        if (!user_id) {
+            return res.status(404).json({ message: "Invalid user id" });
+        }
 
-        const emailTemplate = fs.readFileSync('../frontend/public/emails/template.ejs', 'utf-8');
+        const user = await UserModel.findById(user_id);
+        if (!user_id) {
+            return res.status(404).json({ message: "user not found" });
+        }
+
+        const reset_token = user.reset_password_token;
+
+        const emailTemplate = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Password Reset Instructions</title>
+            </head>
+            <body>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2>Password Reset</h2>
+                    <p>Hello,</p>
+                    <p>You are receiving this email because you have requested a password reset for your account.</p>
+                    <p>Please click on the following link to reset your password:</p>
+                    <p><a href="http://localhost:3000/reset-password/?user_id=${user_id}&reset_token=${reset_token}">Reset Password</a></p>
+                    <p>If you did not request this reset, please ignore this email.</p>
+                    <p>Thank you,</p>
+                    <p>Spindle Dev Team</p>
+                </div>
+            </body>
+            </html>
+        `;
 
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -79,6 +110,7 @@ router.post('/sendEmail', async (req, res) => {
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
               console.log(error);
+              res.status(500).json({ message: error });
             } else {
               console.log('Email sent: ' + info.response);
             }
@@ -116,7 +148,7 @@ router.post('/resetPassword', async (req, res) => {
             return res.status(404).json({ message: "Invalid password reset token" });
         }
 
-        //update passowrd in user object
+        //update passwprd in user object
         user.password = bycrypt.hashSync(new_password, 10);
         user.reset_password_token = CryptoJS.lib.WordArray.random(16).toString();
 

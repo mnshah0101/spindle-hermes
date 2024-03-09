@@ -3,14 +3,18 @@ import React, { useMemo, useState } from 'react';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import {  useRouter } from 'next/navigation'
+import { config } from 'dotenv';
 
+config();
 
+const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function  AccountForm ()  {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const { data: session, status } = useSession();
     const [error, setError] = useState('');
+    const [resetError, setResetError] = useState('');
     const [success, setSuccess] = useState(''); 
     const [profilePicture, setProfilePicture] = useState('');
     const router = useRouter();
@@ -34,7 +38,7 @@ export default function  AccountForm ()  {
             console.log(process.env.NEXT_PUBLIC_SERVER_URL)
             if(username != '') return;
             if(!session) return;
-            const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+ '/form/getAccount', {
+            const res = await fetch(NEXT_PUBLIC_SERVER_URL+ '/form/getAccount', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -94,6 +98,26 @@ export default function  AccountForm ()  {
         }
     }
 
+    const handleResetPasswordSubmit = async (e) => {
+        e.preventDefault();
+        let emailAdd = document.getElementById('emailForReset').value;
+        if (!emailAdd) {
+            setResetError('Invalid Email Address');
+            return;
+        }
+        try {
+            let res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ emailAdd, user_id: session.user.id })
+            });
+            console.log(res);
+        } catch (error) {
+            setResetError('Error sending email');
+        }
+    }
    
 
     return (
@@ -170,15 +194,16 @@ export default function  AccountForm ()  {
       <input 
         type="email" 
         className="form-control" 
-        id="email" 
+        id="emailForReset" 
         placeholder="Enter your email" 
         required
       />
     
     </div>
-    <button id="passwordReset" className="btn btn-primary my-4">
+    <button id="passwordReset" className="btn btn-primary my-4" onClick={(e) => handleResetPasswordSubmit(e)}>
       Send Link
     </button>
+    {resetError && <div className="alert alert-danger my-3" role="alert">{resetError}</div>}
 </div>
             </div>
 

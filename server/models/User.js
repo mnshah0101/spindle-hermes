@@ -45,7 +45,7 @@ UserSchema.methods.comparePassword =   function comparePassword(password, callba
     return  bcrypt.compare(password, this.password, callback);
 }
 
-let UserModel = mongoose.models.User|| mongoose.model('User', UserSchema); // Create a User model
+let UserModel = mongoose.models.User || mongoose.model('User', UserSchema); // Create a User model
 
 export default UserModel;
 
