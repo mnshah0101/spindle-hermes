@@ -10,15 +10,17 @@ config();
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleInputChange = (e) => {
     setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
+    setSuccess('');
+    setError('');
     e.preventDefault();
     const params = new URLSearchParams(window.location.search);
-
     const user_id = params.get('user_id');
     const reset_token = params.get('reset_token');
     try {
@@ -29,8 +31,16 @@ export default function ResetPasswordPage() {
             },
             body: JSON.stringify({ user_id, reset_token, password })
         })
+        console.log(res);
+        if(res.status === 200) {
+          setSuccess('Successfully updated password');
+        }
+        if(res.status === 404) {
+          setError('Reset password link has expired');
+        }
+        
     } catch (error) {
-      setError('An error occurred.');
+      setError('Invalid Password.');
       console.log(error);
     }
   };
@@ -84,10 +94,12 @@ export default function ResetPasswordPage() {
                           </div>
                           <div className="col-12">
                             <div className="form-group">
-                              <p className="text-danger text-center">{error}</p>
+                              <p className="text-danger text-center"></p>
                             </div>
                           </div>
                         </div>
+                        {success && <div className="alert alert-success my-3" role="alert">{success}</div>}
+                        {error && <div className="alert alert-danger my-3" role="alert">{error}</div>}
                       </form>
                     </div>
                   </div>

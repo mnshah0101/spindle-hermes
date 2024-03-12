@@ -50,17 +50,26 @@ router.post('/register', async (req, res) => {
 
 router.post('/sendEmail', async (req, res) => {
     try {
-        const { email, user_id } = req.body;
+        const email = req.body.emailAdd;
+        const user_id = req.body.user_id;
+        console.log(email, user_id);
         if (!email) {
+            console.log('no email');
             return res.status(404).json({ message: "Invalid email" });
         }
         if (!user_id) {
+            console.log('no user_id');
             return res.status(404).json({ message: "Invalid user id" });
         }
 
         const user = await UserModel.findById(user_id);
         if (!user_id) {
+            console.log('no user');
             return res.status(404).json({ message: "user not found" });
+        }
+        if(user.email != email) {
+            console.log('email not registered with spindle');
+            return res.status(500).json({ message: "email address is not valid" });
         }
 
         const reset_token = user.reset_password_token;
@@ -125,7 +134,8 @@ router.post('/sendEmail', async (req, res) => {
 
 router.post('/resetPassword', async (req, res) => {
     try {
-        const new_password = req.body.new_password;
+        console.log(req.body);
+        const new_password = req.body.password;
         if (!new_password) {
             return res.status(404).json({ message: "Invalid passowrd" });
         }
@@ -135,7 +145,7 @@ router.post('/resetPassword', async (req, res) => {
             return res.status(404).json({ message: "Invalid password reset token" });
         }
 
-        const user_id = req.query.user_id;
+        const user_id = req.body.user_id;
         if (!user_id) {
             return res.status(404).json({ message: "Invalid user id" });
         }
