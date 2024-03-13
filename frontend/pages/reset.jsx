@@ -4,8 +4,45 @@ import Layout from '../components/Layout';
 import Link from 'next/link';
 import SectionHeading from '../components/SectionHeading';
 import Icon from '../components/Icon';
+import { useState } from 'react';
 
 export default function ResetPage() {
+  const [resetError, setResetError] = useState('');
+  const [resetSuccess, setResetSuccess] = useState('');
+
+  const handleSubmit = async (e) => {
+    setResetSuccess('');
+    setResetError('');
+    e.preventDefault();
+    let emailAdd = document.getElementById('emailorusername').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailAdd || !emailRegex.test(emailAdd)) {
+      setResetError('Invalid Email Address');
+      return;
+    }
+    try {
+      let res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ emailAdd })
+      });
+      console.log(res);
+      if (res.status === 200) {
+        setResetSuccess("Successfully sent email");
+      }
+      if (res.status === 500) {
+        setResetError("No account exists with this email address");
+      }
+
+
+    } catch (error) {
+      console.log(error);
+      setResetError('Error sending email');
+    }
+  }
+
   return (
     <>
       <Head>
@@ -33,7 +70,7 @@ export default function ResetPage() {
                         If you forgot your password, well, then we’ll email you
                         instructions to reset your password.
                       </p>
-                      <form action="success">
+                      <form onSubmit={e => handleSubmit(e)}>
                         <div className="row g-4">
                           <div className="col-12">
                             <div className="form-group">
@@ -60,11 +97,12 @@ export default function ResetPage() {
                               <div className="form-group">
                                 <button
                                   className="btn btn-primary"
-                                  type="submit"
-                                  id="submit-btn"
+                                  id="passwordReset"
                                 >
                                   Send Reset Link
                                 </button>
+                                {resetError && <div className="alert alert-danger my-3" role="alert">{resetError}</div>}
+                                {resetSuccess && <div className="alert alert-success my-3" role="alert">{resetSuccess}</div>}
                               </div>
                             </div>
                           </div>

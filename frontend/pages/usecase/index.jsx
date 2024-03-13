@@ -23,7 +23,7 @@ export default function UsecasePage() {
           <div className="container">
             <SectionHeading
               overlineTitle="Use cases"
-              title="Write high-converting emails in <br className='d-none d-md-block' /> <s>hours</s> <span className='text-primary'>minutes</span>"
+              title="Automate your API creation in <br className='d-none d-md-block' /> <s>hours</s> <span className='text-primary'>minutes</span>"
               variant="h1"
               containerWidthClass="col-xl-8"
             />

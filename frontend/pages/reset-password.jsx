@@ -21,7 +21,7 @@ export default function ResetPasswordPage() {
     setError('');
     e.preventDefault();
     const params = new URLSearchParams(window.location.search);
-    const user_id = params.get('user_id');
+    const email = params.get('email');
     const reset_token = params.get('reset_token');
     try {
         const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/resetPassword', {
@@ -29,7 +29,7 @@ export default function ResetPasswordPage() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id, reset_token, password })
+            body: JSON.stringify({ email, reset_token, password })
         })
         console.log(res);
         if(res.status === 200) {
