@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import Layout from '../components/Layout';
+import Image from 'next/image';
 import Cta from '../components/Cta';
 import SectionHeading from '../components/SectionHeading';
 import Testimonial from '../components/Testimonial';
@@ -8,7 +9,9 @@ import IconBoxStyle4 from '../components/IconBox/IconBoxStyle4';
 import Button from '../components/Button';
 import BrandsStyle2 from '../components/Brands/BrandsStyle2';
 import FeatureCardStyle7 from '../components/FeatureCard/FeatureCardStyle7';
-import featureImg from '../public/images/gfx/about.png';
+import futureDB from '../public/images/futureDB.png';
+
+
 const brandData = [
   {
     lightUrl: '/images/brands/72-a.png',
@@ -61,13 +64,12 @@ export default function AboutPage() {
               ]}
               actionBtnUrl="/"
               actionBtnText="Get Started"
-              imgUrl={featureImg}
+              imgUrl={futureDB}
             />
           </div>
         </section>
         <section className="section section-sm section-0">
           <div className="container">
-            <SectionHeading title="Meet the Developers" />
             <BrandsStyle2 brandList={brandData} />
           </div>
         </section>

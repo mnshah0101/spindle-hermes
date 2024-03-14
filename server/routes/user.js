@@ -2,6 +2,7 @@
 
 import express from 'express';
 import UserModel from '../models/User.js';
+import APIModel from '../models/API.js';
 import bycrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
 import getImage from '../utils/getImage.js';
@@ -51,28 +52,25 @@ router.post('/register', async (req, res) => {
 router.post('/sendEmail', async (req, res) => {
     try {
         const email = req.body.emailAdd;
-        const user_id = req.body.user_id;
-        console.log(email, user_id);
+        // const user_id = req.body.user_id;
+        console.log(email);
         if (!email) {
             console.log('no email');
             return res.status(404).json({ message: "Invalid email" });
         }
-        if (!user_id) {
-            console.log('no user_id');
-            return res.status(404).json({ message: "Invalid user id" });
-        }
+        // if (!user_id) {
+        //     console.log('no user_id');
+        //     return res.status(404).json({ message: "Invalid user id" });
+        // }
 
-        const user = await UserModel.findById(user_id);
-        if (!user_id) {
+        const user = await UserModel.findOne({email: email});
+        if (!user) {
             console.log('no user');
             return res.status(404).json({ message: "user not found" });
         }
-        if(user.email != email) {
-            console.log('email not registered with spindle');
-            return res.status(500).json({ message: "email address is not valid" });
-        }
 
         const reset_token = user.reset_password_token;
+        console.log(reset_token);
 
         const emailTemplate = `
             <!DOCTYPE html>
@@ -89,7 +87,7 @@ router.post('/sendEmail', async (req, res) => {
                     <p>Hello,</p>
                     <p>You are receiving this email because you have requested a password reset for your account.</p>
                     <p>Please click on the following link to reset your password:</p>
-                    <p><a href="http://localhost:3000/reset-password/?user_id=${user_id}&reset_token=${reset_token}">Reset Password</a></p>
+                    <p><a href="http://localhost:3000/reset-password/?email=${email}&reset_token=${reset_token}">Reset Password</a></p>
                     <p>If you did not request this reset, please ignore this email.</p>
                     <p>Thank you,</p>
                     <p>Spindle Dev Team</p>
@@ -145,12 +143,12 @@ router.post('/resetPassword', async (req, res) => {
             return res.status(404).json({ message: "Invalid password reset token" });
         }
 
-        const user_id = req.body.user_id;
-        if (!user_id) {
-            return res.status(404).json({ message: "Invalid user id" });
+        const email = req.body.email;
+        if (!email) {
+            return res.status(404).json({ message: "Invalid email" });
         }
 
-        const user = await UserModel.findById(user_id);
+        const user = await UserModel.findOne({email: email});
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -172,6 +170,32 @@ router.post('/resetPassword', async (req, res) => {
     }
 })
 
+router.post('/checkIfOwner', async (req, res) => {
+    try {
+        const api_id = req.body.api_id;
+        if (!api_id) {
+            return res.status(404).json({ message: "Invalid api_id" });
+        }
+        const user_id = req.body.user_id;
+        if (!user_id) {
+            return res.status(404).json({ message: "Invalid user_id" });
+        }
+
+        const api = await APIModel.findById(api_id);
+        if(!api) {
+            return res.status(404).json({ message: "API not found" });
+        }
+        if(!api.user._id == user_id) {
+            return res.status(404).json({ message: "User is not Owner" });
+        }
+
+        return res.status(200).json({message: "User matches Owner"});
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error });
+    }
+})
 
 
 

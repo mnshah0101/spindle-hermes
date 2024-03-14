@@ -65,9 +65,7 @@ export default function Database() {
                 variant="h1"
                 />
 
-            <APIPage id={id}  />
-           
-              
+            <APIPage id={id} isOwner={isOwner} />
              
          
         </section>

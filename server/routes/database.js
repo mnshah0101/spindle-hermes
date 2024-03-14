@@ -125,4 +125,18 @@ router.post('/getEndpoints', async (req, res) => {
     }
 })
 
+router.post('/deleteEndpoint', async (req, res) => {
+    try {
+        const endpoint_name = req.body.endpoint_name;
+        if (!endpoint_name) {
+            return res.status(404).json({ message: 'Endpoint not found' });
+        }
+
+        await EndpointModel.findOneAndDelete({endpoint_name: endpoint_name});
+        return res.status(200).json({ message: 'Endpoint deleted' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}) 
+
 export default router;

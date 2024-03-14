@@ -6,36 +6,54 @@ import { useState } from "react";
 import StickyMenu from './StickyMenu';
 
 
-
-export default function APIContent({ id }) {
-     const [endpoints, setEndpoints] = useState([])
-     const [titles, setTitles] = useState([])
+export default function APIContent({ id, isOwner }) {
+    const [endpoints, setEndpoints] = useState([])
+    const [titles, setTitles] = useState([])
 
     useEffect(() => {
         const fetchEndpoints = async () => {
-            try{
+            try {
+                const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/database/getEndpoints', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id })
+                })
+                const data = await res.json()
+                setEndpoints(data)
+
+                const titles = data.map(endpoint => endpoint.endpoint_name)
+                setTitles(titles)
+
+
+
+            } catch (e) {
+                console.error('Error fetching endpoints:', e)
+            }
+        }
+        fetchEndpoints()
+    }, [id])
+
+    const refreshEndpoints = async () => {
+        try {
             const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/database/getEndpoints', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: id})
-            })
-            const data = await res.json()
-            setEndpoints(data)
+                body: JSON.stringify({ id: id })
+            });
+            const data = await res.json();
+            setEndpoints(data);
 
-            const titles = data.map(endpoint => endpoint.endpoint_name)
-            setTitles(titles)
-
-
-
-        }catch(e){
-            console.error('Error fetching endpoints:', e)
+            const titles = data.map(endpoint => endpoint.endpoint_name);
+            setTitles(titles);
+        } catch (e) {
+            console.error('Error fetching endpoints:', e);
         }
-        }
-        fetchEndpoints()
-    }, [id])
-    
+    };
+
 
     return (
         <div>
@@ -44,22 +62,24 @@ export default function APIContent({ id }) {
 
                     <div className="col-2">
 
-                        <StickyMenu titles={titles}  />
-                        
-                        </div>
+                        <StickyMenu titles={titles} />
+
+                    </div>
 
                     <div className="col-10">
 
-                    {Array.isArray(endpoints) && endpoints.map((endpoint, index) => (
-    <APICard key={index} api={endpoint}  />
+                        {Array.isArray(endpoints) && endpoints.map((endpoint, index) => (
+                            <div>
+                                <APICard key={index} api={endpoint}  isOwner={isOwner} refreshEndpoints={refreshEndpoints} />
+                                
+                            </div>
+                        ))}
 
-))}
+                        <APIForm id={id} isOwner={isOwner} onSubmit={refreshEndpoints}/>
 
- <APIForm id={id} />
+                    </div>
 
-                </div>
-                       
-                        
+
                 </div>
             </div>
         </div>

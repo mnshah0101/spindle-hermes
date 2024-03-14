@@ -61,7 +61,7 @@ export default function Footer() {
               />
               <Copyright
                 copyrightText="© 2024 Spindle by Hermes Group"
-                copyrightLink="https://hermesgruop.dev"
+                copyrightLink="https://hermesgroup.dev"
                 copyrightLinkText="HERMES"
                 variant="text-heading mt-4"
               />
