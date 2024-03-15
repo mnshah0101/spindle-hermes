@@ -70,6 +70,8 @@ export default function  AccountForm ()  {
     const handleSubmit =async e => {
         setSuccess('');
         setError('');
+        setResetSuccess('');
+        setResetError('');
         //form validation and submission
         e.preventDefault();
         if (!email || !username ) return;
@@ -100,6 +102,8 @@ export default function  AccountForm ()  {
     }
 
     const handleResetPasswordSubmit = async (e) => {
+        setSuccess('');
+        setError('');
         setResetSuccess('');
         setResetError('');
         e.preventDefault();

@@ -31,8 +31,7 @@ export default function ResetPage() {
       console.log(res);
       if (res.status === 200) {
         setResetSuccess("Successfully sent email");
-      }
-      if (res.status === 500) {
+      } else {
         setResetError("No account exists with this email address");
       }
 

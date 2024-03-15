@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.4",
     "html-react-parser": "^4.0.0",
@@ -25,7 +26,8 @@
     "react-dom": "18.2.0",
     "react-loader-spinner": "^6.1.6",
     "react-type-animation": "^3.1.0",
-    "swiper": "^10.0.4"
+    "swiper": "^10.0.4",
+    "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
     "@appnest/readme": "^1.2.7",

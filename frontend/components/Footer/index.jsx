@@ -1,29 +1,34 @@
 import React from 'react';
+import { useState } from 'react';
 import MenuWidget from '../Widget/MenuWidget';
 import TextWidget from '../Widget/TextWidget';
 import Copyright from '../Widget/Copyright';
 import logoUrl from '../../public/images/logos/spindle_med_purple.png';
+import ContactInfo from '../ContactInfo';
 import darkLogoUrl from '../../public/images/logos/spindle_med_white.png';
 
 const useCaseMenu = [
-  { href: '/usecase/data-migration', title: 'Data Migration' },
-  { href: '/usecase/data-analysis', title: 'Data Analysis' },
-  { href: '/usecase/e-commerce', title: 'E-Commerce' },
-  { href: '/usecase/supply-chain', title: 'Supply Chain Management' },
-  { href: '/usecase/crm', title: 'CRM' },
+  { href: '/', title: 'Data Migration' },
+  { href: '/', title: 'Data Analysis' },
 ];
 const aboutMenu = [
-  { href: '/pricing', title: 'Pricing' },
   { href: '/login', title: 'Login' },
   { href: '/register', title: 'Sign up' },
-  { href: '/terms-condition', title: 'Privacy Policy' },
-  { href: '/terms-condition', title: 'Terms & Conditions' },
 ];
 const copygenMenu = [
-  { href: '/contact', title: 'Contact Us' },
   { href: '/', title: 'FAQs' }];
 
 export default function Footer() {
+  const [onContact, setOnContact] = useState(false);
+
+  function handleClicked(e) {
+    setOnContact(!onContact);
+  }
+
+  function handleClose() {
+    setOnContact(false);
+  }
+
   return (
     <footer className="nk-footer">
       <div className="section">
@@ -49,6 +54,8 @@ export default function Footer() {
                 title="Spindle"
                 menuItems={copygenMenu}
               />
+              <p className="link-base my-1" onClick={(e) => handleClicked(e)} style={{ cursor: 'pointer' }} >contact</p>
+              {onContact && <ContactInfo onClose={handleClose}/>}
             </div>
             <div className="col-xl-4 col-lg-7 col-md-9 me-auto order-xl-first">
               <TextWidget

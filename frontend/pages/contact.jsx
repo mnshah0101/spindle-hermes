@@ -2,10 +2,14 @@ import Head from 'next/head';
 import React from 'react';
 import Layout from '../components/Layout';
 import Cta from '../components/Cta';
+import { config } from 'dotenv';
 import CardStyle4 from '../components/Card/CardStyle4';
 import CardStyle5 from '../components/Card/CardStyle5';
 
+config;
+
 export default function ContactPage() {
+
   return (
     <>
       <Head>
@@ -36,30 +40,18 @@ export default function ContactPage() {
                 <div className="col-xl-5 col-lg-6 col-md-8 text-lg-start text-center">
                   <div className="block-text pt-lg-4">
                     <h3 className="title h2">{`Let's talk`}</h3>
-                    <p>
-                      Must explain to you how all this mistaken idea of
-                      denouncing pleasure and praising born and I will give you
-                      a complete account of the system.
-                    </p>
                     <ul className="row gy-4 pt-4">
                       <li className="col-12">
                         <CardStyle5
-                          title="Contact"
-                          subTitle="+(642) 342 762 44"
-                          iconClass="call-alt-fill"
-                        />
-                      </li>
-                      <li className="col-12">
-                        <CardStyle5
                           title="Email"
-                          subTitle="support@copygen.com"
+                          subTitle="hermesdevelopergroup@gmail.com"
                           iconClass="mail-fill"
                         />
                       </li>
                       <li className="col-12">
                         <CardStyle5
                           title="Office"
-                          subTitle="442 Belle Terre St Floor 7, San Francisco, AV 4206"
+                          subTitle="Richmond, Virginia"
                           iconClass="map-pin-fill"
                         />
                       </li>
@@ -145,55 +137,6 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-        <section className="section section-bottom-0">
-          <div className="container">
-            <div className="section-content">
-              <div className="row g-gs justify-content-center">
-                <div className="col-md-6 col-xl-4">
-                  <CardStyle4
-                    title="Get 1:1 Demo"
-                    subTitle="Finding it difficult to navigate our suite of products? Get on a call with our product experts for personalized demo"
-                    actionBtnUrl="/"
-                    actionBtnText="Schedule a call"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <CardStyle4
-                    title="24X7 Chat Support"
-                    subTitle="Get on a call with our excellent customer support team by using our 24X7 live chat support. We are here to help!"
-                    actionBtnUrl="/"
-                    actionBtnText="Talk to Support"
-                  />
-                </div>
-                <div className="col-md-6 col-xl-4">
-                  <CardStyle4
-                    title="Request Feature"
-                    subTitle="Have an out of the box idea for a new AI feature to add. We are all ears."
-                    actionBtnUrl="/"
-                    actionBtnText="Request a feature"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="section section-bottom-0">
-          <div className="container">
-            <Cta
-              overlineTitle="Boost your writing productivity"
-              title="End writer’s block today"
-              subtitle="It’s like having access to a team of copywriting experts writing
-              powerful copy for you in 1-click."
-              btnUrl="/login"
-              btnText="Start writing for free"
-              infoList={[
-                'No credit card required',
-                'Cancel anytime',
-                '10+ tools to expolore',
-              ]}
-            />
           </div>
         </section>
       </Layout>
