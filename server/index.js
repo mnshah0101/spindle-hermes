@@ -12,7 +12,7 @@ import keysRouter from './routes/keys.js';
 import databaseRouter from './routes/database.js';
 
 dotenv.config();
-
+const {EXPRESS_PORT} = process.env;
 
 
 const app = express();
@@ -28,7 +28,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     console.log('Error connecting to the database');
     console.log(err);
 }
-);app.use('/spindle', spindleRouter);
+);
+
+app.use('/spindle', spindleRouter);
 app.use('/form', formRouter);
 app.use('/database', databaseRouter);
 app.use('/keys', keysRouter);
@@ -38,8 +40,9 @@ app.use('/', apiRouter);
 
 
 
-app.listen(process.env.EXPRESS_PORT, () => {
-    console.log('Server is listening on port 8000');
+
+app.listen(EXPRESS_PORT, () => {
+    console.log(`Server is listening on port ${EXPRESS_PORT}`);
     }
 );
 

@@ -21,7 +21,7 @@ router.post('/getDbObjects', async (req, res) => {
 
         let client = await MongoClient.connect(process.env.MONGO_URI, {});
         if (!client) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: "Error connecting to the database" });
         }
         
         const databases = client.db().collection('databases');
@@ -38,7 +38,7 @@ router.post('/getDbObjects', async (req, res) => {
         client = await MongoClient.connect(database.mongo_uri, {});
         if (!client) {
             await client.close();
-            return res.status(500).send({"message" : 'Error connecting to MongoDB'});
+            return res.status(500).send('Error connecting to MongoDB');
         }
 
         const collection = client.db(database.database_name).collection(database.collection_name);
@@ -58,7 +58,6 @@ router.post('/getDbObjects', async (req, res) => {
 //get all databases from user_id
 router.post("/getDbs", async (req, res) => {
     try{
-        console.log('annabelle')
         const { user_id } = req.body
         if (!user_id) {
             return res.status(400).json({ message: 'User ID is required' })
@@ -71,7 +70,6 @@ router.post("/getDbs", async (req, res) => {
         if (!db_objects) {
             return res.status(404).json({ message: 'Databases not found' });
         }
-        console.log('Databases:', db_objects)
         return res.status(200).json(db_objects)
 
 
@@ -96,7 +94,6 @@ router.post('/getAPIs', async (req, res) => {
             console.log('APIs not found');
             return res.status(404).json({ message: 'APIs not found' });
         }
-        console.log('APIs:', apis);
         return res.status(200).json(apis);
     } catch (error) {
         console.error('Error fetching databases:', error);
@@ -124,5 +121,19 @@ router.post('/getEndpoints', async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 })
+
+router.post('/deleteEndpoint', async (req, res) => {
+    try {
+        const endpoint_name = req.body.endpoint_name;
+        if (!endpoint_name) {
+            return res.status(404).json({ message: 'Endpoint not found' });
+        }
+
+        await EndpointModel.findOneAndDelete({endpoint_name: endpoint_name});
+        return res.status(200).json({ message: 'Endpoint deleted' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}) 
 
 export default router;

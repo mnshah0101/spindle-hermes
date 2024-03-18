@@ -30,7 +30,6 @@ export default async function handler(req, res) {
             return res.status(404).json({ message: 'Databases not found' })
         }
         await client.close()
-        console.log('Databases:', return_databases)
         return res.status(200).json(return_databases)
     }
     catch (error) {

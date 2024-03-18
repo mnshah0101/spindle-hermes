@@ -1,6 +1,7 @@
 //create a User model in mongoose
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
 
 const Schema = mongoose.Schema;
 
@@ -22,7 +23,10 @@ const UserSchema = new Schema({
         type: String,
         unique: true
     },
-    reset_password_token: String,
+    reset_password_token: {
+        type: String,
+        default: CryptoJS.lib.WordArray.random(16).toString()
+    },
     profile_picture: {
         type: String,
         default: "https://i.ibb.co/ctJJ5Q7/image.png"
@@ -41,7 +45,7 @@ UserSchema.methods.comparePassword =   function comparePassword(password, callba
     return  bcrypt.compare(password, this.password, callback);
 }
 
-let UserModel = mongoose.models.User|| mongoose.model('User', UserSchema); // Create a User model
+let UserModel = mongoose.models.User || mongoose.model('User', UserSchema); // Create a User model
 
 export default UserModel;
 

@@ -24,7 +24,7 @@ router.post('/getAccount', async (req, res) => {
 
         //connect to MongoDB
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         }
 
         const account = await UserModel.findById(id);

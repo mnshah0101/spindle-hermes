@@ -20,11 +20,11 @@ const extractionFunctionSchema = {
     properties: {
       endpoint_name: {
         type: "string",
-        description: "The Name of the API Endpoint",
+        description: "The Name of the API Endpoint. This should be the exact same as the API idea, but with a space between each word.",
       },
       method : {
         type: "string",
-        description: "The HTTP Method of the API Endpoint. Can be GET, POST, PUT, DELETE, PATCH",
+        description: "The HTTP Method of the API Endpoint. Can only be GET",
       },
 
       endpoint_slug: {

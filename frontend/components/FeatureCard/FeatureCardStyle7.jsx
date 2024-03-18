@@ -17,7 +17,7 @@ export default function FeatureCardStyle7({
         <div className="col-lg-6 col-md-11">
           <div className="block-gfx ps-xxl-5">
             <Image
-              className="w-100"
+              className="w-100 rounded-circle"
               src={imgUrl}
               alt="Thumbnail"
               placeholder="blur"

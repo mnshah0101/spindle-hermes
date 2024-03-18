@@ -44,11 +44,11 @@ const APISchema = new Schema({
     description: {
         type: String
     },
-    api_keys: [
-        {
-            type: String
-        }
-    ],
+    api_keys: {
+        type: Array,
+        default: []
+    
+    },
 
     //api slug such as www.example.com/api_slug/endpoint_slug
     api_slug:{

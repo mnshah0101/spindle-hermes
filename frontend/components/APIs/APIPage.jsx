@@ -4,7 +4,7 @@ import APIContent from './APIContent';
 
 
 
-export default function APIPage({id}){
+export default function APIPage({id, isOwner}){
 
 
     return (
@@ -12,7 +12,7 @@ export default function APIPage({id}){
 
                 
 
-                    <APIContent id={id} />
+                    <APIContent id={id} isOwner={isOwner} />
 
 
         </div>

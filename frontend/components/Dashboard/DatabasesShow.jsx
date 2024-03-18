@@ -3,6 +3,9 @@ import DatabaseCard from "../DatabaseCard/card";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
+import { config } from "dotenv";
+
+config();
 
 
 export default function Databases() {

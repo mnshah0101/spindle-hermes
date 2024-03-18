@@ -2,6 +2,10 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { config } from 'dotenv';
+
+config();
+
 const data = [
     {
       "playerName": "Tom Brady",

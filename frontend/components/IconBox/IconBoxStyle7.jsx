@@ -7,13 +7,9 @@ export default function IconBoxStyle7({
   subTitle,
   iconClass,
   iconBoxBgClass,
-  href,
 }) {
   return (
-    <Link
-      href={href}
-      className="card card-hover-translate rounded-4 border-0 shadow-tiny h-100 "
-    >
+    <div className="card card-hover-translate rounded-4 border-0 shadow-tiny h-100">
       <div className="card-body">
         <div className="feature">
           <div className="feature-media">
@@ -29,6 +25,6 @@ export default function IconBoxStyle7({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

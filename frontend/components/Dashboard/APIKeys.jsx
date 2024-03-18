@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useMemo } from "react";
 import { useSession } from 'next-auth/react';
+import { config } from "dotenv";
+
+config();
 
 export default function APIKeys() {
     const { data: session, status } = useSession();
@@ -34,7 +37,6 @@ export default function APIKeys() {
         if(status === 'loading') return;
         if(status === 'unauthenticated') return;
 
-        console.log("my api keys");
 
     
         
@@ -45,7 +47,7 @@ export default function APIKeys() {
     async function deleteKey(id){
         console.log('create key')
         console.log(id)
-        const res = await fetch('/api/keys/deleteKey', {
+        const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/keys/deleteKey', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -72,7 +74,7 @@ export default function APIKeys() {
 
     async function createKey(){
         console.log('create key')
-        const res = await fetch('/api/keys/createKey', {
+        const res = await fetch(process.env.NEXT_PUBLIC_SERVER_URL+'/keys/createKey', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

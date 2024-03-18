@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import CryptoJS from 'crypto-js';
 import KeyModel from '../models/Key.js';
+import UserModel from '../models/User.js';
+import APIModel from '../models/API.js';
 
 config();
 
@@ -14,6 +16,8 @@ const router = express.Router();
 router.post('/createKey', async (req, res) => {
     try {
         const { user_id } = req.body
+                console.log("seeing if user")
+
 
         if (!user_id) {
             return res.status(400).json({ message: 'User ID is required' })
@@ -22,7 +26,7 @@ router.post('/createKey', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const newKey = {
@@ -33,6 +37,29 @@ router.post('/createKey', async (req, res) => {
         };
 
         let saved_key = new KeyModel(newKey);
+
+        //get all APIs from user
+
+        const user = await UserModel.findById(user_id)
+        console.log("seeing if user")
+
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log(user)
+
+        for (let i = 0; i < user.apis.length; i++) {
+            let api = await APIModel.findById(user.apis[i]);
+            if (!api) {
+                return res.status(404).json({ message: 'API not found' });
+            }
+            api.api_keys.push(newKey.key);
+            await api.save();
+        }
+
+
         await saved_key.save();
 
         return res.status(200).json({ message: 'Key created' });
@@ -45,7 +72,6 @@ router.post('/createKey', async (req, res) => {
 router.post('/deleteKey', async (req, res) => {
     try {
         const { key_id } = req.body
-        console.log('key_id:', key_id)
         if (!key_id) {
             return res.status(400).json({ message: 'Key ID is required' })
         };
@@ -53,7 +79,7 @@ router.post('/deleteKey', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const key = await KeyModel.findByIdAndDelete(key_id).exec();
@@ -78,7 +104,7 @@ router.post('/getKeys', async (req, res) => {
         //connect to mongodb
         const connect = await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         if(!connect) {
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
         const keys = await KeyModel.find({ user: user_id }).exec();

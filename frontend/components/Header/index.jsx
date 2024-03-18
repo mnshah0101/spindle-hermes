@@ -116,15 +116,7 @@ useEffect(() => {
                   <span className="nk-menu-text">About</span>
                 </Link>
               </li>
-              <li
-                className={`nk-menu-item ${
-                  router.pathname === '/index-s5' ? 'active' : ''
-                }`}
-              >
-                <Link href="/pricing" className="nk-menu-link">
-                  <span className="nk-menu-text">Pricing</span>
-                </Link>
-              </li>
+              
             </ul>
             <div className="mx-2 d-none d-lg-block">
             </div>

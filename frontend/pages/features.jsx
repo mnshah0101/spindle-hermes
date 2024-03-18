@@ -9,50 +9,54 @@ import IconBoxStyle9 from '../components/IconBox/IconBoxStyle9';
 import featureImgA from '../public/images/gfx/process/a.jpg';
 import featureImgB from '../public/images/gfx/process/b.jpg';
 import featureImgC from '../public/images/gfx/process/c.jpg';
+import Accordion from '../components/Accordion';
+
 const featureData = [
   {
-    title: 'Write content faster',
+    title: 'Effortless Data Management',
     subTitle:
-      'You do not need to spend hours to write good content — let our advance AI Writer to get it done.',
+      'Simplify data management tasks and handle multiple databases, endpoints, and API keys effortlessly with Spindle’s intuitive UI.',
     iconClass: 'spark',
     iconBoxBgClass: 'text-bg-info-soft-outline',
   },
   {
-    title: 'Tools and templates',
+    title: 'Customizable Solutions',
     subTitle:
-      'Using our AI tools and pre-built template to create content briefs, write and optimize content in one place.',
+      'Tailor data handling and API creation processes to your preferences with Spindle’s flexible and customizable platform.',
     iconClass: 'cpu',
     iconBoxBgClass: 'text-bg-warning-soft-outline',
   },
   {
-    title: 'Brainstorm faster',
+    title: 'Seamless Data Organization',
     subTitle:
-      'Use our advanced AI as your personal content writer or partner for your endless work for your business.',
+      'Organize data seamlessly across diverse databases, endpoints, and security protocols with Spindle’s user-friendly interface.',
     iconClass: 'bulb',
     iconBoxBgClass: 'text-bg-primary-soft-outline',
   },
   {
-    title: 'Copy and publish anywhere',
+    title: 'Optimized Development Pipeline',
     subTitle:
-      'You can simply copy your desire content and then you can publish, like Shopify, WordPress, or anywhere.',
+      'Streamline your development pipeline for maximum efficiency and productivity with Spindle’s optimized tools and features.',
     iconClass: 'file-docs',
     iconBoxBgClass: 'text-bg-purple-soft-outline',
   },
   {
-    title: 'Repurpose content easily',
+    title: 'Flexible Content Repurposing',
     subTitle:
-      'Write and saved once, use everywhere. Also rewrite content for different porpose with minimal effort.',
+      'Maximize content value and reach by repurposing content effortlessly across different platforms with Spindle’s advanced features.',
     iconClass: 'swap-alt',
     iconBoxBgClass: 'text-bg-success-soft-outline',
   },
   {
-    title: 'Write in Any Language',
+    title: 'Multi-Language Support',
     subTitle:
-      'Let AI write for you in over 40 languages. Our AI can write in English, Spanish, French and many more language.',
+      'Create content in over 40 languages effortlessly with Spindle’s advanced AI capabilities, expanding your global reach.',
     iconClass: 'text',
     iconBoxBgClass: 'text-bg-danger-soft-outline',
   },
 ];
+
+
 
 export default function FeaturesPage() {
   return (
@@ -92,91 +96,15 @@ export default function FeaturesPage() {
           </div>
         </section>
         <section className="section section-bottom-0">
-          <div className="container">
-            <SectionHeading
-              overlineTitle="How it works"
-              title="Few steps to write content"
-              containerWidthClass="col-lg-8 col-xl-7 col-xxl-6"
-            />
-            <FeatureCardStyle8
-              number="01"
-              title="Select a Template"
-              subTitle="Sed ut perspiciatis unde omnis iste natus error sit
-              voluptatem accusantium doloremque laudantium, totam rem
-              aperiam, quasi architecto beatae vitae dicta sunt
-              explicabo."
-              imgUrl={featureImgA}
-              imgBgClass="bg-info bg-opacity-50"
-            />
-            <div className="sction-sap text-center py-3 d-none d-md-block">
-              <svg
-                className="h-3rem h-sm-5rem h-lg-7rem"
-                viewBox="0 0 444 112"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M442.989 1C443.49 18.4197 426.571 53.2592 354.892 53.2591C265.293 53.2591 126.139 53.2591 80.0875 53.2591C34.0366 53.2591 7.00663 85.784 0.999979 111"
-                  stroke="currentColor"
-                  strokeDasharray="7 7"
+              <div className="container">
+                <SectionHeading
+                  overlineTitle="FAQ'S"
+                  title="Frequently Asked Questions"
+                  containerWidthClass="col-xl-8"
                 />
-              </svg>
-            </div>
-            <div className="h-3rem d-md-none" />
-            <FeatureCardStyle9
-              number="02"
-              title="Fill in Your Product Details"
-              subTitle="Explain with as many details as possible to the AI what you would
-              like to write about."
-              featureList={[
-                'At vero eos et accusamus et iusto',
-                'At vero eos et accusamus et iusto',
-              ]}
-              imgUrl={featureImgB}
-              imgBgClass="bg-primary bg-opacity-40"
-            />
-            <div className="sction-sap text-center py-3 d-none d-md-block">
-              <svg
-                className="h-3rem h-sm-5rem h-lg-7rem"
-                viewBox="0 0 444 114"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.01068 1C0.510125 18.7364 17.4289 54.2093 89.1082 54.2093C178.707 54.2093 317.861 54.2093 363.912 54.2093C409.963 54.2093 436.993 87.3256 443 113"
-                  stroke="currentColor"
-                  strokeDasharray="7 7"
-                />
-              </svg>
-            </div>
-            <div className="h-3rem d-md-none" />
-            <FeatureCardStyle8
-              number="03"
-              title="Generate AI Content"
-              subTitle="Our highly trained AI understands your details and
-              generate unique and human-like content in seconds."
-              imgUrl={featureImgC}
-              imgBgClass="bg-pink bg-opacity-30"
-            />
-          </div>
-        </section>
-        <section className="section section-bottom-0">
-          <div className="container">
-            <Cta
-              overlineTitle="Boost your writing productivity"
-              title="End writer’s block today"
-              subtitle="It’s like having access to a team of copywriting experts writing
-              powerful copy for you in 1-click."
-              btnUrl="/login"
-              btnText="Start writing for free"
-              infoList={[
-                'No credit card required',
-                'Cancel anytime',
-                '10+ tools to expolore',
-              ]}
-            />
-          </div>
-        </section>
+                <Accordion plusMinus />
+              </div>
+            </section>
       </Layout>
     </>
   );

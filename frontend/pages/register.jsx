@@ -70,15 +70,16 @@ export default function RegisterPage() {
 
     setLoading(false);
 
-    console.log(response.status)
 
 
-    if(response.status != 201 || response.status != 200){
+    if(response.status != 201 && response.status != 200){
 
       setError("The username or email is already taken. Please try again");
+      throw new Error("The username or email is already taken. Please try again");
     }
 
-    console.log("signing in")
+
+    
 
 
       setError('');

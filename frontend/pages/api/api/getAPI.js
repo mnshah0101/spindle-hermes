@@ -30,9 +30,7 @@ export default async function handler(req, res) {
             console.log('APIs not found')
             return res.status(404).json({ message: 'APIs not found' })
         }
-        console.log('APIs:', return_apis)
         await client.close()
-        console.log('APIs:', return_apis)
         return res.status(200).json(return_apis)
     }
     catch (error) {
