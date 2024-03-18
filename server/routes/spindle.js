@@ -134,14 +134,14 @@ router.post('/createDatabase', async (req, res) => {
         });
         const api_response = await response.json();
         if(api_response.status != 'success') {
-            return res.status(500).send({'message' : 'Error creating API'});
+            return res.status(500).send({'message' : 'Error Creating API'});
         }
 
         res.status(200).send(returnObject);
 
         } catch (error) {
             console.error('Error saving database:', error);
-            res.status(500).send({'message' : 'Error saving database'});
+            res.status(500).send({'message' : 'Error Saving Database'});
         }
 
         } catch (error) {

@@ -38,7 +38,7 @@ router.post('/getDbObjects', async (req, res) => {
         client = await MongoClient.connect(database.mongo_uri, {});
         if (!client) {
             await client.close();
-            return res.status(500).send('Error connecting to MongoDB');
+            return res.status(500).send({"message" : 'Error connecting to MongoDB'});
         }
 
         const collection = client.db(database.database_name).collection(database.collection_name);
