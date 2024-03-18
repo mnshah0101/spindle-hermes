@@ -124,6 +124,7 @@ router.post('/createDatabase', async (req, res) => {
 
         //make post request to /spindle/createAPIs
         const data = {api_name : api_name, user_id: user_id, description: description, endpoint_slug: endpoint_slug, database_id: uploadedDatabase._id, schema: schema};
+        console.log(data);
         const response = await fetch(process.env.MY_URL+'/spindle/createAPIs', {
             method: 'POST',
             headers: {
@@ -132,7 +133,8 @@ router.post('/createDatabase', async (req, res) => {
             body: JSON.stringify(data)
         });
         const api_response = await response.json();
-        if(api_response.status != 'success') {
+        console.log(api_response.status);
+        if(api_response.status !== 'active') {
             return res.status(500).send({'message' : 'Error creating API'});
         }
 
@@ -154,7 +156,6 @@ router.post('/createDatabase', async (req, res) => {
 
 
 router.post("/createAPIs", async (req, res) => {
-
     const api_name = req.body.api_name;
 
     let api_exists = await APIModel.findOne({name: api_name});
@@ -324,7 +325,7 @@ router.post("/createAPIs", async (req, res) => {
       //   await database_new.save();
       //   res.send(myCreatedAPI);
 
-      res.send(myCreatedAPI);
+      res.status(200).send(myCreatedAPI);
 });
 
 router.post('/testRequests', async (req, res) => {

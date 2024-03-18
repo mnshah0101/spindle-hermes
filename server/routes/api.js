@@ -70,6 +70,8 @@ router.use('/', async (req, res, next) => {
     }
 
     const isIn = api.api_keys.includes(key);
+    console.log(key);
+    console.log(api.api_keys);
     if(!isIn) {
         return res.status(401).json({ message: 'Invalid key' });
     }

@@ -30,7 +30,7 @@ router.post('/createKey', async (req, res) => {
         };
 
         const newKey = {
-            key: CryptoJS.lib.WordArray.random(16).toString(),
+            key: CryptoJS.lib.WordArray.random(16).toString().toUpperCase(),
             user: user_id,
             uses: 0,
             created_at: Date.now()
@@ -82,7 +82,7 @@ router.post('/deleteKey', async (req, res) => {
             return res.status(500).json({ message: 'Error connecting to MongoDB' });
         };
 
-        const key = await KeyModel.findByIdAndDelete(key_id).exec();
+        let key = await KeyModel.findByIdAndDelete(key_id).exec();
         if (!key) {
             return res.status(404).json({ message: 'Key not found' });
         }
