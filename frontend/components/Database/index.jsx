@@ -508,6 +508,7 @@ useEffect(() => {
     }
     fetchData();
 }, [session])
+
   
 
 
@@ -516,7 +517,7 @@ useEffect(() => {
             <div className='d-flex justify-content-between'>
                 <h2>{databaseTitle}</h2>
 
-                <button className='btn btn-outline-info'>Edit API Page</button>
+              
 
             </div>
         
