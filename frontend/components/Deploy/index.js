@@ -102,6 +102,7 @@ export default function Deploy() {
       const res = await response.json();
       if (res.status != 'success') {
         setError(res.message);
+        setLoading(false);
         return;
       }
       setLoading(false);

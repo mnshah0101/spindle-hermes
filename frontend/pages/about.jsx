@@ -69,9 +69,7 @@ export default function AboutPage() {
           </div>
         </section>
         <section className="section section-sm section-0">
-          <div className="container">
-            <BrandsStyle2 brandList={brandData} />
-          </div>
+          
         </section>
       </Layout>
     </>

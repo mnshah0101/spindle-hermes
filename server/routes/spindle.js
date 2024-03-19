@@ -9,6 +9,7 @@ import processName from '../utils/processName.js';
 import processDBName from '../utils/processDatabaseName.js';
 import UserModel from '../models/User.js';
 import APIModel from '../models/API.js';
+import KeyModel from '../models/Key.js';
 import EndpointModel from '../models/Endpoint.js';
 import getIdeas from '../utils/getIdeas.js';
 import createEndpoints from '../utils/createEndpoint.js';
@@ -225,7 +226,7 @@ router.post("/createAPIs", async (req, res) => {
     let endpoints = await createEndpoints(ideas, schema, JSON.stringify(firstThree));
 
     const curDate = new Date();
-    // const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
+    const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
 
         //check to make sure api with api name does not exist
      api_exists = await APIModel.findOne({name: api_name});
@@ -239,21 +240,32 @@ router.post("/createAPIs", async (req, res) => {
       return res.status(400).send({message : 'API slug already exists'});
     }
 
+    //get all keys with user_id == user_id
+
+    let keys = await KeyModel.find({user: user_id});
+    if(keys.length < 1) {
+      keys = []
+    }
+
+
+
     const newAPI = {
       name: api_name,
       description: description,
-      api_keys: ['a'], 
+      api_keys: keys.map(key => key.key), 
       api_slug: removeSpaces(full_endpoint_slug),
       user: user,
       mongo_uri: MONGO_URI,
       mongo_schema: schema,
       database_name: database,
-      image: 'image_url', 
+      image: image_url, 
       status: "active",
       created_at: curDate,
       sample_data: firstThree
 
     }
+    database.image = image_url;
+    await database.save();
 
 
     //check to make s
@@ -375,7 +387,10 @@ router.post('/testRequests', async (req, res) => {
     }
 
     const curDate = new Date();
-    // const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
+  const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
+
+
+
 
     const newAPI = {
       name: api_name,
@@ -386,7 +401,7 @@ router.post('/testRequests', async (req, res) => {
       mongo_uri: MONGO_URI,
       mongo_schema: schema,
       database_name: database,
-      image: 'image_url', 
+      image: image_url, 
       status: "active",
       created_at: curDate
 
@@ -435,6 +450,8 @@ router.post('/createAPI', async (req, res) => {
   endpoint_slug = processName(endpoint_slug);
 
   const user_id = req.body.user_id;
+
+
   if(!user_id) {
     console.log('no user id')
     return res.status(400).send({message : 'Missing user ID'});

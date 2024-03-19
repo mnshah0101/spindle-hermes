@@ -7,6 +7,7 @@ import KeyModel from '../models/Key.js';
 import UserModel from '../models/User.js';
 import APIModel from '../models/API.js';
 
+
 config();
 
 const MONGO_URI = process.env.MONGO_URI;
@@ -86,6 +87,24 @@ router.post('/deleteKey', async (req, res) => {
         if (!key) {
             return res.status(404).json({ message: 'Key not found' });
         }
+
+        //delete keys from all APIs
+        const user = await UserModel.findById(key.user);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        for (let i = 0; i < user.apis.length; i++) {
+            let api = await APIModel.findById(user.apis[i]);
+            if (!api) {
+                return res.status(404).json({ message: 'API not found' });
+            }
+            api.api_keys = api.api_keys.filter(k => k !== key.key);
+            await api.save();
+        }
+        
+
+
 
         return res.status(200).json({ message: 'Key deleted successfully' });
     } catch (error) {

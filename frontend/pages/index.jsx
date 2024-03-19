@@ -10,9 +10,9 @@ import IconBoxStyle2 from '../components/IconBox/IconBoxStyle2';
 import FeatureCardStyle2 from '../components/FeatureCard/FeatureCardStyle2';
 import IconBoxStyle3 from '../components/IconBox/IconBoxStyle3';
 import heroImage from '../public/images/spindle_mongo_db.png';
-import featureCardImg1 from '../public/images/gfx/process/a.jpg';
-import featureCardImg2 from '../public/images/gfx/process/b.jpg';
-import featureCardImg3 from '../public/images/gfx/process/c.jpg';
+import featureCardImg1 from '../public/images/csvexample.png';
+import featureCardImg2 from '../public/images/dbexample.png';
+import featureCardImg3 from '../public/images/apiexample.png';
 
 export default function HomeS2() {
   return (
