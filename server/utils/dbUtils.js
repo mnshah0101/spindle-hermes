@@ -65,6 +65,12 @@ function parseCSV(schema, csvData) {
               } else {
                   value = null;
               }
+          } else if (type == "Date") {
+              if (!isNaN(new Date(value))) {
+                value = new Date(value);
+              } else {
+                value = null;
+              }
           }
           
           obj[key] = value;
