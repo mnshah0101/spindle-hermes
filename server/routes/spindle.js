@@ -507,7 +507,7 @@ router.post('/createAPI', async (req, res) => {
   //check if endpoint_slug already exists
   const username = user.username;
 
-  const full_endpoint_slug = `/${slug}/${endpoint_slug}`;
+  const full_endpoint_slug = `${slug}/${endpoint_slug}`;
   let endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
   if(endpoint) {
     console.log('endpoint slug already exists')

@@ -65,7 +65,7 @@ export default function Deploy() {
     }
     if (name == 'api-endpoint') {
       if (!checkLowerCaseString(e.target.value)) {
-        setError('Endpoint slug must be in lower case');
+        setError('Endpoint slug must be in lowercase and separated by hyphens');
         return;
       }
       setEndpointSlug(e.target.value);
@@ -86,7 +86,7 @@ export default function Deploy() {
       setError('');
       e.preventDefault();
       if (csvData.length < 20) {
-        setError('Data must have at least 20 rows');
+        setError('The data must have at least 20 rows');
         return;
       }
       console.log('submitting');
@@ -254,7 +254,7 @@ export default function Deploy() {
                           type="submit"
                           id="submit-btn"
                         >
-                          Send Message
+                          Deploy API
                         </button>
 
                         {error && <div className="alert alert-danger mt-3">{error}</div>}
