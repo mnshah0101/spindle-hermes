@@ -60,7 +60,7 @@ export default function RegisterPage() {
     try{
 
       setLoading(true);
-    let response = await fetch(NEXT_PUBLIC_SERVER_URL+'/register', {
+    let response = await fetch(NEXT_PUBLIC_SERVER_URL + '/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ export default function RegisterPage() {
   }catch(err){
     setLoading(false);
     console.log('error hit')
-    setError("The username or email is already taken. Please try again")
+    setError("There was an error with signing in. The username or email is already taken. Please try again")
     console.log(err);
   }
   }
