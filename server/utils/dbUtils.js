@@ -57,6 +57,8 @@ function parseCSV(schema, csvData) {
           let value = row[i];
           if (value === "") {
               value = "";
+          }else if (type.toLowerCase() === "date") {
+            value = new Date(value);
           } else if (type === "Number") {
               if (/^-?\d+$/.test(value)) {
                   value = parseInt(value);
