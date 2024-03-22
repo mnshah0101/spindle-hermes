@@ -116,7 +116,6 @@ router.post('/createDatabase', async (req, res) => {
                 database_description: description,
         mongo_uri: MONGO_URI
         });
-        try{
         const uploadedDatabase = await database.save();
          returnObject.status = "success";
         returnObject.message = "Database created successfully.";
@@ -141,10 +140,7 @@ router.post('/createDatabase', async (req, res) => {
 
         res.status(200).send(returnObject);
 
-        } catch (error) {
-            console.error('Error saving database:', error);
-            res.status(500).send({'message' : 'Error saving database'});
-        }
+       
 
         } catch (error) {
 
@@ -157,6 +153,8 @@ router.post('/createDatabase', async (req, res) => {
 
 
 router.post("/createAPIs", async (req, res) => {
+
+  try{
     const api_name = req.body.api_name;
 
     let api_exists = await APIModel.findOne({name: api_name});
@@ -346,100 +344,22 @@ router.post("/createAPIs", async (req, res) => {
       //   res.send(myCreatedAPI);
 
       res.status(200).send(myCreatedAPI);
+    }
+    catch(error) {
+      console.log('Error creating API:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+
 });
 
-router.post('/testRequests', async (req, res) => {
-  const api_name = req.body.api_name;
-    //check if api_name exists
-    if(!api_name) {
-        return res.status(400).json({ message: 'Missing API name' });
-    }
-    const user_id = req.body.user_id;
-    if(!user_id) {
-        return res.status(400).json({ message: 'Missing user ID' });
-    }
-    const description = req.body.description;
-    if(!description) {
-        return res.status(400).json({ message: 'Missing description' });
-    }
-    let endpoint_slug = req.body.endpoint_slug;
-    if(!endpoint_slug) {
-        return res.status(400).json({ message: 'Missing endpoint slug' });
-    }
 
-     endpoint_slug = processName(req.body.endpoint_slug);
-  
-    const database_id = req.body.database_id;
-    if(!database_id) {
-        return res.status(400).json({ message: 'Missing database ID' });
-    }
-    const schema = req.body.schema;
-    if(!schema) {
-        return res.status(400).json({ message: 'Missing schema' });
-    }
-
-    if(!api_name || !user_id || !description || !endpoint_slug || !database_id) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
-    const user = await UserModel.findById(user_id);
-
-    if(!user) {
-        return res.status(400).json({ message: 'Invalid user' });
-    }
-
-    const username = user.username;
-    const full_endpoint_slug = `/${username}/${endpoint_slug}`;
-    const database = await DatabaseModel.findById(database_id);
-    if(!database) {
-        return res.status(400).json({ message: 'Invalid database' });
-    }
-
-    const curDate = new Date();
-  const image_url = await image_query("Create an image that has to do with: " + api_name+ ". If it is unsafe or inappropriate, just create a general image of an API.");
-
-
-
-
-    const newAPI = {
-      name: api_name,
-      description: description,
-      api_keys: ['xtlqbxowjwffzcvrnnfkckcwqmwdglkvesliheuairxiycysjscqtxkeewqwgbbvhnseutkjvjjqzwnhljlizzptqlocfnsousceojgpwyzocktjvaqtbosvwzxhfcdrkmiugfjtqdngfkikzovalduyfcnbxkkcgjdsvlhmhimasludpfhmqhgqifwcajhf'], 
-      api_slug: removeSpaces(full_endpoint_slug),
-      user: user,
-      mongo_uri: MONGO_URI,
-      mongo_schema: schema,
-      database_name: database,
-      image: image_url, 
-      status: "active",
-      created_at: curDate
-
-    }
-
-
-    //check to make s
-    
-    let api =  new APIModel(newAPI);
-
-
-    let new_api = await api.save()
-
-    //push endpoints to api object with createdCode 
-    let myCreatedAPI = await API.findById(new_api._id);
-    let deleteEndpoint = createDeleteEndpoint(api, user, database);
-    myCreatedAPI.endpoints.push(deleteEndpoint);
-
-    console.log('created api:')
-
-    await myCreatedAPI.save()
-
-    res.send(myCreatedAPI);
-})
 
 
 
 
 
 router.post('/createAPI', async (req, res) => {
+  try{
   const endpoint_name = req.body.endpoint_name;
   console.log('endpoint_name:', endpoint_name)
   //check if endpoint_name exists
@@ -545,7 +465,7 @@ router.post('/createAPI', async (req, res) => {
   const endpointObject = new EndpointModel(newEndpoint);
 
 
-  try {
+  
     const savedEndpoint = await endpointObject.save();
 
     api.endpoints.push(savedEndpoint);
@@ -560,6 +480,9 @@ router.post('/createAPI', async (req, res) => {
   }
 
 }
+
+
+
 );
 
 export default router;
