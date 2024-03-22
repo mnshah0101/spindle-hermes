@@ -10,7 +10,7 @@ export default function ContactInfo({ onClose }) {
   return (
   
     <div className='d-flex row contact-modal row px-4' >
-      <div className='card col-lg-2 row'>
+      <div className='card col-lg-3 row '>
 
         <div className="col-lg-12 d-flex justify-content-end">
 

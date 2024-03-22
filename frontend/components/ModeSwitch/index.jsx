@@ -28,11 +28,6 @@ export default function ModeSwitch() {
   };
 
   return (
-    <button
-      className={`dark-mode-toggle ${darkMode ? 'dark-active' : ''}`}
-      onClick={toggleMode}
-    >
-      <Icon icon={darkMode ? 'moon-fill' : 'sun-fill'} className="icon" />
-    </button>
+    <></>
   );
 }

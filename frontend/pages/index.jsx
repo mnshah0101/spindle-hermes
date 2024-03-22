@@ -36,7 +36,7 @@ export default function HomeS2() {
          subTitle="Revolving the way you manage your data. Automatically create mongodb and APIs from CSV."
           imgUrl={heroImage}
           btnText="Get started for free"
-          btnUrl="/login-s2"
+          btnUrl="/login"
           btnAlert="No credit card required"
           brandTitle="Relied upon by innovators seeking improved data management and customization."
           brandSrcList={[
