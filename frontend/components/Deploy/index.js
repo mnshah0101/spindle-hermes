@@ -31,6 +31,8 @@ export default function Deploy() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
 
+  const [canSubmit, setCanSubmit] = useState(false); 
+
 
   const router = useRouter();
 
@@ -66,6 +68,8 @@ export default function Deploy() {
     if (name == 'api-endpoint') {
       if (!checkLowerCaseString(e.target.value)) {
         setError('Endpoint slug must be in lowercase and separated by hyphens');
+        setCanSubmit(false);
+
         return;
       }
       setEndpointSlug(e.target.value);
@@ -79,19 +83,26 @@ export default function Deploy() {
     if (name == 'api-collection') {
       if (!checkLowerCaseString(e.target.value)) {
         setError('Collection name must be in lowercase and separated by hyphens');
+        setCanSubmit(false);
         return;
       }
       setCollectionName(e.target.value);
       
     }
+
+    setCanSubmit(true);
   }
 
   const handleSubmit = async (e) => {
     try {
+
       setError('');
       e.preventDefault();
       if (csvData.length < 20) {
         setError('The data must have at least 20 rows');
+        return;
+      }
+      if(!canSubmit) {
         return;
       }
       console.log('submitting');
