@@ -395,7 +395,7 @@ router.post('/testRequests', async (req, res) => {
     const newAPI = {
       name: api_name,
       description: description,
-      api_keys: ['a'], 
+      api_keys: ['xtlqbxowjwffzcvrnnfkckcwqmwdglkvesliheuairxiycysjscqtxkeewqwgbbvhnseutkjvjjqzwnhljlizzptqlocfnsousceojgpwyzocktjvaqtbosvwzxhfcdrkmiugfjtqdngfkikzovalduyfcnbxkkcgjdsvlhmhimasludpfhmqhgqifwcajhf'], 
       api_slug: removeSpaces(full_endpoint_slug),
       user: user,
       mongo_uri: MONGO_URI,
