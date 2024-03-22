@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
-import Layout2 from '../components/Layout/Layout2';
+import Layout from '../components/Layout';
 import HeroStyle2 from '../components/Hero/HeroStyle2';
 import SectionHeading from '../components/SectionHeading';
 import Accordion from '../components/Accordion';
@@ -22,7 +22,7 @@ export default function HomeS2() {
           Spindle - Automated API and Database Hosting
         </title>
       </Head>
-      <Layout2>
+      <Layout>
         <HeroStyle2
           title="AI Developer for Creating"
           typingText={[
@@ -259,7 +259,7 @@ export default function HomeS2() {
             <Accordion variant="accordion-separated" plusMinus />
           </div>
         </section>
-      </Layout2>
+      </Layout>
     </>
   );
 }
