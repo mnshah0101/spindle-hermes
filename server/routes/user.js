@@ -103,7 +103,7 @@ router.post('/sendEmail', async (req, res) => {
                     <p>Hello,</p>
                     <p>You are receiving this email because you have requested a password reset for your account.</p>
                     <p>Please click on the following link to reset your password:</p>
-                    <p><a href="http://localhost:3000/reset-password/?email=${email}&reset_token=${reset_token}">Reset Password</a></p>
+                    <p><a href="https://spindleapi.com/reset-password/?email=${email}&reset_token=${reset_token}">Reset Password</a></p>
                     <p>If you did not request this reset, please ignore this email.</p>
                     <p>Thank you,</p>
                     <p>Spindle Dev Team</p>
