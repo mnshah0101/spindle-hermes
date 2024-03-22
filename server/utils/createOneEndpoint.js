@@ -96,7 +96,7 @@ async function createOneEndpoint(endpoint_name, endpoint_slug, endpoint_descript
 const result = await runnable.invoke([
   new HumanMessage(`Create an API with this endpoint name: ${endpoint_name}, this endpoint slug: ${endpoint_slug} from this API description: 
   ${endpoint_description}
-    This is the schema of the data. The schema is the structure of the data that the API will be working with and you can only use the schema fields to create the API. 
+    This is the schema of the data. The schema is the structure of the data that the API will be working with and you can only use the schema fields to create the API. When making the code, take into account the types of the fields and the examples of the data. For example, if the field is a string, you can assume the data will be a string, so you cannot make date operations on it.
     ${schema}
     These are the first three examples of the data:
     ${firstThree}
