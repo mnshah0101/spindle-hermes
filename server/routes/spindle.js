@@ -289,7 +289,7 @@ router.post("/createAPIs", async (req, res) => {
   
         const newEndpoint = {
           endpoint_name: endpoint.endpoint_name, 
-          endpoint_slug: removeSpaces(`/${full_endpoint_slug}${endpoint.endpoint_slug}`),
+          endpoint_slug: removeSpaces(`${full_endpoint_slug}${endpoint.endpoint_slug}`),
           user: user,
           method: endpoint.method,
           api: api._id,
