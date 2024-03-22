@@ -16,7 +16,7 @@ const {EXPRESS_PORT} = process.env;
 
 
 const app = express();
-app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.json({ limit: '500mb', extended: true }));
 
 app.use(cors());
 
