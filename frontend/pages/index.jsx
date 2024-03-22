@@ -38,12 +38,10 @@ export default function HomeS2() {
           btnText="Get started for free"
           btnUrl="/login"
           btnAlert="No credit card required"
-          brandTitle="Relied upon by innovators seeking improved data management and customization."
+          brandTitle="Spindle is powered by OPENAI's GPT-4 through Langchain. We also use MongoDB for your databases."
           brandSrcList={[
-            '/images/brands/72-b-white.png',
-            '/images/brands/72-c-white.png',
-            '/images/brands/72-d-white.png',
-            '/images/brands/72-e-white.png',
+            '/images/mongo_logo.png',
+            '/images/langchain_logo.png',
           ]}
         />
        <section className="section bg-darker is-dark section-top-0 has-shape">
