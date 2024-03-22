@@ -65,12 +65,7 @@ export default function Deploy() {
       setApiName(e.target.value);
     }
     if (name == 'api-endpoint') {
-      if (!checkLowerCaseString(e.target.value)) {
-        setEndpointSlug('');
-        setError('Endpoint slug must be in lowercase and separated by hyphens');
-
-        return;
-      }
+     
       setEndpointSlug(e.target.value);
     }
 
@@ -80,11 +75,6 @@ export default function Deploy() {
     }
 
     if (name == 'api-collection') {
-      if (!checkLowerCaseString(e.target.value)) {
-        setCollectionName('');
-        setError('Collection name must be in lowercase and separated by hyphens');
-        return;
-      }
       setCollectionName(e.target.value);
       
     }
@@ -100,8 +90,17 @@ export default function Deploy() {
         setError('The data must have at least 20 rows');
         return;
       }
+
+      if (!checkLowerCaseString(collectionName)) {
+        setError('Collection name must be in lowercase and separated by hyphens');
+        return;
+      }
+      if (!checkLowerCaseString(endpointSlug)) {
+        setError('Endpoint slug must be in lowercase and separated by hyphens');
+        return;
+      }
+      
  
-      console.log('submitting');
       const data = { api_name: apiName, endpoint_slug: endpointSlug, description: dataDescription, csvData: csvData, user_id: user_id, collection_name: collectionName };
       setLoading(true);
       const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + '/spindle/createDatabase', {
@@ -200,7 +199,7 @@ export default function Deploy() {
                             type="text"
                             name="api-name"
                             className="form-control form-control-lg"
-                            placeholder="API Name"
+                            placeholder="API Name (e.g. Covid-19 Data)"
                             required
                             onChange={e => handleInput(e)}
 
@@ -217,7 +216,7 @@ export default function Deploy() {
                             type="text"
                             name="api-collection"
                             className="form-control form-control-lg"
-                            placeholder="Collection Name"
+                            placeholder="Collection Name (e.g. covid-19-data)"
                             required
                             onChange={e => handleInput(e)}
 
@@ -235,7 +234,7 @@ export default function Deploy() {
                             type="text"
                             name="api-endpoint"
                             className="form-control form-control-lg"
-                            placeholder="Endpoint Slug"
+                            placeholder="Endpoint Slug (e.g. covid-19-data)"
                             required
                             onChange={e => handleInput(e)}
 
@@ -250,7 +249,7 @@ export default function Deploy() {
                           <input
                             name="api-description"
                             className="form-control form-control-lg"
-                            placeholder="Enter a description of the data"
+                            placeholder="Enter a description of the data (This data contains information about...)"
                             required
                             id="api-description"
                             onChange={e => handleInput(e)}
