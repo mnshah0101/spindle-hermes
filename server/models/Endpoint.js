@@ -52,7 +52,8 @@ const EndpointSchema = new Schema({
 
     //endpoint slug such as www.example.com/api_slug/endpoint_slug
    endpoint_slug: {
-         type: String
+         type: String,
+         unique: true
     },
     //endpoint owner
     user : {

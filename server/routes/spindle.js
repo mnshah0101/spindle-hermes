@@ -289,7 +289,7 @@ router.post("/createAPIs", async (req, res) => {
   
         const newEndpoint = {
           endpoint_name: endpoint.endpoint_name, 
-          endpoint_slug: removeSpaces(`/${username}${endpoint.endpoint_slug}`),
+          endpoint_slug: removeSpaces(`/${full_endpoint_slug}${endpoint.endpoint_slug}`),
           user: user,
           method: endpoint.method,
           api: api._id,
@@ -312,9 +312,17 @@ router.post("/createAPIs", async (req, res) => {
 
         
 
-
-        let new_endpoint = await saved_endpoint.save();
+        let new_endpoint = null;
+        try{
+        new_endpoint = await saved_endpoint.save();
+        }
+        catch(error) {
+          console.log('Error saving endpoint:', error);
+        }
+        if(new_endpoint !== null){
         endpointObjects.push(new_endpoint);
+        }
+
       };
 
       //push endpoints to api object with createdCode 
@@ -474,6 +482,8 @@ router.post('/createAPI', async (req, res) => {
   //get schema from api object
   const api = await APIModel.findById(api_id);
 
+  let slug = api.api_slug;
+
   if(!api) {
     return res.status(400).json({ message: 'Invalid API' });
   }
@@ -497,7 +507,7 @@ router.post('/createAPI', async (req, res) => {
   //check if endpoint_slug already exists
   const username = user.username;
 
-  const full_endpoint_slug = `/${username}/${endpoint_slug}`;
+  const full_endpoint_slug = `${slug}/${endpoint_slug}`;
   let endpoint = await EndpointModel.findOne({endpoint_slug: full_endpoint_slug});
   if(endpoint) {
     console.log('endpoint slug already exists')
