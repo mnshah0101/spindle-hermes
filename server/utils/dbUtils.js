@@ -59,7 +59,9 @@ function parseCSV(schema, csvData) {
               value = "";
           }else if (type.toLowerCase() === "date") {
             value = new Date(value);
-          } else if (type === "Number") {
+          }else if (type.toLowerCase() === "boolean") {
+              value = value.toLowerCase() === "true";
+          } else if (type.toLowerCase() === "number") {
               if (/^-?\d+$/.test(value)) {
                   value = parseInt(value);
               } else if (/^-?\d+(\.\d+)?$/.test(value)) {
