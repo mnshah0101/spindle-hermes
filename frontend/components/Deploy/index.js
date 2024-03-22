@@ -77,7 +77,12 @@ export default function Deploy() {
     }
 
     if (name == 'api-collection') {
+      if (!checkLowerCaseString(e.target.value)) {
+        setError('Collection name must be in lowercase and separated by hyphens');
+        return;
+      }
       setCollectionName(e.target.value);
+      
     }
   }
 
