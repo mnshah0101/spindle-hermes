@@ -135,9 +135,9 @@ useEffect(() => {
                     </Link>
                     </div>
                     ) : (
-                  <Link className="link link-dark" href="/login">
+                  <a className="link link-dark" href="/login">
                     <span className="nk-menu-text">{loginBtn}</span>
-                      </Link>
+                      </a>
                   )}
                    
                  

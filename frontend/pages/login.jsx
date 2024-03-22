@@ -50,6 +50,7 @@ export default function LoginPage() {
       
       if(response.error){
         setError(result.error);
+        return;
       }
       else{
         setError('');

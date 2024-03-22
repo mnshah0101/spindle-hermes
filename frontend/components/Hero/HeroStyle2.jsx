@@ -39,11 +39,10 @@ export default function HeroStyle2({
                 </p>
                 <ul className="btn-list btn-list-inline">
                   <li>
-                    <Button
+                    <a
                       href={btnUrl}
-                      btnClass="btn btn-primary btn-lg rounded-pill"
-                      btnText={btnText}
-                    />
+                      className="btn btn-primary btn-lg rounded-pill"
+                    >{btnText}</a>
                   </li>
                 </ul>
                 <p className="sub-text mt-2">{btnAlert}</p>
