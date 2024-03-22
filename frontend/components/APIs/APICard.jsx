@@ -25,7 +25,7 @@ export default function APICard({ api, id, isOwner, refreshEndpoints }) {
             <p><strong className="mx-2">Full Endpoint Slug: </strong>{api.endpoint_slug}</p>
             <p><strong className="mx-2">Method: </strong>{api.method}</p>
             <p><strong className="mx-2">Description: </strong>{api.description}</p>
-            <p><strong className="mx-2">Tags: </strong>{api.tags}</p>
+            <p><strong className="mx-2">Tags: </strong>{api.tags.join(', ')}</p>
 
             <table className="my-3" style={{ width: '100%' }}>
                 <thead>
