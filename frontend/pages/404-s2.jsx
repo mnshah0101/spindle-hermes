@@ -8,12 +8,11 @@ export default function ErrorPageS2() {
     <>
       <Head>
         <title>
-          404-s2 - CopyGen - AI Writer & Copywriting Landing Page Next.js
-          Template.
+          404-Spindle
         </title>
         <meta
           name="description"
-          content="CopyGen - AI Writer & Copywriting Landing Page Next.js Template."
+          content="Spindle"
         />
         <link rel="icon" href="/images/favicon.png" />
       </Head>

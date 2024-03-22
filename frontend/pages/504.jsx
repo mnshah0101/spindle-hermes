@@ -8,8 +8,7 @@ export default function Error504() {
     <>
       <Head>
         <title>
-          504 Error - CopyGen - AI Writer & Copywriting Landing Page Next.js
-          Template.
+          504 Error - Spindle 
         </title>
       </Head>
       <Layout>

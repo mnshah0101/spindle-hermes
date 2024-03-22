@@ -8,7 +8,7 @@ export default function ErrorPage() {
     <>
       <Head>
         <title>
-          404 - CopyGen - AI Writer & Copywriting Landing Page Next.js Template.
+          404 - Spindle
         </title>
       </Head>
       <Layout>

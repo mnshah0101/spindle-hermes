@@ -8,12 +8,11 @@ export default function Error504S2() {
     <>
       <Head>
         <title>
-          504-s2 Error - CopyGen - AI Writer & Copywriting Landing Page Next.js
-          Template.
+          504 - Spindle
         </title>
         <meta
           name="description"
-          content="CopyGen - AI Writer & Copywriting Landing Page Next.js Template."
+          content="Spindle 504 Error Page"
         />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
