@@ -33,7 +33,7 @@ export default function APIContent({ id, isOwner }) {
             }
         }
         fetchEndpoints()
-    }, [id])
+    })
 
     const refreshEndpoints = async () => {
         try {
@@ -53,6 +53,25 @@ export default function APIContent({ id, isOwner }) {
             console.error('Error fetching endpoints:', e);
         }
     };
+
+    if(endpoints.length === 0) {
+        return (
+            <div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-2">
+                            <StickyMenu titles={titles} />
+                        </div>
+                        <div className="col-10">
+                            <h1 className="my-4 pb-3">Create Your First Endpoint</h1>
+                            <APIForm id={id} isOwner={isOwner} onSubmit={refreshEndpoints} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+      
 
 
     return (
